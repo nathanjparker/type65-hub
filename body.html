@@ -52,7 +52,7 @@
         <select id="sg-car"><option value="Gen 3 coupe">On a Gen 3 coupe</option><option value="Gen 1/2 coupe">On a Gen 1/2 coupe</option><option value="roadster">On a roadster</option><option value="idea">Just an idea</option></select>
         <input id="sg-price" placeholder="What you paid (optional)">
         <textarea class="wide" id="sg-desc" placeholder="What it is, why you chose it, anything that went wrong *" required></textarea>
-        <div class="wide" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit" id="sg-btn">Add it to the hub</button><span class="status" id="sg-status">Takes about ten seconds. Claude on this page runs on your own account; the first time you'll be asked to allow it.</span></div>
+        <div class="wide" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit" id="sg-btn">Add it to the hub</button><span class="status" id="sg-status">Works for the owner and invited builders. On the public link, reply in the forum thread instead; the weekly pass reads it.</span></div>
       </form>
     </div>
   </section>
@@ -100,7 +100,7 @@
       <div class="answer" id="askout"></div>
       <div id="asksave" hidden style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="askstage" aria-label="Save to stage"></select><button class="btn ghost" id="asksavebtn">Save answer as a note</button></div>
     </div>
-    <p class="empty" id="ask-off">Asking is available when this page is opened in Claude.</p>
+    <p class="empty" id="ask-off">Asking works for the owner and invited builders when the page is opened in Claude. On the public link it's read-only; make your own copy from the Sources section to get it.</p>
   </section>
 </main>
 </div>
@@ -338,7 +338,7 @@ async function submitReference(){
   const g=k=>document.getElementById('rf-'+k).value.trim(); const st=$('#rf-status'), btn=$('#rf-btn');
   if(!g('url')||!g('why')){ st.textContent='A link and a sentence about it are the minimum.'; return; }
   if(!/^https?:\/\//i.test(g('url'))){ st.textContent='The link needs to start with http:// or https://.'; return; }
-  if(!db||!userId){ st.textContent='Open this page in Claude and sign in to add a resource, or post it on the forum and Nate will add it.'; return; }
+  if(!db||!userId||canWriteOwn===false){ st.innerHTML=readOnlyMsg('link'); return; }
   btn.disabled=true; st.textContent='Filing it…';
   let summary=g('why').slice(0,200), title=g('title');
   if(sample){ try{ const r=await sample.json(`Summarize this resource submitted to a Factory Five Gen 3 Type 65 Coupe build hub in one sentence (max 25 words) for a list of sources, and give a short title if none was given. Return ONLY JSON {"title":"...","summary":"..."}. URL: ${g('url')} Title: ${title} Kind: ${g('kind')} Why: ${g('why')}`,{modelTier:'quick'}); if(r){ summary=r.summary||summary; title=title||r.title||''; } }catch(x){} }
@@ -348,7 +348,7 @@ async function submitReference(){
     data.items=(data.items||[]).concat([item]); if(g('who')) data.by=g('who');
     await ref.set(data);
     st.textContent='Added. The weekly pass will read it and file what it finds.'; ['url','title','why'].forEach(k=>document.getElementById('rf-'+k).value='');
-  }catch(x){ st.textContent=(x&&x.code==='invalid_argument')?'This link is view-only. Ask Nate for Contributor access, or post it on the forum.':'Could not save. Try again in a moment.'; }
+  }catch(x){ if(x&&x.code==='invalid_argument') st.innerHTML=readOnlyMsg('link'); else st.textContent='Could not save. Try again in a moment.'; }
   btn.disabled=false;
 }
 function renderSandboxBar(){
@@ -532,11 +532,15 @@ document.addEventListener('submit',async e=>{
   const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.extra=(cur.extra||[]).concat([v]); taskState[id]=cur; inp.value=''; renderParts(q.value);
   try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); }
 });
+function readOnlyMsg(what){
+  const t=D.forumThread; const where=t?`<a href="${esc(t)}" target="_blank" rel="noopener">reply in the forum thread</a>`:'reply in the forum thread where you found this link';
+  return `This link is read-only, so the box can't save. To add a ${what}, ${where} with the name, model and a link; the weekly research pass reads the thread and files it. Or make your own copy of the hub from the Sources section.`;
+}
 /* ---- suggestions ---- */
 async function submitSuggestion(){
   const g=k=>document.getElementById('sg-'+k).value.trim(); const st=$('#sg-status'), btn=$('#sg-btn');
   if(!g('name')||!g('desc')){ st.textContent='A name and a description are the minimum.'; return; }
-  if(!db||!userId){ st.textContent='Open this page in Claude and sign in to add a part. Or message Nate on the forum and he will add it.'; return; }
+  if(!db||!userId||canWriteOwn===false){ st.innerHTML=readOnlyMsg('part'); return; }
   btn.disabled=true; st.textContent='Filing it…';
   let filed={stage:'plan',cat:'Suggested',name:g('name'),model:g('model'),notes:g('desc')};
   if(sample){
@@ -554,7 +558,7 @@ async function submitSuggestion(){
     st.textContent=`Added to stage "${(D.stages.find(x=>x.id===item.stage)||{title:'Tools'}).title}" as "${item.name}". Thanks. The weekly research pass will fill in the rest.`;
     ['name','model','link','price','desc'].forEach(k=>document.getElementById('sg-'+k).value='');
     const sec=document.getElementById(item.stage); if(sec) setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),800);
-  }catch(x){ st.textContent=(x&&x.code==='invalid_argument')?'This link is view-only. Ask Nate for Contributor access, or post the part on the forum and he will add it.':'Could not save. Try again in a moment.'; }
+  }catch(x){ if(x&&x.code==='invalid_argument') st.innerHTML=readOnlyMsg('part'); else st.textContent='Could not save. Try again in a moment.'; }
   btn.disabled=false;
 }
 /* ---- ask the hub (sample) ---- */
