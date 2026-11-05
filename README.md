@@ -19,18 +19,16 @@ Runtime state (picks, percent complete, notes, photos, receipts, checklist ticks
 
 Then republish `index.html` with `hub-data.json` as a supporting file.
 
-## Make your own copy
+## Use it
 
-The live hub is a Claude artifact. To run your own, with your own picks, notes, photos and progress, open the Claude app and paste:
+- **Free web version:** https://nathanjparker.github.io/type65-hub/ — the whole hub, no account. Your picks, progress, checklist ticks and notes save in your browser; use Export / Import at the top to back them up or move them between devices.
+- **Nate's live copy** is a Claude artifact with cloud features on top (photos, receipts, builder submissions, a weekly research pass that files what builders post). The public link to it is read-only.
 
-> Publish the Factory Five Type 65 Coupe Build Hub from the GitHub repo nathanjparker/type65-hub as my own artifact: publish index.html with hub-data.json as a supporting file, and declare these capabilities: db with rules [{path:"",read:"view",write:"owner"},{path:"private",read:"owner",write:"owner"},{path:"data/users/{self}",write:"interact"},{path:"suggestions",read:"view",write:"owner"},{path:"suggestions/{self}",read:"view",write:"interact"},{path:"references",read:"view",write:"owner"},{path:"references/{self}",read:"view",write:"interact"}], user, sample, assets. Then tell me the link.
+To change the catalog, edit `data/*.json`, run `python3 scripts/build.py`, and commit; GitHub Pages serves `docs/`.
 
-You get the full catalog with an empty database: no picks, notes or progress carried over. Edit `data/*.json` and rerun `scripts/build.py` to change the catalog; republish the same two files to update your copy.
+### Access rules on the Claude copy
 
-### What the access rules mean
-
-- Everyone who can open the artifact reads the catalog, the owner's picks and progress, checklists, stage notes and what's new.
+- Everyone with the link reads the catalog, the owner's picks and progress, checklists, stage notes and what's new.
 - `private/` (per-part notes, photos, receipts) is readable and writable by the owner only.
-- `data/users/{self}` is each visitor's own sandbox (their picks, percentages, ticks); only they can read or write it, and the owner cannot see it either.
+- `data/users/{self}` is each invited builder's own sandbox; only they can read or write it.
 - `suggestions/` and `references/` are builder submissions: each person writes only their own, everyone reads them, the owner can remove any.
-- Visitors need Contributor access on the share link to write a sandbox or submit; Viewer access is read-only.

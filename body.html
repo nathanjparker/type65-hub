@@ -77,9 +77,8 @@
       <div class="panel"><h3>Builders referenced</h3><div class="chips" id="src-builders"></div></div>
     </div>
     <div class="panel" style="margin-top:14px"><h3>Make your own copy</h3>
-      <p class="status">Want this hub for your own build, with your own picks, notes and photos? The catalog and page are open source. Open your Claude app and paste this:</p>
-      <pre class="copyprompt" id="copyprompt">Publish the Factory Five Type 65 Coupe Build Hub from the GitHub repo nathanjparker/type65-hub as my own artifact: publish index.html with hub-data.json as a supporting file, and declare these capabilities: db with rules [{path:"",read:"view",write:"owner"},{path:"private",read:"owner",write:"owner"},{path:"data/users/{self}",write:"interact"},{path:"suggestions",read:"view",write:"owner"},{path:"suggestions/{self}",read:"view",write:"interact"},{path:"references",read:"view",write:"owner"},{path:"references/{self}",read:"view",write:"interact"}], user, sample, assets. Then tell me the link.</pre>
-      <button class="btn ghost" id="copyprompt-btn">Copy the prompt</button>
+      <p class="status">Want this hub for your own build? Open the free web version and start picking; your picks, progress and notes save on your device, and Export moves them between phone and laptop. No account needed.</p>
+      <p><a class="btn" id="copyprompt" href="https://nathanjparker.github.io/type65-hub/" target="_blank" rel="noopener">Open the free version →</a> <a class="btn ghost" href="https://github.com/nathanjparker/type65-hub" target="_blank" rel="noopener">Source on GitHub</a></p>
     </div>
     <div class="panel suggestbox" style="margin-top:14px">
       <h3>Add your build or a resource you trust</h3>
@@ -279,7 +278,6 @@ function renderReport(){
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   $('#report').innerHTML=html; reportText=txt.join('\n');
 }
-$('#copyprompt-btn').addEventListener('click',async()=>{ const t=$('#copyprompt').textContent; try{ await navigator.clipboard.writeText(t); toast('Prompt copied'); }catch(e){ const r=document.createRange(); r.selectNodeContents($('#copyprompt')); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('Select and copy the text'); } });
 $('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Order sheet copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
 
 /* ---- checklist ---- */
@@ -561,6 +559,32 @@ async function submitSuggestion(){
   }catch(x){ if(x&&x.code==='invalid_argument') st.innerHTML=readOnlyMsg('part'); else st.textContent='Could not save. Try again in a moment.'; }
   btn.disabled=false;
 }
+/* ---- local mode (static site): everything saved in this browser ---- */
+const LKEY='type65hub.v1';
+function initLocal(){
+  let saved={}; try{ saved=JSON.parse(localStorage.getItem(LKEY)||'{}')||{}; }catch(e){}
+  state=saved.state||{}; stageState=saved.stagestate||{}; taskState=saved.tasks||{}; notes=saved.notes||{}; addedParts=saved.addedParts||[]; priv={};
+  isOwner=true; db=localDb();
+  ALL_IDS.forEach(id=>{const el=document.getElementById('owner-'+id); if(el) el.innerHTML=ownerPanelHTML(id);});
+  renderNotes(); renderParts(q.value);
+  const bar=$('#sandbox'); if(bar){ bar.hidden=false; bar.innerHTML=`<b>Your copy.</b> Picks, progress and notes are saved in this browser only. <button class="btn ghost" id="lc-export">Export my build</button> <label class="btn ghost" style="cursor:pointer">Import<input type="file" accept="application/json" id="lc-import" hidden></label> <button class="btn ghost" id="lc-nate">Start from Nate's picks</button> <button class="btn ghost" id="lc-clear">Clear</button>`;
+    $('#lc-export').onclick=()=>{ const blob=new Blob([JSON.stringify(localSnapshot(),null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='my-type65-build.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); };
+    $('#lc-import').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const d=JSON.parse(r.result); state=d.state||{}; stageState=d.stagestate||{}; taskState=d.tasks||{}; notes=d.notes||{}; addedParts=d.addedParts||[]; persistLocal(); renderNotes(); renderParts(q.value); toast('Build imported'); }catch(x){ toast('That file is not a hub export'); } }; r.readAsText(f); };
+    $('#lc-nate').onclick=()=>{ state={}; (D.natePicks||[]).forEach(id=>{state[id]={chosen:true,pct:0};}); persistLocal(); renderParts(q.value); toast("Nate's picks loaded"); };
+    $('#lc-clear').onclick=()=>{ state={}; stageState={}; taskState={}; notes={}; addedParts=[]; persistLocal(); renderNotes(); renderParts(q.value); toast('Cleared'); };
+  }
+  $('#ask-off').textContent='Asking the hub is a feature of the Claude version. This copy keeps everything else.';
+  const cp=$('#copyprompt'); if(cp){ cp.closest('.panel').innerHTML='<h3>This is your copy</h3><p class="status">Everything you pick or note here is saved in this browser. Use Export at the top to back it up or move it to another device.</p>'; }
+  document.querySelectorAll('#sgform, #rfform').forEach(f=>{ f.querySelector('.status').innerHTML=readOnlyMsg(f.id==='sgform'?'part':'link'); f.querySelectorAll('input,textarea,select,button').forEach(el=>el.disabled=true); });
+}
+function localSnapshot(){ return {v:1,exported:new Date().toISOString(),state,stagestate:stageState,tasks:taskState,notes,addedParts}; }
+function persistLocal(){ try{ localStorage.setItem(LKEY,JSON.stringify(localSnapshot())); }catch(e){ toast('Could not save in this browser'); } }
+function localDb(){
+  // minimal stand-in for the db capability: only the calls the page makes
+  const doc=path=>({ async set(data){ const [c,id]=path.split('/'); if(c==='state') state[id]=data; else if(c==='private') state[id]=Object.assign({},state[id]||{},data); else if(c==='stagestate') stageState[id]=data; else if(c==='tasks') taskState[id]=data; else if(c==='notes') notes[id]=data; else if(c==='parts') addedParts=addedParts.map(p=>p.id==='u-'+id?Object.assign({},p,data):p); persistLocal(); renderNotes(); renderParts(q.value); }, async delete(){ const [c,id]=path.split('/'); if(c==='parts') addedParts=addedParts.filter(p=>p.id!=='u-'+id); persistLocal(); renderParts(q.value); }, async get(){ return {exists:false,data:()=>undefined}; } });
+  const collection=c=>({ async add(data){ const id=Date.now().toString(36); if(c==='parts'){ addedParts=addedParts.concat([Object.assign({id:'u-'+id,added:true},data)]); persistLocal(); renderParts(q.value); } return {id}; } });
+  return {doc,collection};
+}
 /* ---- ask the hub (sample) ---- */
 function context(){
   const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`];
@@ -588,6 +612,6 @@ async function initAsk(){
   };
   $('#asksavebtn').onclick=async()=>{ if(!db||!isOwner) return; const id=$('#askstage').value; const prev=notes[id]?.text||''; const txt=(prev?prev+'\n\n':'')+'Q: '+$('#askq').value.trim()+'\n'+$('#askout').textContent; try{await db.doc('notes/'+id).set({text:txt,updated:new Date().toISOString()}); toast('Saved to stage notes');}catch(x){toast('Could not save');} };
 }
-if(window.claude&&claude.use){ initDb().catch(()=>{}); initAsk().catch(()=>{}); }
+if(window.claude&&claude.use){ initDb().catch(()=>{}); initAsk().catch(()=>{}); } else { initLocal(); }
 })();
 </script>
