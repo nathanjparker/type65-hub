@@ -19,6 +19,7 @@
   <a href="#vendors"><span class="n">$</span>Vendor directory</a>
   <a href="#options"><span class="n">O</span>FFR order form</a>
   <a href="#community"><span class="n">C</span>Northwest &amp; community</a>
+  <a href="#sources"><span class="n">≡</span>Sources</a>
   <a href="#ask"><span class="n">?</span>Ask the hub</a>
 </nav>
 <main>
@@ -69,6 +70,24 @@
 
   <section class="stage" id="community"><div class="shead"><div class="roundel">C</div><div class="t"><h2>Northwest builders &amp; community</h2><div class="meta"><span>One thing to do this month: ask for a Puget Sound coupe owner who will let you sit in a finished car.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="community-tbl"><thead><tr><th>Where</th><th>What</th><th>How to use it</th></tr></thead><tbody></tbody></table></div></section>
 
+  <section class="stage" id="sources"><div class="shead"><div class="roundel">≡</div><div class="t"><h2>Sources</h2><div class="meta"><span>Where everything on this page comes from: the forums, sites, builders and build threads it cites. Add yours and the weekly pass will read it and file what it finds.</span></div></div></div>
+    <div class="twocol" style="margin-top:14px">
+      <div class="panel"><h3>Forums &amp; sites</h3><ul class="srclist" id="src-sites"></ul></div>
+      <div class="panel"><h3>Builders referenced</h3><div class="chips" id="src-builders"></div></div>
+    </div>
+    <div class="panel suggestbox" style="margin-top:14px">
+      <h3>Add your build or a resource you trust</h3>
+      <p class="status">A build thread, a video series, a vendor page, a guide. Claude files it under Sources now; the weekly research pass reads it and pulls the parts, ideas and gotchas into the right stages, with your thread as the source.</p>
+      <form id="rfform" class="frm">
+        <input id="rf-url" placeholder="Link *" required><input id="rf-title" placeholder="Title (thread name, channel, site)">
+        <input id="rf-who" placeholder="Your name or forum handle"><select id="rf-kind"><option value="build thread">Build thread</option><option value="video">Video or channel</option><option value="vendor">Vendor or product page</option><option value="guide">Guide, manual or article</option><option value="other">Other</option></select>
+        <textarea class="wide" id="rf-why" placeholder="What's in it that would help a Gen 3 coupe builder? *" required></textarea>
+        <div class="wide" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit" id="rf-btn">Add it</button><span class="status" id="rf-status"></span></div>
+      </form>
+      <ul class="srclist" id="src-refs" style="margin-top:12px"></ul>
+    </div>
+  </section>
+
   <section class="stage ask" id="ask"><div class="shead"><div class="roundel">?</div><div class="t"><h2>Ask the hub</h2><div class="meta"><span>Ask a question against everything on this page, including your picks, progress and notes. The owner can save a useful answer as a stage note.</span></div></div></div>
     <div id="ask-ui" hidden>
       <div class="in" style="margin-top:12px"><input id="askq" type="text" placeholder="e.g. What's left to finish before go-kart?" aria-label="Question"><button class="btn" id="askbtn">Ask</button><button class="btn ghost" id="askstop" hidden>Stop</button></div>
@@ -91,7 +110,7 @@ try{ D=await (await fetch('hub-data.json')).json(); }catch(e){ $('#stages').inne
 const STAGE_IDS=D.stages.map(s=>s.id), ALL_IDS=STAGE_IDS.concat(['tools']);
 const GROUPS=Object.fromEntries(D.groups.map(g=>[g.id,g]));
 const hoursMid=s=>{const m=String(s.hours).match(/(\d+)[–-](\d+)/); return m?(+m[1]+ +m[2])/2:30;};
-let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], userId=null, canWriteOwn=null;
+let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], refs=[], addedBuilds=[], userId=null, canWriteOwn=null;
 
 /* ---- overview ---- */
 $('#strip').innerHTML=[['Build hours','~1,200','range 900–1,600'],['Budget','$66k–$110k','typical ~$85k before use tax'],['Go-kart','May 2028','first drive, no body'],['Title in gelcoat','late 2028','before paint'],['Done','Sep 2029','Coco\'s senior year']].map(([k,v,s])=>`<div><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
@@ -291,6 +310,40 @@ document.addEventListener('click',e=>{
   el.scrollIntoView({behavior:'smooth',block:'center'});
   el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),2400);
 });
+/* ---- sources ---- */
+const siteLabel={'v1.thefactoryfiveforum.com':'The Factory Five Forum (archive)','thefactoryfiveforum.com':'The Factory Five Forum','ffcars.com':'FFCars (Club Cobra)','factoryfive.com':'Factory Five Racing','factoryfiveparts.com':'Factory Five Parts','youtube.com':'YouTube','buildthreads.com':'BuildThreads','grassrootsmotorsports.com':'Grassroots Motorsports'};
+function renderSources(){
+  const counts={};
+  const bump=u=>{const h=host(u); if(h) counts[h]=(counts[h]||0)+1;};
+  allParts().forEach(p=>{bump(p.srcUrl);});
+  D.stages.forEach(s=>s.reads.forEach(r=>bump(r.url)));
+  D.builds.concat(addedBuilds).forEach(b=>bump(b.url)); D.videos.forEach(v=>bump(v.url)); D.community.forEach(c=>bump(c.url));
+  const sites=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  $('#src-sites').innerHTML=sites.map(([h,n])=>`<li><a href="https://${esc(h)}/" target="_blank" rel="noopener">${esc(siteLabel[h]||h)}</a> <span class="pn">${n} reference${n===1?'':'s'}</span></li>`).join('');
+  const builders={};
+  const addB=(txt)=>{ String(txt||'').split(/[;,]|\band\b/).map(x=>x.replace(/\(.*?\)/g,'').replace(/#\d+.*$/,'').replace(/^(via|see|most|several|many|all|older|roadster|gen 3|coupe)\b.*$/i,'').trim()).filter(x=>x&&x.length<28&&!/^(not|no|one|two|a few|builders?|thread|threads|users?|most builds|everyone|nobody|nearly)/i.test(x)).forEach(x=>{builders[x]=(builders[x]||0)+1;}); };
+  allParts().forEach(p=>addB(p.users)); D.builds.concat(addedBuilds).forEach(b=>addB(b.builder));
+  const top=Object.entries(builders).sort((a,b)=>b[1]-a[1]).slice(0,60);
+  $('#src-builders').innerHTML=top.map(([n,c])=>`<span class="chip" title="${c} mention${c===1?'':'s'}">${esc(n)}${c>1?` <span class="pn">${c}</span>`:''}</span>`).join('');
+  $('#src-refs').innerHTML=refs.length?refs.map(r=>`<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title||host(r.url)||r.url)}</a> <span class="chip sug">${esc(r.kind||'resource')} · ${esc(r.by||'a builder')}${r.processed?' · filed':' · pending'}</span>${r.summary?` <span class="row">${esc(r.summary)}</span>`:''}${isOwner?` <button class="nbtn delref" data-doc="${esc(r.docId)}" data-key="${esc(r.key)}">remove</button>`:''}</li>`).join(''):'<li class="empty">Nothing submitted yet.</li>';
+}
+async function submitReference(){
+  const g=k=>document.getElementById('rf-'+k).value.trim(); const st=$('#rf-status'), btn=$('#rf-btn');
+  if(!g('url')||!g('why')){ st.textContent='A link and a sentence about it are the minimum.'; return; }
+  if(!/^https?:\/\//i.test(g('url'))){ st.textContent='The link needs to start with http:// or https://.'; return; }
+  if(!db||!userId){ st.textContent='Open this page in Claude and sign in to add a resource, or post it on the forum and Nate will add it.'; return; }
+  btn.disabled=true; st.textContent='Filing it…';
+  let summary=g('why').slice(0,200), title=g('title');
+  if(sample){ try{ const r=await sample.json(`Summarize this resource submitted to a Factory Five Gen 3 Type 65 Coupe build hub in one sentence (max 25 words) for a list of sources, and give a short title if none was given. Return ONLY JSON {"title":"...","summary":"..."}. URL: ${g('url')} Title: ${title} Kind: ${g('kind')} Why: ${g('why')}`,{modelTier:'quick'}); if(r){ summary=r.summary||summary; title=title||r.title||''; } }catch(x){} }
+  const item={key:Date.now().toString(36),url:g('url'),title,kind:g('kind'),by:g('who')||'a builder',why:g('why'),summary,added:new Date().toISOString(),processed:false};
+  try{
+    const ref=db.doc('references/'+userId); const snap=await ref.get(); const data=snap.exists?Object.assign({},snap.data()):{by:g('who')||'',items:[]};
+    data.items=(data.items||[]).concat([item]); if(g('who')) data.by=g('who');
+    await ref.set(data);
+    st.textContent='Added. The weekly pass will read it and file what it finds.'; ['url','title','why'].forEach(k=>document.getElementById('rf-'+k).value='');
+  }catch(x){ st.textContent=(x&&x.code==='invalid_argument')?'This link is view-only. Ask Nate for Contributor access, or post it on the forum.':'Could not save. Try again in a moment.'; }
+  btn.disabled=false;
+}
 /* ---- render all ---- */
 function renderParts(q){
   q=(q||'').trim().toLowerCase();
@@ -308,7 +361,7 @@ function renderParts(q){
   const o=overallPct(); $('#overall-pct').textContent=o+'%'; $('#overall-bar').style.width=o+'%';
   const chosenN=allParts().filter(isChosen).length;
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
-  renderSheet(); renderReport(); renderNews();
+  renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds();
 }
 function filterTable(id,q){
   const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;
@@ -318,7 +371,8 @@ function filterTable(id,q){
 
 /* ---- reference tables ---- */
 const link=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
-$('#builds-tbl tbody').innerHTML=D.builds.map(b=>`<tr><td>${b.star?'<span class="star">★</span> ':''}${link(b.url,b.name)}</td><td>${esc(b.builder)}</td><td>${esc(b.drivetrain)}</td><td>${esc(b.status)}</td><td>${esc(b.why)}</td></tr>`).join('');
+function renderBuilds(){ $('#builds-tbl tbody').innerHTML=D.builds.concat(addedBuilds).map(b=>`<tr><td>${b.star?'<span class="star">★</span> ':''}${link(b.url,b.name)}${b.submittedBy?` <span class="chip sug">via ${esc(b.submittedBy)}</span>`:''}</td><td>${esc(b.builder)}</td><td>${esc(b.drivetrain)}</td><td>${esc(b.status)}</td><td>${esc(b.why)}</td></tr>`).join(''); }
+
 $('#videos-tbl tbody').innerHTML=D.videos.map(v=>`<tr><td>${v.star?'<span class="star">★</span> ':''}${link(v.url,v.name)}</td><td>${esc(v.car)}</td><td>${esc(v.eps)}</td><td>${esc(v.best)}</td></tr>`).join('');
 $('#vendors-tbl tbody').innerHTML=D.vendors.map(v=>`<tr><td>${link(v.url,v.name)}${v.parts?`<br><small>${link(v.parts,'coupe parts')}</small>`:''}</td><td>${esc(v.sells)}</td><td class="pn">${esc(v.phone)}</td><td>${esc(v.notes)}</td></tr>`).join('');
 const vcls=v=>/^(yes|recommended|required|powder)/i.test(v)?'v-yes':/^(skip|no)/i.test(v)?'v-skip':/call/i.test(v)?'v-call':'';
@@ -419,6 +473,8 @@ async function initDb(){
   db.collection('stagestate').onSnapshot(snap=>{stageState={}; snap.docs.forEach(d=>{stageState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('stagestate',e));
   db.collection('tasks').onSnapshot(snap=>{taskState={}; snap.docs.forEach(d=>{taskState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('tasks',e));
   db.collection('suggestions').onSnapshot(snap=>{suggestions=[]; snap.docs.forEach(d=>{const data=d.data(); (data.items||[]).filter(it=>!it.researched).forEach((it,i)=>suggestions.push(Object.assign({id:'s-'+d.id+'-'+(it.key||i),suggested:true,docId:d.id,key:it.key||String(i),kind:'aftermarket',fit:'unknown',tag:'forum'},it)));}); renderParts(q.value);},e=>console.warn('suggestions',e));
+  db.collection('references').onSnapshot(snap=>{refs=[]; snap.docs.forEach(d=>{(d.data().items||[]).forEach((it,i)=>refs.push(Object.assign({docId:d.id,key:it.key||String(i)},it)));}); renderSources();},e=>console.warn('references',e));
+  db.collection('builds').onSnapshot(snap=>{addedBuilds=snap.docs.map(d=>d.data()); renderBuilds(); renderSources();},e=>console.warn('builds',e));
   db.collection('news').onSnapshot(snap=>{news=snap.docs.map(d=>d.data()); renderNews();},e=>console.warn('news',e));
   db.collection('notes').onSnapshot(snap=>{notes={}; snap.docs.forEach(d=>{notes[d.id]=d.data();}); renderNotes(); if(isOwner) ALL_IDS.forEach(id=>{const ta=document.getElementById('note-'+id); if(ta&&document.activeElement!==ta) ta.value=notes[id]?.text||'';});},e=>console.warn('notes',e));
   db.collection('parts').onSnapshot(snap=>{addedParts=snap.docs.map(d=>Object.assign({id:'u-'+d.id,added:true},d.data())); renderParts(q.value);},e=>console.warn('parts',e));
@@ -431,6 +487,7 @@ document.addEventListener('click',async e=>{
   const sn=e.target.closest('[data-savenote]'); if(sn){const id=sn.dataset.savenote; sn.disabled=true; try{await db.doc('notes/'+id).set({text:document.getElementById('note-'+id).value,updated:new Date().toISOString()}); toast('Note saved');}catch(x){toast('Could not save the note');} sn.disabled=false; return;}
   const ap=e.target.closest('[data-addpart]'); if(ap){const id=ap.dataset.addpart; const g=k=>document.getElementById(k+'-'+id).value.trim(); if(!g('an')){document.getElementById('st-'+id).textContent='A name is required.';return;}
     ap.disabled=true; try{await db.collection('parts').add({stage:id,name:g('an'),cat:g('ac')||'Added',model:g('am'),vendor:g('av'),url:g('au'),price:g('ap'),tag:'owner',kind:g('ak'),fit:g('af'),group:g('ag'),users:g('aw'),srcUrl:g('as'),src:g('as')?host(g('as')):'',notes:g('ax'),added:new Date().toISOString()}); ['an','ac','am','av','au','ap','aw','as','ax'].forEach(k=>document.getElementById(k+'-'+id).value=''); toast('Added to the hub');}catch(x){toast('Could not add the part');} ap.disabled=false; return;}
+  const dr=e.target.closest('.delref'); if(dr){ const ref=db.doc('references/'+dr.dataset.doc); const snap=await ref.get(); if(snap.exists){ const data=Object.assign({},snap.data()); data.items=(data.items||[]).filter(it=>String(it.key)!==dr.dataset.key); try{ await ref.set(data); toast('Removed'); }catch(x){ toast('Could not remove'); } } return; }
   const ds=e.target.closest('.delsug'); if(ds){ const ref=db.doc('suggestions/'+ds.dataset.doc); const snap=await ref.get(); if(snap.exists){ const data=Object.assign({},snap.data()); data.items=(data.items||[]).filter(it=>String(it.key)!==ds.dataset.key); try{ await ref.set(data); toast('Removed'); }catch(x){ toast('Could not remove'); } } return; }
   const del=e.target.closest('.del'); if(del){const id=del.dataset.id.replace(/^u-/,''); del.disabled=true; try{await db.doc('parts/'+id).delete(); toast('Removed');}catch(x){toast('Could not remove');} }
 });
@@ -444,6 +501,7 @@ document.addEventListener('change',async e=>{
 
 document.addEventListener('submit',async e=>{
   if(e.target.id==='sgform'){ e.preventDefault(); await submitSuggestion(); return; }
+  if(e.target.id==='rfform'){ e.preventDefault(); await submitReference(); return; }
   const f=e.target.closest('[data-taskadd]'); if(!f) return; e.preventDefault(); if(!isOwner||!db) return;
   const id=f.dataset.taskadd; const inp=document.getElementById('ta-'+id); const v=inp.value.trim(); if(!v) return;
   const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.extra=(cur.extra||[]).concat([v]); taskState[id]=cur; inp.value=''; renderParts(q.value);
