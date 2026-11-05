@@ -204,6 +204,8 @@ td.pn{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 .srclist li{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
 .srclist .pn{font-family:var(--mono);font-size:12px;color:var(--muted)}
 #src-builders .chip{font-size:12.5px}
+.sandboxbar{margin-top:16px;border-color:var(--gold);background:var(--gold-soft);font-size:14.5px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.copyprompt{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:8px 0;overflow-wrap:anywhere}
 /* card controls */
 .card .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}
 .card .ctl label{display:flex;align-items:center;gap:5px;cursor:pointer}
@@ -274,6 +276,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
     <p class="status" id="count"></p>
   </section>
 
+  <div class="panel sandboxbar" id="sandbox" hidden></div>
   <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Your build</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
 
   <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Prices are the low end of what's listed and are rough.</span></div></div></div>
@@ -313,6 +316,11 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
       <div class="panel"><h3>Forums &amp; sites</h3><ul class="srclist" id="src-sites"></ul></div>
       <div class="panel"><h3>Builders referenced</h3><div class="chips" id="src-builders"></div></div>
     </div>
+    <div class="panel" style="margin-top:14px"><h3>Make your own copy</h3>
+      <p class="status">Want this hub for your own build, with your own picks, notes and photos? The catalog and page are open source. Open your Claude app and paste this:</p>
+      <pre class="copyprompt" id="copyprompt">Publish the Factory Five Type 65 Coupe Build Hub from the GitHub repo nathanjparker/type65-hub as my own artifact: publish index.html with hub-data.json as a supporting file, and declare these capabilities: db with rules [{path:"",read:"view",write:"owner"},{path:"private",read:"owner",write:"owner"},{path:"data/users/{self}",write:"interact"},{path:"suggestions",read:"view",write:"owner"},{path:"suggestions/{self}",read:"view",write:"interact"},{path:"references",read:"view",write:"owner"},{path:"references/{self}",read:"view",write:"interact"}], user, sample, assets. Then tell me the link.</pre>
+      <button class="btn ghost" id="copyprompt-btn">Copy the prompt</button>
+    </div>
     <div class="panel suggestbox" style="margin-top:14px">
       <h3>Add your build or a resource you trust</h3>
       <p class="status">A build thread, a video series, a vendor page, a guide. Claude files it under Sources now; the weekly research pass reads it and pulls the parts, ideas and gotchas into the right stages, with your thread as the source.</p>
@@ -348,7 +356,7 @@ try{ D=await (await fetch('hub-data.json')).json(); }catch(e){ $('#stages').inne
 const STAGE_IDS=D.stages.map(s=>s.id), ALL_IDS=STAGE_IDS.concat(['tools']);
 const GROUPS=Object.fromEntries(D.groups.map(g=>[g.id,g]));
 const hoursMid=s=>{const m=String(s.hours).match(/(\d+)[–-](\d+)/); return m?(+m[1]+ +m[2])/2:30;};
-let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], refs=[], addedBuilds=[], userId=null, canWriteOwn=null;
+let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], refs=[], addedBuilds=[], userId=null, canWriteOwn=null, priv={}, mine=null, sandbox=false;
 
 /* ---- overview ---- */
 $('#strip').innerHTML=[['Build hours','~1,200','range 900–1,600'],['Budget','$66k–$110k','typical ~$85k before use tax'],['Go-kart','May 2028','first drive, no body'],['Title in gelcoat','late 2028','before paint'],['Done','Sep 2029','Coco\'s senior year']].map(([k,v,s])=>`<div><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
@@ -357,7 +365,7 @@ $('#gaps').innerHTML=D.gaps.map(x=>`<li>${esc(x)}</li>`).join('');
 
 /* ---- state helpers ---- */
 function allParts(){ return D.parts.concat(addedParts).concat(suggestions); }
-const st=id=>state[id]||{};
+const st=id=>{ if(sandbox&&mine) return (mine.state&&mine.state[id])||{}; const base=state[id]||{}; return isOwner?Object.assign({},base,priv[id]||{}):base; };
 const isChosen=p=>!!st(p.id).chosen;
 const pctOf=p=>Math.max(0,Math.min(100,+st(p.id).pct||0));
 function groupChosen(gid){ return allParts().some(p=>p.group===gid&&isChosen(p)); }
@@ -370,9 +378,9 @@ function activeWarnings(){
   return out;
 }
 /* tasks: stage units = checklist items (0/100) + chosen parts (pct) */
-function taskList(id){ const s=D.stages.find(x=>x.id===id); const base=(s&&s.tasks)||[]; const ts=taskState[id]||{}; return base.concat(ts.extra||[]).map((t,i)=>({i,t,done:!!(ts.done&&ts.done[i])})); }
+function taskList(id){ const s=D.stages.find(x=>x.id===id); const base=(s&&s.tasks)||[]; const ts=(sandbox&&mine?((mine.tasks||{})[id]):taskState[id])||{}; return base.concat(ts.extra||[]).map((t,i)=>({i,t,done:!!(ts.done&&ts.done[i])})); }
 function stagePct(id){
-  const ss=stageState[id];
+  const ss=sandbox&&mine?((mine.stagestate||{})[id]):stageState[id];
   if(ss&&ss.pct!=null&&ss.pct!=='') return {pct:Math.max(0,Math.min(100,+ss.pct)),manual:true};
   const ch=allParts().filter(p=>p.stage===id&&isChosen(p));
   const units=ch.map(pctOf).concat(taskList(id).map(t=>t.done?100:0));
@@ -397,16 +405,16 @@ function cardHTML(p){
   if(p.kind!=='DIY'||p.imgUrl){ const iq=encodeURIComponent((p.imgQuery||((p.vendor||'')+' '+p.name)).replace(/\s+/g,' ').trim()); links.push(`<a class="photo" href="${esc(p.imgUrl||('https://www.google.com/search?tbm=isch&q='+iq))}" target="_blank" rel="noopener">Photos</a>`); }
   const s=st(p.id), chosen=isChosen(p), pct=pctOf(p), hasNote=!!((s.note&&s.note.trim())||(s.photos&&s.photos.length)||s.receipt);
   let ctl='';
-  if(isOwner){
+  if(isOwner||sandbox){
     const inGroup=p.group&&!GROUPS[p.group]?.multi;
     ctl=`<div class="ctl">
       <label><input type="${inGroup?'radio':'checkbox'}" ${inGroup?`name="g-${esc(p.group)}"`:''} data-choose="${esc(p.id)}" ${chosen?'checked':''}> Chosen</label>
       ${chosen?`<input type="number" min="0" max="100" step="5" value="${pct}" data-pct="${esc(p.id)}" aria-label="Percent done">%<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div>`:''}
-      <button class="nbtn ${hasNote?'has':''}" data-note="${esc(p.id)}" title="Builder note">✎ note</button>
-      ${p.added?`<button class="nbtn del" data-id="${esc(p.id)}">remove</button>`:''}${p.suggested?`<button class="nbtn delsug" data-doc="${esc(p.docId)}" data-key="${esc(p.key)}">remove</button>`:''}
+      ${isOwner?`<button class="nbtn ${hasNote?'has':''}" data-note="${esc(p.id)}" title="Builder note">✎ note</button>`:''}
+      ${p.added&&isOwner?`<button class="nbtn del" data-id="${esc(p.id)}">remove</button>`:''}${p.suggested&&isOwner?`<button class="nbtn delsug" data-doc="${esc(p.docId)}" data-key="${esc(p.key)}">remove</button>`:''}
     </div>`;
-  } else if(chosen||hasNote){
-    ctl=`<div class="ctl">${chosen?`<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div><span>${pct}%</span>`:''}${hasNote?`<button class="nbtn has" data-note="${esc(p.id)}">✎ note</button>`:''}</div>`;
+  } else if(chosen){
+    ctl=`<div class="ctl"><div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div><span>${pct}%</span></div>`;
   }
   return `<article class="card ${esc(p.kind)}${p.added?' added':''}${chosen?' chosen':''}" data-id="${esc(p.id)}">
     <div class="nm">${esc(p.name)}</div>
@@ -433,7 +441,7 @@ function groupedHTML(list,q){
 }
 function stagePctHTML(id){
   const r=stagePct(id);
-  const ownerIn=isOwner?`<input type="number" min="0" max="100" step="5" data-stagepct="${id}" value="${r.manual?r.pct:''}" placeholder="auto" title="Override this stage's percent" aria-label="Stage percent override">`:'';
+  const ownerIn=(isOwner||sandbox)?`<input type="number" min="0" max="100" step="5" data-stagepct="${id}" value="${r.manual?r.pct:''}" placeholder="auto" title="Override this stage's percent" aria-label="Stage percent override">`:'';
   return `<div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div><span>${r.pct}%${r.manual?' set':r.none?' · nothing chosen yet':''}</span>${ownerIn}`;
 }
 function stageHTML(s){
@@ -467,7 +475,7 @@ function renderSheet(){
     if(!opts.length) return '';
     const top=Math.max(...opts.map(p=>p.pop||0));
     const dl=D.decideLabels[g.decideBy]||''; const decided=opts.some(isChosen);
-    return `<div class="dec" id="dec-${esc(g.id)}"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>`<button class="opt ${isChosen(p)?'on':''} ${isOwner?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${isOwner?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}</div></div>`;
+    return `<div class="dec" id="dec-${esc(g.id)}"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>` <button class="opt ${isChosen(p)?'on':''} ${(isOwner||sandbox)?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${(isOwner||sandbox)?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}</div></div>`;
   }).join('');
   // decide-by summary
   const order=['order','body','paint','any'];
@@ -511,12 +519,13 @@ function renderReport(){
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   $('#report').innerHTML=html; reportText=txt.join('\n');
 }
+$('#copyprompt-btn').addEventListener('click',async()=>{ const t=$('#copyprompt').textContent; try{ await navigator.clipboard.writeText(t); toast('Prompt copied'); }catch(e){ const r=document.createRange(); r.selectNodeContents($('#copyprompt')); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); toast('Select and copy the text'); } });
 $('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Order sheet copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
 
 /* ---- checklist ---- */
 function tasksHTML(id){
   const list=taskList(id); const done=list.filter(t=>t.done).length;
-  const rows=list.map(t=>`<li><label><input type="checkbox" data-task="${id}" data-i="${t.i}" ${t.done?'checked':''} ${isOwner?'':'disabled'}> <span class="${t.done?'tdone':''}">${esc(t.t)}</span></label></li>`).join('');
+  const rows=list.map(t=>`<li><label><input type="checkbox" data-task="${id}" data-i="${t.i}" ${t.done?'checked':''} ${(isOwner||sandbox)?'':'disabled'}> <span class="${t.done?'tdone':''}">${esc(t.t)}</span></label></li>`).join('');
   const add=isOwner?`<form class="taskadd" data-taskadd="${id}"><input placeholder="Add a step…" aria-label="Add a step" id="ta-${id}"><button class="btn ghost" type="submit">Add</button></form>`:'';
   return `<h3>Checklist · ${done}/${list.length}</h3><ul class="tasks">${rows}</ul>${add}`;
 }
@@ -581,6 +590,12 @@ async function submitReference(){
     st.textContent='Added. The weekly pass will read it and file what it finds.'; ['url','title','why'].forEach(k=>document.getElementById('rf-'+k).value='');
   }catch(x){ st.textContent=(x&&x.code==='invalid_argument')?'This link is view-only. Ask Nate for Contributor access, or post it on the forum.':'Could not save. Try again in a moment.'; }
   btn.disabled=false;
+}
+function renderSandboxBar(){
+  const el=$('#sandbox'); if(!el) return;
+  if(!sandbox){ el.hidden=true; return; }
+  el.hidden=false;
+  el.innerHTML=`<b>Your sandbox.</b> Picks, percentages and checklist ticks you make here are saved to your own account and only you see them; Nate's build doesn't change. <button class="btn ghost" id="sb-start">Start from Nate's picks</button> <button class="btn ghost" id="sb-clear">Clear mine</button>`;
 }
 /* ---- render all ---- */
 function renderParts(q){
@@ -663,12 +678,17 @@ function openNote(id){
 
 /* ---- db ---- */
 function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600);}
+const PRIV=['note','photos','receipt','receiptName'];
 async function writeState(id,patch){
   if(!db) return;
-  const cur=Object.assign({},st(id),patch,{updated:new Date().toISOString()});
-  state[id]=cur; renderParts(q.value);
-  try{ await db.doc('state/'+id).set(cur); }catch(e){ toast('Could not save'); }
+  if(sandbox){ if(!mine) return; mine.state=mine.state||{}; mine.state[id]=Object.assign({},mine.state[id]||{},patch); renderParts(q.value); await saveMine(); return; }
+  const pub={},pv={}; Object.entries(patch).forEach(([k,v])=>{ (PRIV.includes(k)?pv:pub)[k]=v; });
+  const now=new Date().toISOString();
+  if(Object.keys(pub).length){ const cur=Object.assign({},state[id]||{},pub,{updated:now}); state[id]=cur; try{ await db.doc('state/'+id).set(cur); }catch(e){ toast('Could not save'); } }
+  if(Object.keys(pv).length){ const cur=Object.assign({},priv[id]||{},pv,{updated:now}); priv[id]=cur; try{ await db.doc('private/'+id).set(cur); }catch(e){ toast('Could not save'); } }
+  renderParts(q.value);
 }
+let mineT; async function saveMine(){ clearTimeout(mineT); mineT=setTimeout(async()=>{ try{ await db.doc('data/users/'+userId+'/hub').set(Object.assign({},mine,{updated:new Date().toISOString()})); }catch(e){ toast('Could not save your picks'); } },400); }
 async function choose(id,on){
   const p=allParts().find(x=>x.id===id); if(!p) return;
   const g=p.group&&GROUPS[p.group];
@@ -707,6 +727,8 @@ async function initDb(){
   const user=await claude.use('user'); db=await claude.use('db'); assets=await claude.use('assets');
   isOwner=!!(user&&await user.isOwner()); userId=user?await user.id():null; canWriteOwn=user?await user.can('data.write'):null;
   if(!db){ renderParts(q.value); return; }
+  if(isOwner){ db.collection('private').onSnapshot(snap=>{priv={}; snap.docs.forEach(d=>{priv[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('private',e)); }
+  else if(userId){ const ref=db.doc('data/users/'+userId+'/hub'); try{ const snap=await ref.get(); mine=snap.exists?Object.assign({state:{},stagestate:{},tasks:{}},snap.data()):{state:{},stagestate:{},tasks:{}}; if(canWriteOwn!==false){ sandbox=true; } }catch(e){ mine=null; } renderSandboxBar(); }
   db.collection('state').onSnapshot(snap=>{state={}; snap.docs.forEach(d=>{state[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('state',e));
   db.collection('stagestate').onSnapshot(snap=>{stageState={}; snap.docs.forEach(d=>{stageState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('stagestate',e));
   db.collection('tasks').onSnapshot(snap=>{taskState={}; snap.docs.forEach(d=>{taskState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('tasks',e));
@@ -720,8 +742,11 @@ async function initDb(){
 }
 document.addEventListener('click',async e=>{
   const nb=e.target.closest('[data-note]'); if(nb){ openNote(nb.dataset.note); return; }
-  if(!isOwner||!db) return;
+  if(e.target.closest('#sb-start')){ if(!mine) return; mine.state={}; Object.entries(state).forEach(([k,v])=>{ if(v.chosen) mine.state[k]={chosen:true,pct:0}; }); renderParts(q.value); await saveMine(); toast("Copied Nate's picks into your sandbox"); return; }
+  if(e.target.closest('#sb-clear')){ if(!mine) return; mine.state={}; mine.stagestate={}; mine.tasks={}; renderParts(q.value); await saveMine(); toast('Sandbox cleared'); return; }
+  if(!(isOwner||sandbox)||!db) return;
   const pk=e.target.closest('[data-pick]'); if(pk){ const id=pk.dataset.pick; await choose(id,!isChosen(allParts().find(x=>x.id===id))); return; }
+  if(!isOwner) return;
   const sn=e.target.closest('[data-savenote]'); if(sn){const id=sn.dataset.savenote; sn.disabled=true; try{await db.doc('notes/'+id).set({text:document.getElementById('note-'+id).value,updated:new Date().toISOString()}); toast('Note saved');}catch(x){toast('Could not save the note');} sn.disabled=false; return;}
   const ap=e.target.closest('[data-addpart]'); if(ap){const id=ap.dataset.addpart; const g=k=>document.getElementById(k+'-'+id).value.trim(); if(!g('an')){document.getElementById('st-'+id).textContent='A name is required.';return;}
     ap.disabled=true; try{await db.collection('parts').add({stage:id,name:g('an'),cat:g('ac')||'Added',model:g('am'),vendor:g('av'),url:g('au'),price:g('ap'),tag:'owner',kind:g('ak'),fit:g('af'),group:g('ag'),users:g('aw'),srcUrl:g('as'),src:g('as')?host(g('as')):'',notes:g('ax'),added:new Date().toISOString()}); ['an','ac','am','av','au','ap','aw','as','ax'].forEach(k=>document.getElementById(k+'-'+id).value=''); toast('Added to the hub');}catch(x){toast('Could not add the part');} ap.disabled=false; return;}
@@ -730,11 +755,13 @@ document.addEventListener('click',async e=>{
   const del=e.target.closest('.del'); if(del){const id=del.dataset.id.replace(/^u-/,''); del.disabled=true; try{await db.doc('parts/'+id).delete(); toast('Removed');}catch(x){toast('Could not remove');} }
 });
 document.addEventListener('change',async e=>{
-  if(!isOwner||!db) return;
+  if(!(isOwner||sandbox)||!db) return;
   const c=e.target.closest('[data-choose]'); if(c){ await choose(c.dataset.choose,c.checked); return; }
   const p=e.target.closest('[data-pct]'); if(p){ await writeState(p.dataset.pct,{pct:Math.max(0,Math.min(100,+p.value||0))}); return; }
-  const tk=e.target.closest('[data-task]'); if(tk){ const id=tk.dataset.task, i=tk.dataset.i; const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); taskState[id]=cur; renderParts(q.value); try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); } return; }
-  const sp=e.target.closest('[data-stagepct]'); if(sp){ const id=sp.dataset.stagepct; const v=sp.value===''?null:Math.max(0,Math.min(100,+sp.value||0)); stageState[id]={pct:v}; renderParts(q.value); try{ await db.doc('stagestate/'+id).set({pct:v,updated:new Date().toISOString()}); }catch(x){toast('Could not save');} }
+  const tk=e.target.closest('[data-task]'); if(tk&&sandbox){ const id=tk.dataset.task, i=tk.dataset.i; mine.tasks=mine.tasks||{}; const cur=Object.assign({done:{},extra:[]},mine.tasks[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); mine.tasks[id]=cur; renderParts(q.value); await saveMine(); return; }
+  const tk2=tk; if(tk2){ const id=tk.dataset.task, i=tk.dataset.i; const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); taskState[id]=cur; renderParts(q.value); try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); } return; }
+  const sp=e.target.closest('[data-stagepct]'); if(sp&&sandbox){ const id=sp.dataset.stagepct; const v=sp.value===''?null:Math.max(0,Math.min(100,+sp.value||0)); mine.stagestate=mine.stagestate||{}; mine.stagestate[id]={pct:v}; renderParts(q.value); await saveMine(); return; }
+  if(sp){ const id=sp.dataset.stagepct; const v=sp.value===''?null:Math.max(0,Math.min(100,+sp.value||0)); stageState[id]={pct:v}; renderParts(q.value); try{ await db.doc('stagestate/'+id).set({pct:v,updated:new Date().toISOString()}); }catch(x){toast('Could not save');} }
 });
 
 document.addEventListener('submit',async e=>{
