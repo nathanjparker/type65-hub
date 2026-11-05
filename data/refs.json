@@ -1,0 +1,1084 @@
+{
+"builds": [
+{
+"star": true,
+"name": "Coupe #692 Gen 3 build",
+"builder": "Power Surge",
+"drivetrain": "BluePrint 347, TKX, 3-link 8.8; A/C, side windows, PS",
+"status": "In progress, kit delivered Sept 2025",
+"why": "Closest match to this build; follow in real time. Missing hardware on delivery, control-arm changes for pin-drive wheels.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-51689.html"
+},
+{
+"star": true,
+"name": "edwardb's Gen 3 Coyote Coupe #59 / 5,000-mile report",
+"builder": "edwardb",
+"drivetrain": "Coyote, T-56, IRS; A/C, heat, PS, windows, keyless",
+"status": "Done Mar 2020, 5,264 mi",
+"why": "The reference Gen 3 build. A/C only adequate, cabin loud without mass-loaded vinyl.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26630-p-5.html"
+},
+{
+"star": true,
+"name": "Type 65 Coupe in Everett WA",
+"builder": "Fredscoupe",
+"drivetrain": "347, TKO600, 3-link",
+"status": "Done ~2019",
+"why": "A finished 347 coupe 30 minutes from Seattle; the owner offered to help other builders.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41129.html"
+},
+{
+"star": true,
+"name": "Derek R.'s Type 65 Coupe",
+"builder": "Derek R. (TX)",
+"drivetrain": "Small-block, Holley Sniper, A/C, PS",
+"status": "Daily-driven; kit Oct 2021, go-kart in 6 months, 18 months in gelcoat",
+"why": "Closest public analog to a Sniper small-block street coupe. Family painted it in the garage.",
+"url": "https://www.factoryfive.com/whats-new/derek-r-type-65-coupe/"
+},
+{
+"star": true,
+"name": "Ron L. graduates his Type 65 Coupe",
+"builder": "Ron L.",
+"drivetrain": "IRS 3.55, QA1, 14\" Wilwood, Forgestar 19s",
+"status": "Done 2026, 600+ mi",
+"why": "FormaCars power windows and HVAC, Levy electric e-brake, Dakota Digital, Auto-Vox mirror, custom C2-style dash, Brock mirrors.",
+"url": "https://www.factoryfive.com/whats-new/ron-l-graduates-his-type-65-coupe-build/"
+},
+{
+"star": false,
+"name": "Westley B. graduates his Type 65",
+"builder": "Westley B.",
+"drivetrain": "427 SBF, hydraulic clutch, IRS, PS, Wilwood, windows, wipers, A/C-heater, GPS gauges, seat tracks",
+"status": "Done 2024",
+"why": "Essentially this order sheet, finished. Kandy Apple Red.",
+"url": "https://www.factoryfive.com/whats-new/westley-b-graduates-his-type-65-coupe-build"
+},
+{
+"star": false,
+"name": "Hank's Type 65 build thread",
+"builder": "Hank",
+"drivetrain": "347, electric PS (ePowerSteering), 17\" Halibrands, Levy brakes, GAS-N pipes, FormaCars windows",
+"status": "In progress",
+"why": "Closest electric-PS analog for a 347/Sniper.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-43135.html"
+},
+{
+"star": false,
+"name": "Build thread Gen 3 Coupe #138",
+"builder": "P100DHG",
+"drivetrain": "Roush 427 SBF EFI, TKO600 mid-shift, IRS",
+"status": "Chaptered, through 2020",
+"why": "Best small-block-in-Gen-3 reference: 90° bulkhead A/C fittings, seat fit, pinion flange error FFR replaced.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-29393.html"
+},
+{
+"star": false,
+"name": "John's Type 65 build",
+"builder": "jgray",
+"drivetrain": "302, T-56, IRS; A/C, PS",
+"status": "Driving, finishing paint 2026",
+"why": "Door-fit fix (spacer washer), throttle pedal wobble, PS pump failure, satin-clear aluminum.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-47979.html"
+},
+{
+"star": false,
+"name": "427 SBF Coupe R build",
+"builder": "GT_Rich",
+"drivetrain": "427 Dart SBF, Holley EFI, TKX close-ratio, 3-link",
+"status": "Done Mar 2023 in ~7 months",
+"why": "Fastest SBF + TKX build; gelcoat fill, axle end play, brake bias.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41854.html"
+},
+{
+"star": false,
+"name": "Wedel456's Gen 3 Coupe, NC",
+"builder": "wedel456",
+"drivetrain": "427 SBF Sniper 2, TKO, IRS; A/C, Ron Francis harness, Wilwood EPB",
+"status": "In progress 2024–25",
+"why": "Very detailed wiring, hood clearance with a tall intake, upholstery.",
+"url": "https://v1.thefactoryfiveforum.com/showthread.php?p=568546"
+},
+{
+"star": false,
+"name": "Bob's Arizona Gen 3 build",
+"builder": "Bob Brandle",
+"drivetrain": "Coyote, T-56, IRS; A/C, fixed glass, Flowmaster inserts, MiniCats",
+"status": "Done, registered Oct 2023",
+"why": "Pedal vs steering-shaft interference, degas tank relocation, state inspection.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-28883.html"
+},
+{
+"star": false,
+"name": "Lewma's Gen 3 coupe",
+"builder": "lewma",
+"drivetrain": "BluePrint LS 427, T-56, IRS",
+"status": "Done Aug 2024",
+"why": "BluePrint crate quirks (ECU/injector data), trans mount, oil pan clearance.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-46358.html"
+},
+{
+"star": false,
+"name": "MJS coupe build",
+"builder": "MSumners",
+"drivetrain": "Coyote; A/C, door poppers",
+"status": "Dash/A/C stage 2025",
+"why": "First-start debugging and A/C charging.",
+"url": "https://v1.thefactoryfiveforum.com/showthread.php?p=593534"
+},
+{
+"star": false,
+"name": "First FFR build – Gen 3 Coupe",
+"builder": "nskaats",
+"drivetrain": "LS 347, T-56, 3-link",
+"status": "Started 2017",
+"why": "Page 1 is a compact dose of veteran advice: inventory every part, stay standard.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26873.html"
+},
+{
+"star": false,
+"name": "Project Deimos, Gen 3 #576",
+"builder": "Deimos",
+"drivetrain": "BluePrint LS3 427, T56, IRS",
+"status": "Received May 2024, first start Feb 2026",
+"why": "A current timeline: 20 months to first start.",
+"url": "https://thefactoryfiveforum.com/"
+},
+{
+"star": false,
+"name": "Gen 3 Coupe race build (Grassroots Motorsports)",
+"builder": "ffr48",
+"drivetrain": "Coyote, IRS",
+"status": "First drive 2017",
+"why": "IRS assembly, hood/nose latch clearance, E30 nose pop-up.",
+"url": "https://grassrootsmotorsports.com/forum/build-projects-and-project-cars/factory-five-gen3-type65-coupe-race/125711/page1"
+},
+{
+"star": false,
+"name": "Jom's Type 65 Coupe kick-off",
+"builder": "Jom",
+"drivetrain": "Gen 3 Coyote; Boig pipes, Corbeau LG1, Schroth, BRE mirrors",
+"status": "In progress",
+"why": "Quiet-pipe and belt choices.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41970.html"
+},
+{
+"star": false,
+"name": "Papa's retirement build",
+"builder": "Papa",
+"drivetrain": "Gen 3; FFR A/C, Wilwood EPB, NRG quick release, Snakebite glovebox",
+"status": "In progress",
+"why": "Check the firewall extension before drilling wiper holes; extended A/C harness.",
+"url": "https://buildthreads.com/thread/18365"
+},
+{
+"star": false,
+"name": "David F.'s Type 65 Coupe",
+"builder": "David F.",
+"drivetrain": "Coupe; Kirkey low-backs, tablet dash, Alpine with camera",
+"status": "Done",
+"why": "Hidden-electronics interior, PPG tri-coat Sunkist, no stripes, window delete.",
+"url": "https://www.factoryfive.com/whats-new/david-f-s-factory-five-type-65-coupe"
+},
+{
+"star": false,
+"name": "Mike 'Rocky' R.'s coupe (Autorama gold)",
+"builder": "Rocky R.",
+"drivetrain": "363/TKX",
+"status": "Done",
+"why": "Door pockets with chargers, low LED night light, rear camera, Blu Avio over Wimbledon White.",
+"url": "https://www.factoryfive.com/whats-new/mike-rocky-r-s-coupe-strikes-detroit-autorama-gold/"
+},
+{
+"star": false,
+"name": "SATA / Austin Hatcher Foundation coupe",
+"builder": "SATA build",
+"drivetrain": "347 Street Cruiser, TKX, Moser",
+"status": "Sold on BaT for $137,500 (charity)",
+"why": "Bristol Grey, navy leather, 300SL and 275 GT cues. Euro-GT styling on a 347/TKX.",
+"url": "https://www.hatcherfoundation.org/hatchs-garage-vehicles/2022-sata-build-custom-gen-3-factory-five-type-65-coupe"
+},
+{
+"star": false,
+"name": "LateApex / Bob's Daytona build",
+"builder": "LateApex",
+"drivetrain": "Coupe; leather dash, NRG quick release, dead pedal, roof NACA ducts",
+"status": "Done",
+"why": "Leather over 1/8\" foam, carbon gauge panel on rivnuts, Russ Thompson stalk.",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41661.html"
+},
+{
+"star": false,
+"name": "Rob M.'s Type 65 Coupe",
+"builder": "Rob M.",
+"drivetrain": "Coupe",
+"status": "Done",
+"why": "Bare-aluminum look with period decals and hand-lettered switches; a no-paint livery idea.",
+"url": "https://www.factoryfive.com/whats-new/rob-m-s-type-65-coupe"
+}
+],
+"videos": [
+{
+"star": true,
+"name": "Walton Racing – Type 65 Coupe dream build",
+"car": "Gen 3, Coyote/T-56",
+"eps": "~15–25, 2024–26",
+"best": "First-timers: front suspension, rivets/clecos/rivnuts, first start and wiring lessons; \"Why We Ditched Some Factory Five Parts\" (Tilton reservoir, Sparco wheel, Odyssey battery)",
+"url": "https://www.youtube.com/watch?v=_Rep5A90xik"
+},
+{
+"star": true,
+"name": "Yellville – Type 65 Coupe build playlist",
+"car": "Gen 3, delivered Aug 2022",
+"eps": "33",
+"best": "Step-by-step in manual order; linked parts-and-cost spreadsheet",
+"url": "https://www.youtube.com/playlist?list=PLEgD1JDI6GIW9BOScwk6N8qH-nxkt1jLd"
+},
+{
+"star": false,
+"name": "Cobra Daytona Build",
+"car": "Type 65 Coyote",
+"eps": "240+ short clips",
+"best": "Almost every sub-task; Gen 1 vs Gen 3 comparison, side pipes",
+"url": "https://www.youtube.com/@cobradaytonabuild1671/videos"
+},
+{
+"star": false,
+"name": "John Nizman / Last Chance Auto Restore",
+"car": "Several coupes, pro shop",
+"eps": "25+",
+"best": "Body, door and hatch-glass fitting; quarter-glass bodywork; paint",
+"url": "https://www.youtube.com/results?search_query=John+Nizman+Type+65+Coupe+hatch+glass+body+fit"
+},
+{
+"star": false,
+"name": "Low Boost Films",
+"car": "Type 65",
+"eps": "2 key videos",
+"best": "Vintage Air install; Wilwood pedal box install",
+"url": "https://www.youtube.com/watch?v=QWqEZuXmUR4"
+},
+{
+"star": false,
+"name": "Wake Productions – Coupe-R",
+"car": "Gen 3 Coupe-R",
+"eps": "~8, 2018–19",
+"best": "Powder-coat-then-assemble sequence; wiring start and heat protection",
+"url": "https://www.youtube.com/results?search_query=Wake+Productions+Factory+Five+Coupe+R+build"
+},
+{
+"star": false,
+"name": "SlickWorks – Daytona Coupe build",
+"car": "Coupe, 2025–",
+"eps": "New",
+"best": "Current bodywork struggles",
+"url": "https://www.youtube.com/watch?v=3zMqs4OKJ-o"
+},
+{
+"star": false,
+"name": "Tim Custer – Forma power window kit",
+"car": "Type 65",
+"eps": "Part 1, Feb 2026",
+"best": "The only install video of the Forma roll-up window conversion",
+"url": "https://www.youtube.com/results?search_query=Forma+window+kit+Factory+Five+Type+65+Daytona"
+},
+{
+"star": false,
+"name": "Factory Five official How-To / Build playlist",
+"car": "Mk4 roadster",
+"eps": "25",
+"best": "Dan Golub's technique videos: front/rear Wilwood, chassis aluminum and wiring",
+"url": "https://www.youtube.com/playlist?list=PLWvfrZxPoPnbmHRjXTlVS-CVcPoK4x6lB"
+},
+{
+"star": false,
+"name": "FFR Solid Car Guys podcast",
+"car": "—",
+"eps": "Series",
+"best": "Ep 4 Build School instructors; Ep 7 dad-and-daughter Mk4 build",
+"url": "https://www.youtube.com/watch?v=YK76Kn63Lus"
+},
+{
+"star": false,
+"name": "Snap-on Gen 3 Coupe-R build / SEMA 2018 live build",
+"car": "Gen 3",
+"eps": "4 + 1",
+"best": "Pros assembling a Gen 3 in days shows the order of operations",
+"url": "https://www.youtube.com/watch?v=ftm1j5D-mvg"
+},
+{
+"star": false,
+"name": "The Roadster Experience – IRS install",
+"car": "Mk4",
+"eps": "Series",
+"best": "The most detailed FFR IRS install; same IRS as the coupe",
+"url": "https://www.youtube.com/watch?v=EEz4tr8Vvmk"
+},
+{
+"star": false,
+"name": "Kevin's Garage – first-time Mk4 build",
+"car": "Mk4, 38+ eps",
+"eps": "Current",
+"best": "Body setting and dash-cowl trimming transfer to the coupe",
+"url": "https://www.youtube.com/results?search_query=Kevin's+Garage+Factory+Five+Mk4+setting+the+body"
+},
+{
+"star": false,
+"name": "Sinks Family Garage",
+"car": "Mk4, father/son",
+"eps": "Series",
+"best": "How a family build flows; go-kart in 4.5 months",
+"url": "https://www.youtube.com/@SinkFamilyGarage"
+}
+],
+"vendors": [
+{
+"name": "Factory Five Racing",
+"sells": "Kit, options, replacement parts",
+"url": "https://www.factoryfive.com",
+"parts": "https://www.factoryfiveparts.com",
+"phone": "508-291-3443",
+"notes": "9 Tow Road, Wareham MA. tech@factoryfive.com for build questions; partsales@ for missing parts. M–F 8–5 ET."
+},
+{
+"name": "BluePrint Engines",
+"sells": "347 EFI + TKX package",
+"url": "https://factoryfiveengines.com",
+"parts": "",
+"phone": "1-800-483-4263",
+"notes": "Must call for Factory Five fitment; order through factoryfiveengines.com for the FFR discount."
+},
+{
+"name": "Breeze Automotive",
+"sells": "Gen 3 fan shroud, quick-release hub, gas pedal, PS pump/bracket, LED kits, Sniper fuel kit, side-pipe spacers, tools",
+"url": "https://breezeautomotive.com",
+"parts": "https://breezeautomotive.com/product-category/type-65-coupe/",
+"phone": "508-533-6455",
+"notes": "Medway MA. Has a dedicated Type 65 Coupe category."
+},
+{
+"name": "Forte's Parts Connection",
+"sells": "Hydraulic clutch kits, mid-shift kits, TKX, IRS center sections, pedals, BPE bundles",
+"url": "https://fortesparts.com",
+"parts": "",
+"phone": "508-875-0016",
+"notes": "Mike Forte; Tremec Elite dealer."
+},
+{
+"name": "GAS-N",
+"sells": "Gen 3 long-tube headers, Daytona Coupe side pipes",
+"url": "https://www.gas-n.com",
+"parts": "https://www.gas-n.com/collections/gen-3-daytona-coupe-headers",
+"phone": "",
+"notes": "Months-long shipping delays and a possible ownership change reported mid-2025."
+},
+{
+"name": "ePowerSteering",
+"sells": "KIT-26 Gen 3 Type 65 electric power steering",
+"url": "https://epowersteering.com",
+"parts": "https://epowersteering.com/purchase/product/factory-five-gen-3-type-65-coupe-electric-power-steering-kit/",
+"phone": "",
+"notes": "Buy the Gen 3 kit, not the Mk4 kit. Check stock ('Notify me' shown)."
+},
+{
+"name": "FormaCars",
+"sells": "Electric roll-down window kit, HVAC",
+"url": "https://christopher-relyea.squarespace.com/blogposts/2019/11/new-daytona-coupe-build-with-modern-window-development",
+"parts": "",
+"phone": "",
+"notes": "No published prices. Ask on TFFF for price and lead time."
+},
+{
+"name": "Russ Thompson",
+"sells": "Column turn-signal stalk, quarter windows, A-pillar deflectors, pontoon covers",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-34975.html",
+"parts": "",
+"phone": "",
+"notes": "Forum vendor; order by email via TFFF."
+},
+{
+"name": "Levy Racing",
+"sells": "Wilwood brake packages, electric parking brakes, QA1 coil-overs",
+"url": "https://levyracing.com",
+"parts": "",
+"phone": "",
+"notes": "Used by Hank and Ron L."
+},
+{
+"name": "Wilwood",
+"sells": "Front and rear brake kits (140-15138-R lists the Type 65 Coupe)",
+"url": "https://www.wilwood.com",
+"parts": "",
+"phone": "805-388-1188",
+"notes": ""
+},
+{
+"name": "Kirkey Racing",
+"sells": "Aluminum seats (55V, 55-series)",
+"url": "https://www.kirkeyracing.com",
+"parts": "",
+"phone": "",
+"notes": "Thin shell = most headroom."
+},
+{
+"name": "Corbeau",
+"sells": "Sportline, A4, LG1 seats; vinyl by the yard",
+"url": "https://corbeau.com",
+"parts": "",
+"phone": "",
+"notes": "Track-first.com adds heaters and shaved bases."
+},
+{
+"name": "Speedhut",
+"sells": "GPS gauges (builds FFR's set)",
+"url": "https://www.speedhut.com",
+"parts": "",
+"phone": "",
+"notes": ""
+},
+{
+"name": "Siroco",
+"sells": "Boreal 600 evaporator (FFR's unit)",
+"url": "https://www.sirocoac.com",
+"parts": "",
+"phone": "",
+"notes": ""
+},
+{
+"name": "I.E.427",
+"sells": "Thin NRG quick-release hub adapter",
+"url": "https://ie427.com",
+"parts": "",
+"phone": "",
+"notes": "Adds only ~1/2\"."
+},
+{
+"name": "Snakebite Motorworks",
+"sells": "Flush glovebox",
+"url": "https://snakebitemotorworks.com",
+"parts": "",
+"phone": "",
+"notes": ""
+},
+{
+"name": "Boig Motorsport",
+"sells": "Premium headers and quiet side pipes",
+"url": "https://boigmotorsport.com",
+"parts": "",
+"phone": "",
+"notes": "Confirm 302 pattern."
+},
+{
+"name": "Specialty Power Windows",
+"sells": "Wiper kits",
+"url": "https://www.specialtypowerwindows.com",
+"parts": "",
+"phone": "",
+"notes": ""
+},
+{
+"name": "Summit Racing / JEGS",
+"sells": "BPE package, Tilton, Lokar, Rostra, headers, misc.",
+"url": "https://www.summitracing.com",
+"parts": "https://www.jegs.com",
+"phone": "",
+"notes": ""
+},
+{
+"name": "Stewart Transport",
+"sells": "Kit delivery",
+"url": "https://www.factoryfive.com/type-65-coupe/faqs/",
+"parts": "",
+"phone": "888-737-4852",
+"notes": "FFR's referenced carrier."
+}
+],
+"community": [
+{
+"name": "The Factory Five Forum (and v1 archive)",
+"what": "Nearly every Gen 3 coupe build lives here",
+"url": "https://thefactoryfiveforum.com/",
+"alt": "https://v1.thefactoryfiveforum.com/",
+"how": "Live site needs JavaScript; thread numbers resolve on the v1 archive, which is faster on a phone."
+},
+{
+"name": "ffcars.com Northwest Region subforum",
+"what": "WA/OR/ID FFR owners",
+"url": "https://www.ffcars.com/forums/northwest-region.28/",
+"alt": "",
+"how": "Post an intro: new Gen 3 coupe builder, looking for local builders to visit and body/paint shops."
+},
+{
+"name": "Puget Sound FFR Owners Club thread",
+"what": "Long-running Seattle-area owners thread",
+"url": "https://www.ffcars.com/threads/puget-sound-ffr-owners-club.33009/",
+"alt": "",
+"how": "Read the last pages for who is still active, then PM them."
+},
+{
+"name": "NW Club Cobra summer cruise",
+"what": "Tacoma/Puget Sound crew; 2019 Oregon Coast cruise roster of ~15 owners (Bruce Snyder, Spanaway)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-31545.html",
+"alt": "https://www.ffcars.com/threads/northwest-club-cobra-summer-cruise.636894/",
+"how": "The roster is a list of experienced Northwest owners; the group also has a Facebook page."
+},
+{
+"name": "NW Cobra Club (Facebook)",
+"what": "Seattle-area; Pacific Northwest Historics",
+"url": "https://www.facebook.com/people/NW-Cobra-Club/100064545675921/",
+"alt": "",
+"how": ""
+},
+{
+"name": "Cascade Cobra Club",
+"what": "Portland-area coast trips",
+"url": "https://www.ffcars.com/threads/cascade-cobra-club-summer-coast-trip-2019.638156/",
+"alt": "https://www.ffcars.com/threads/portland-or-any-ffr-cobra-owners.16439/",
+"how": "Useful if the paint-shop search widens to Portland."
+},
+{
+"name": "Griot's Garage Caffeine & Gasoline (Tacoma)",
+"what": "First Saturday monthly; 'Built Not Bought' show",
+"url": "https://www.ffcars.com/forums/28-northwest-region/543546-seattle-cobra-club.html",
+"alt": "",
+"how": ""
+},
+{
+"name": "Factory Five Build School",
+"what": "Hands-on class, Wareham MA / Mott CC",
+"url": "https://www.factoryfive.com/build-school/",
+"alt": "",
+"how": "Worth the trip before the kit ships."
+},
+{
+"name": "FFR event schedule and community page",
+"what": "Official shows, forum, Facebook, Instagram, YouTube",
+"url": "https://www.factoryfive.com/event-schedule/",
+"alt": "https://www.factoryfive.com/community/",
+"how": "Watch for any West Coast show."
+}
+],
+"options": [
+{
+"pn": "60000 / 16613",
+"opt": "Uncoated chassis / powder coat black",
+"verdict": "Powder coat",
+"why": "Washington wet climate"
+},
+{
+"pn": "13083",
+"opt": "302/351W mounts",
+"verdict": "Required",
+"why": ""
+},
+{
+"pn": "34158",
+"opt": "Hydraulic clutch master cylinder kit",
+"verdict": "Yes",
+"why": "BluePrint includes the hydraulic TOB"
+},
+{
+"pn": "16427",
+"opt": "Hydraulic throw-out bearing",
+"verdict": "No",
+"why": "Duplicates the BluePrint package"
+},
+{
+"pn": "16757",
+"opt": "302 stainless headers",
+"verdict": "Yes, or GAS-N",
+"why": ""
+},
+{
+"pn": "60808",
+"opt": "Stainless side exhaust",
+"verdict": "Yes",
+"why": "Plan quiet inserts or coating"
+},
+{
+"pn": "60898 + 17150 + 16668",
+"opt": "2015 IRS + IRS shocks + 2018 3.55 center section",
+"verdict": "Yes",
+"why": "Hard to add later"
+},
+{
+"pn": "60175 / 16038",
+"opt": "TKX + IRS driveshaft (10.50\" vs 8.38\")",
+"verdict": "Call FFR",
+"why": "Depends on the BPE bellhousing"
+},
+{
+"pn": "16799",
+"opt": "Power steering kit",
+"verdict": "Yes, or electric assist",
+"why": "FFR says you will want it"
+},
+{
+"pn": "60312",
+"opt": "GPS vintage gauges",
+"verdict": "Yes",
+"why": "Confirm 60312 vs 60311"
+},
+{
+"pn": "15478 + 12077",
+"opt": "Vintage low-back seats + seat track",
+"verdict": "Yes",
+"why": "6'2\" driver"
+},
+{
+"pn": "15370/15368 + 60850/60849",
+"opt": "Wilwood front / IRS rear",
+"verdict": "Recommended",
+"why": "Needs 17\" or 18\" wheels"
+},
+{
+"pn": "17763 / 15812",
+"opt": "17\" / 18\" Halibrands",
+"verdict": "Yes",
+"why": ""
+},
+{
+"pn": "60867",
+"opt": "Body with cut-outs",
+"verdict": "Yes",
+"why": "Saves hours"
+},
+{
+"pn": "12451",
+"opt": "Leather steering wheel",
+"verdict": "Yes",
+"why": ""
+},
+{
+"pn": "60969 / 60888",
+"opt": "Aluminum / carbon dash",
+"verdict": "Aluminum if custom",
+"why": ""
+},
+{
+"pn": "60377",
+"opt": "A/C-heater-defroster 302/351W",
+"verdict": "Yes",
+"why": "Or FormaCars HVAC, decided before the footbox closes"
+},
+{
+"pn": "15830",
+"opt": "Wipers",
+"verdict": "Yes",
+"why": "Much easier body-off"
+},
+{
+"pn": "60371 + 12828",
+"opt": "Side windows + quarter windows",
+"verdict": "Yes",
+"why": "Or FormaCars power windows"
+},
+{
+"pn": "60821 + 17508",
+"opt": "Black carpet + floormats",
+"verdict": "Yes",
+"why": ""
+},
+{
+"pn": "16749",
+"opt": "Battery cutoff",
+"verdict": "Yes",
+"why": ""
+},
+{
+"pn": "16116 / 16037",
+"opt": "Front / F&R sway bars",
+"verdict": "Yes",
+"why": ""
+},
+{
+"pn": "60372",
+"opt": "Aero vents + footbox vents",
+"verdict": "Yes",
+"why": "Builders with insulation still wish they had them"
+},
+{
+"pn": "17680",
+"opt": "EFI in-tank fuel system",
+"verdict": "Yes",
+"why": "Sniper needs it"
+},
+{
+"pn": "12079X / 15834X",
+"opt": "Extra side mirror",
+"verdict": "Yes",
+"why": "WSP mirror check"
+},
+{
+"pn": "14714",
+"opt": "Indoor car cover",
+"verdict": "Yes",
+"why": ""
+},
+{
+"pn": "34168",
+"opt": "Brake reservoir components",
+"verdict": "Optional",
+"why": ""
+},
+{
+"pn": "Coupe-R aero",
+"opt": "Splitter, canards, wing, aero bumper",
+"verdict": "Skip",
+"why": "Track only"
+},
+{
+"pn": "13852",
+"opt": "Competition high-back seats",
+"verdict": "Skip",
+"why": "Fit first"
+},
+{
+"pn": "4-link",
+"opt": "OEM-style 4-link rear",
+"verdict": "Skip",
+"why": "No street benefit over 3-link/IRS"
+}
+],
+"upfront": [
+"A/C-heater-defroster (60377), or decide on FormaCars HVAC before the footbox is closed in.",
+"Wipers (15830): much easier with the body off.",
+"Power steering path: 16799 plus a pump on the BluePrint front drive, or ePowerSteering KIT-26.",
+"IRS (60898 + 17150 + 16668) and the matching driveshaft (60175 vs 16038).",
+"Hydraulic clutch master (34158); skip 16427.",
+"Powder coat (16613).",
+"Power windows (FormaCars) must be done before door finishing.",
+"Seat choice and seat track (15478 + 12077) for a 6'2\" driver; sit in a finished car first.",
+"Side windows (60371), quarter windows (12828), EFI in-tank fuel (17680).",
+"Footbox vents (60372) and sealing foam: heat leakage shows up after the body is on.",
+"Dropped floors, if wanted, before riveting."
+],
+"gaps": [
+"Which TKX/IRS driveshaft (60175 at 10.50\" vs 16038 at 8.38\") fits the BluePrint package. Call FFR.",
+"Whether the BluePrint front drive carries both an A/C compressor and a PS pump on a 347.",
+"FormaCars window and HVAC prices and lead times.",
+"GPS gauge part number: 60312 on the order form vs 60311 in the catalog.",
+"How WSP handles the bumper line for a bumperless Gen 3 coupe. No published outcome.",
+"Whether Washington use tax applies to all out-of-state parts at titling.",
+"No published total-hours log for any Gen 3 coupe; the 1,200 h estimate uses Gen 1/2 logs.",
+"No FFR-published spring rates or alignment specs for the Gen 3 coupe."
+],
+"groups": [
+{
+"id": "engine",
+"label": "Engine & transmission",
+"stage": "plan",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "BluePrint 347 EFI is the turnkey path with a hydraulic clutch bearing in the box, about $4,500 less than a Coyote package and better footroom at 6'2\". The Coyote is the majority Gen 3 choice and sounds the part, but needs different mounts, headers, PS and A/C kits and a tighter footbox. Carb saves $2,200 and gives up cold starts."
+},
+{
+"id": "front-brakes",
+"label": "Front brakes",
+"stage": "front",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "Wilwood 12.88\" ($2,000–2,300) is the near-universal street upgrade and needs 17\"+ wheels. The standard 11\" PBR brakes are adequate and the only choice with 15s. Levy's 14\" kit is for 18\"+ wheels and track use."
+},
+{
+"id": "rear-susp",
+"label": "Rear suspension",
+"stage": "rear",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "IRS rides and tracks better and is what nearly every street Gen 3 runs; it costs roughly $3,000 more than the 3-link once you add the center section and shocks. The 3-link is simpler, lighter and fine for a budget or track car, but you can't switch later."
+},
+{
+"id": "rear-brakes",
+"label": "Rear brakes",
+"stage": "rear",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "IRS 11.65\"/13\" keeps the OEM parking brake and costs the least; Wilwood 12.88\" rears ($2,299) match the fronts visually and need an electric or MC4 parking brake solution."
+},
+{
+"id": "center-section",
+"label": "Differential",
+"stage": "rear",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "The 2018 Mustang 3.55 unit from FFR is the no-donor path and what Ron L. runs. A Torsen ($775, diff only) adds traction for a street car but you still need the FFR carrier parts."
+},
+{
+"id": "steering",
+"label": "Steering",
+"stage": "front",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR's hydraulic kit (16799) needs a pump on the 347's front drive, which has to share with the A/C compressor; electric assist ($935) avoids that and the belt, at the cost of a less natural feel. Manual is cheapest and FFR warns you'll regret it."
+},
+{
+"id": "steering-wheel",
+"label": "Steering wheel",
+"stage": "front",
+"multi": false,
+"decideBy": "any",
+"tradeoff": "FFR's 14\" wheel is included; a 13\" Sparco gives more knee room but heavier steering on a manual rack. A quick-release hub helps entry more than any wheel choice."
+},
+{
+"id": "clutch",
+"label": "Clutch hydraulics",
+"stage": "drivetrain",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "34158 ($220) is the only piece you need with the BluePrint package. Tilton and Forte's kits are for builds that don't come with a bearing."
+},
+{
+"id": "headers",
+"label": "Headers",
+"stage": "drivetrain",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR's 302 headers ($order form) are what the side pipes are designed around. GAS-N long-tubes ($1,095+) flow better and route more gracefully but have had months-long shipping delays."
+},
+{
+"id": "sidepipes",
+"label": "Side exhaust",
+"stage": "drivetrain",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR stainless pipes ($1,525) are the default and loud (~114 dB inside). GAS-N Touring (from $1,495) is the quiet drop-in; Boig quieter still but call-to-order. Inserts ($120–160 a side) are the cheap fix for either."
+},
+{
+"id": "fan-shroud",
+"label": "Fan & shroud",
+"stage": "drivetrain",
+"multi": false,
+"decideBy": "any",
+"tradeoff": "Breeze 70807 ($99) is made for the FFR fan and this chassis; a SPAL swap buys little and loses the shroud fit."
+},
+{
+"id": "battery",
+"label": "Battery",
+"stage": "wiring",
+"multi": false,
+"decideBy": "any",
+"tradeoff": "Odyssey PC925 ($250) is the proven small AGM; Braille B2015 saves 13 lb for about the same money but is a race battery."
+},
+{
+"id": "fuel",
+"label": "Fuel system",
+"stage": "wiring",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR's in-tank kit (17680, ~$600) is simplest and what most Sniper builders run; the Holley 12-345 module ($335) gives 3/8\" lines and a proper bypass regulator for Sniper 2."
+},
+{
+"id": "gauges",
+"label": "Gauges",
+"stage": "wiring",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR's GPS set ($1,299) is the coupe default and skips the TKX speed-sensor hassle. Speedhut custom is the same gauges with your choices; Dakota Digital is for a custom dash."
+},
+{
+"id": "hvac",
+"label": "A/C & heat",
+"stage": "hvac",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR's 302/351W kit (~$1,800) is the only one that fits without fabrication; its weak point is defrost. FormaCars HVAC is the one proven alternative but has no public price. Decide before the footbox closes."
+},
+{
+"id": "side-windows",
+"label": "Side windows",
+"stage": "body",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR sliders ($549) are what nearly everyone runs and leak a little; FormaCars roll-downs are the Washington-rain answer, cost unknown, and must be done before door finishing."
+},
+{
+"id": "wipers",
+"label": "Wipers",
+"stage": "body",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "FFR's Lucas kit ($499) is marginal on the big windshield but fits; Specialty Power Windows ($376) sweeps better. Either is far easier with the body off."
+},
+{
+"id": "mirrors",
+"label": "Mirrors",
+"stage": "body",
+"multi": false,
+"decideBy": "any",
+"tradeoff": "FFR Raydots (included, extra for the pair) pass inspection; BRE's $289 coupe kit is the period-correct upgrade with backing plates."
+},
+{
+"id": "seats",
+"label": "Seats",
+"stage": "interior",
+"multi": false,
+"decideBy": "body",
+"tradeoff": "FFR low-backs give the most headroom for the money; Kirkey ($250 + cover) is thinner still and floor-mounts. Corbeau and Sparco recline but cost headroom. Sit in a car before buying."
+},
+{
+"id": "belts",
+"label": "Belts",
+"stage": "interior",
+"multi": false,
+"decideBy": "any",
+"tradeoff": "The included Simpson 5-point is track-correct; Schroth's ASM 4-point ($325) is the street-friendlier harness."
+},
+{
+"id": "dash",
+"label": "Dash",
+"stage": "interior",
+"multi": false,
+"decideBy": "paint",
+"tradeoff": "The aluminum dash is included; wrapping it over foam is the cheap upgrade; carbon ($600) is a look; a custom dash is a project."
+},
+{
+"id": "wheels",
+"label": "Wheels",
+"stage": "shakedown",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "17\" ($1,600–1,900) clears Wilwoods and has the best tire selection. 15\" is period-correct but locks you to 11\" brakes. 18\" ($1,899) is for 14\" rotors or a modern stance, with thinner tire choices."
+},
+{
+"id": "paint",
+"label": "Paint",
+"stage": "paint",
+"multi": false,
+"decideBy": "paint",
+"tradeoff": "A shop blocking and painting a coupe runs $8k–20k; doing your own prep can halve it. Title in gelcoat first either way."
+},
+{
+"id": "insulation",
+"label": "Insulation",
+"stage": "chassis",
+"multi": true,
+"decideBy": "body",
+"tradeoff": "Lizard Skin sprays go on before carpet and are the biggest single comfort gain; butyl mat on footboxes and tunnel is near-universal. Exhaust choice matters more than any of it for noise."
+},
+{
+"id": "mounts",
+"label": "Engine mounts",
+"stage": "drivetrain",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "Follows the engine; nothing to decide once the engine is picked."
+},
+{
+"id": "driveshaft",
+"label": "Driveshaft",
+"stage": "rear",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "Length depends on the bellhousing and trans; FFR lists two TKX/IRS shafts, so this is a phone call, not a preference."
+}
+],
+"families": {
+"sbf": "Small-block Ford (302/347/427)",
+"ls": "GM LS",
+"coyote": "Ford Coyote"
+},
+"warnings": [
+{
+"when": [
+"2015 Mustang-based IRS"
+],
+"msg": "The IRS does not fit pin-drive wheels; stick with bolt-on Halibrands (Jeff Kleiner)."
+},
+{
+"when": [
+"Hydraulic power steering kit",
+"FFR A/C-heater-defroster for 302/351W"
+],
+"msg": "PS pump and A/C compressor share the 347's front drive; confirm BluePrint's A/C front-drive option carries both before ordering 16799."
+},
+{
+"when": [
+"Gen 3 Coyote 5.0 + TKX package"
+],
+"msg": "FFR's FAQ says the small-block gives more footroom; sit in a Coyote coupe first at 6'2\"."
+},
+{
+"when": [
+"Kirkey aluminum seats",
+"Seat track"
+],
+"msg": "Tall drivers usually floor-mount Kirkeys and skip the track to gain headroom."
+},
+{
+"when": [
+"Hydraulic clutch master cylinder kit",
+"Tilton hydraulic release bearing setup"
+],
+"msg": "BluePrint's package already includes a hydraulic throw-out bearing; the Tilton bearing duplicates it."
+},
+{
+"when": [
+"Wilwood 12.88\" front, drilled & slotted",
+"FFR 15\" Halibrand replicas"
+],
+"msg": "Wilwood 12.88\" fronts do not clear 15\" wheels. Pick 17\" or 18\" Halibrands, or the standard 11\" brakes."
+},
+{
+"when": [
+"Levy Racing Wilwood 6-piston front / 4-piston rear",
+"FFR 15\" Halibrand replicas"
+],
+"msg": "14\" rotors need 18\" or 19\" wheels; 15\" will not clear."
+},
+{
+"when": [
+"Levy Racing Wilwood 6-piston front / 4-piston rear",
+"FFR 17\" Halibrand replicas"
+],
+"msg": "14\" rotors need 18\" or 19\" wheels; confirm with Levy before pairing with 17s."
+},
+{
+"when": [
+"Wilwood 12.88\" IRS rear",
+"FFR 15\" Halibrand replicas"
+],
+"msg": "12.88\" rear Wilwoods will not clear 15\" wheels."
+}
+],
+"decideLabels": {
+"order": "Decide before the kit order",
+"body": "Decide before the body goes on",
+"paint": "Decide before paint",
+"any": "Any time"
+},
+"receiptItems": [
+{
+"label": "Frame / kit (MSO)",
+"group": "kit",
+"partId": "p001"
+},
+{
+"label": "Engine",
+"group": "engine"
+},
+{
+"label": "Transmission",
+"group": "engine",
+"note": "on the engine package receipt"
+},
+{
+"label": "Differential / center section",
+"group": "center-section"
+},
+{
+"label": "Body, doors, hood",
+"group": "kit",
+"partId": "p001",
+"note": "on the kit receipt"
+},
+{
+"label": "Wheels",
+"group": "wheels"
+},
+{
+"label": "Brakes",
+"group": "front-brakes"
+}
+]
+}

@@ -1,0 +1,678 @@
+[
+{
+"id": "plan",
+"num": 1,
+"title": "Plan, order & shop setup",
+"window": "Nov 2026 – kit delivery",
+"hours": "20–40 h",
+"summary": "Lock in every option that is hard to add later, confirm the BluePrint accessory drive, and set up the shop before the truck arrives. FFR assigns a completion date at order; the SEMA special (Nov 2026) gives $2,500 off the kit or $3,500 off options.",
+"manual": "General Information chapter: tools list, torque and fluid specs.",
+"reads": [
+{
+"label": "Type 65 build questions (which options)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-44757.html"
+},
+{
+"label": "Pre-sales coupe questions (SBF, gearing, wheels)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-46176.html"
+},
+{
+"label": "Power Surge Coupe #692, pages 1–2 (a current order sheet)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-51689.html"
+},
+{
+"label": "Gen 3 Complete Kit order form",
+"url": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/"
+},
+{
+"label": "FFR + BluePrint 347 EFI/TKX package page",
+"url": "https://factoryfiveengines.com/ford-347-c-i-fuel-injected-2/"
+},
+{
+"label": "Solid Car Guys Ep 4: Build School instructors",
+"url": "https://www.youtube.com/watch?v=YK76Kn63Lus"
+}
+],
+"challenges": [
+"Options that cannot be added later: IRS, power steering, A/C kit, hydraulic clutch, windows, wipers, powder coat, EFI in-tank fuel.",
+"Pin-drive wheels do not work with the IRS (Jeff Kleiner). Stick with bolt-on Halibrands.",
+"BluePrint's package says STOP AND CALL for Factory Five fitment: confirm the front drive carries both an A/C compressor and a PS pump.",
+"Two TKX/IRS driveshafts are listed (60175 at 10.50\" vs 16038 at 8.38\"). Call FFR with the BluePrint bellhousing/TKX length."
+],
+"ideas": [
+"Start a parts-and-cost spreadsheet like Yellville's on day one.",
+"Take the Mk5 Roadster Build School before the kit ships; FFR says Gen 3 coupe builders take that class.",
+"Post on the ffcars Northwest board for a Puget Sound coupe owner who will let you sit in a finished car. Seat fit and headroom cannot be judged from photos."
+],
+"tasks": [
+"Get a written FFR quote with every option line",
+"Call FFR: which TKX/IRS driveshaft fits the BluePrint bellhousing",
+"Call BluePrint: A/C front drive with PS pump bracket",
+"Sit in a finished Gen 3 coupe (seat and headroom check)",
+"Place the kit order and record the completion date",
+"Start Hagerty under-construction coverage on delivery",
+"Set up the shop: lift or stands, body dolly, bench, lighting"
+]
+},
+{
+"id": "delivery",
+"num": 2,
+"title": "Delivery & inventory",
+"window": "Week 1",
+"hours": "10–20 h",
+"summary": "The body ships on top of the chassis and needs four people to lift off. Missing or wrong hardware is normal: photograph every box and email partsales@factoryfive.com within days. Put the MSO and every receipt in a binder; Washington's inspection depends on them.",
+"manual": "Disassembly of the Kit chapter: unboxing and parts check-off.",
+"reads": [
+{
+"label": "First FFR build – Gen 3 Coupe, page 1 (veteran inventory advice)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26873.html"
+},
+{
+"label": "Power Surge #692 on missing hardware at delivery",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-51689.html"
+},
+{
+"label": "What you get: Complete Kit",
+"url": "https://www.factoryfive.com/type-65-coupe/what-you-get-complete-kit/"
+}
+],
+"challenges": [
+"Backordered quarter windows and side windows are common late ships; log backorders in writing within 30 days.",
+"The quarter-window areas of the body need the most bodywork (edwardb).",
+"The name on the MSO must match the titling applicant. WSP requires the original."
+],
+"ideas": [
+"Build a body dolly first.",
+"Store aluminum panels flat and labeled; they dent and oxidize in storage."
+],
+"tasks": [
+"Photograph every box before opening",
+"Check the packing list against the order form",
+"Email partsales@ about missing or wrong parts within days",
+"Lift the body off (4 people) onto the dolly",
+"Put the MSO and all receipts in the binder",
+"Label and store aluminum panels flat"
+]
+},
+{
+"id": "chassis",
+"num": 3,
+"title": "Chassis prep & aluminum panels",
+"window": "Q1 2027 – Aug 2027",
+"hours": "220–300 h",
+"summary": "The biggest single job: hundreds of holes drilled, cleco'd, riveted and sealed. Heat shielding, firewall insulation and footbox sealing foam go in now, before the body is on and the firewall corner fills with hoses.",
+"manual": "Chassis Assembly chapter: aluminum panel sections (floors, footboxes, firewall, trunk, cockpit sides).",
+"reads": [
+{
+"label": "Walton Racing: rivets, clecos and rivnuts",
+"url": "https://www.youtube.com/watch?v=aWzLZjtn05k"
+},
+{
+"label": "FFR official: chassis aluminum and wiring (Dan Golub)",
+"url": "https://www.youtube.com/results?search_query=Factory+Five+Mk4+build+chassis+aluminum+wiring+Golub"
+},
+{
+"label": "edwardb #59 on sealing and Sikaflex",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26630-p-2.html"
+},
+{
+"label": "Coupe heat management (SBF 347)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-43010.html"
+},
+{
+"label": "Sealing the cabin (ffcars 617986)",
+"url": "https://www.ffcars.com/threads/sealing-the-cabin.617986/"
+}
+],
+"challenges": [
+"Silicone vs Sikaflex debate; panels oxidize if uncoated, so coat them before the pedal box and wiring go in.",
+"Most cockpit heat is engine-bay air pushed along the footbox-to-body gap, not conduction. Seal it with dense foam before the body goes on.",
+"Dropped floors for tall drivers must be decided before panels are riveted."
+],
+"ideas": [
+"Satin clear over aluminum (jgray) for a finished look at low cost.",
+"Standoff aluminum heat shield with an air gap at the headers.",
+"Avoid tar-based mats near heat; they melt and make a sticky mess."
+],
+"tasks": [
+"Inspect powder coat; touch up bare spots",
+"Fit, drill and cleco every aluminum panel",
+"Install footbox heat shields and firewall insulation",
+"Seal the footbox-to-body gap with dense foam",
+"Rivet and seal panels (Sikaflex every seam)",
+"Spray or lay sound deadening before carpet areas close"
+]
+},
+{
+"id": "front",
+"num": 4,
+"title": "Front suspension, steering, pedals & brakes",
+"window": "2027",
+"hours": "60–90 h",
+"summary": "KONI coil-overs, the Wilwood pedal box and the steering column go in while the footbox is open. Decide power steering, quick-release wheel and pedal spacing now. FFR itself says you will want power steering once you try manual.",
+"manual": "Chassis Assembly: front suspension, steering rack and column, pedal box, brake lines.",
+"reads": [
+{
+"label": "Walton Racing: front suspension",
+"url": "https://www.youtube.com/watch?v=FtoILq__vdw"
+},
+{
+"label": "FFR official: front Wilwood install",
+"url": "https://www.youtube.com/results?search_query=Factory+Five+Mk4+front+Wilwood+brake+install"
+},
+{
+"label": "Low Boost Films: Wilwood pedal box install",
+"url": "https://www.youtube.com/watch?v=Gpg3clvgPeg"
+},
+{
+"label": "Quick release + Russ Thompson turn signal",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-34975.html"
+}
+],
+"challenges": [
+"Accelerator pedal vs steering-shaft interference (Bob Brandle made a spacer); throttle pedal wobble (jgray).",
+"Standard 500 lb front springs may be light if the finished car tops 2,900 lb.",
+"A cast Wilwood clutch pedal broke on a roadster with a cable clutch; hydraulic lowers the load."
+],
+"ideas": [
+"Dead-pedal kit and rigid stainless brake lines (edwardb).",
+"Bench-bleed, then pressure-bleed at 5–7 psi."
+],
+"tasks": [
+"Assemble and install front control arms and spindles",
+"Install KONI coil-overs and front sway bar",
+"Mount the pedal box; set pedal height and dead pedal",
+"Install steering rack, column and quick-release hub",
+"Install front brakes and run hard lines",
+"Bench-bleed master cylinders"
+]
+},
+{
+"id": "rear",
+"num": 5,
+"title": "Rear suspension (IRS) & rear brakes",
+"window": "2027",
+"hours": "40–70 h",
+"summary": "The 2015 Mustang-based IRS is the street choice: smoother ride, better traction, and nearly impossible to retrofit. It needs its own shocks (17150), the 2018 3.55 center section (16668) and the matching driveshaft.",
+"manual": "Chassis Assembly: rear suspension (IRS supplement), e-brake.",
+"reads": [
+{
+"label": "The Roadster Experience: FFR IRS install (same IRS as the coupe)",
+"url": "https://www.youtube.com/watch?v=EEz4tr8Vvmk"
+},
+{
+"label": "FFR official: rear Wilwood install",
+"url": "https://www.youtube.com/watch?v=BHA_zGXUtok"
+},
+{
+"label": "Yellville: rear Wilwood brakes",
+"url": "https://www.youtube.com/watch?v=KIyDh6v3t0k"
+},
+{
+"label": "Grassroots Motorsports Gen 3 race build (IRS assembly)",
+"url": "https://grassrootsmotorsports.com/forum/build-projects-and-project-cars/factory-five-gen3-type65-coupe-race/125711/page1"
+}
+],
+"challenges": [
+"IRS bushing misalignment needs spacers; drill spindle and mount holes to 5/8\".",
+"Pinion flange adapter error that FFR replaced (P100DHG #138).",
+"Ask about 3.73 vs 3.55 for the TKX 0.81 overdrive."
+],
+"ideas": [
+"Electric parking brake (Levy Racing / Wilwood EPB) frees the tunnel.",
+"Torque-seal every fastener for the inspector."
+],
+"tasks": [
+"Assemble IRS cradle, knuckles and hubs",
+"Install center section and CV axles",
+"Install rear coil-overs and sway bar",
+"Install rear brakes and parking brake",
+"Install driveshaft and safety loop",
+"Torque-seal every fastener"
+]
+},
+{
+"id": "drivetrain",
+"num": 6,
+"title": "Engine & transmission",
+"window": "Aug – Nov 2027",
+"hours": "100–150 h",
+"summary": "BluePrint 347 EFI (Holley Sniper 2, 415 hp) with the TKX. The package already includes a McLeod hydraulic throw-out bearing, so order FFR #34158 (master kit) and not #16427. The TKX shifter lands too far back in a Gen 3: flip it 180° or buy a mid-shift kit.",
+"manual": "Chassis Assembly: engine and transmission install, driveshaft, mounts, headers and side exhaust, cooling.",
+"reads": [
+{
+"label": "347 with TKX transmission (shifter position)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-48958.html"
+},
+{
+"label": "Shifter boot interference in 1st",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-50219.html"
+},
+{
+"label": "GT_Rich 427 SBF Coupe R (TKX, built in 7 months)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41854.html"
+},
+{
+"label": "Lewma on BluePrint crate quirks",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-46358.html"
+},
+{
+"label": "EFI for BluePrint engine (Art Shand, Sniper cold-start)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-45121.html"
+},
+{
+"label": "GAS-N Gen 3 headers: new option thread",
+"url": "https://thefactoryfiveforum.com/thread/118280"
+},
+{
+"label": "Gen 3 Coupe FAQ (small-block is better for footroom)",
+"url": "https://www.factoryfive.com/type-65-coupe/faqs/"
+}
+],
+"challenges": [
+"TKX shifter position; several builders flipped the shifter and moved the tunnel hole.",
+"Oil pan clearance (rear-sump), tall intakes hit the hood, degas/overflow tank location.",
+"The 4-into-2-into-sidepipe routing is a reported power robber; GAS-N's design has a longer, more gradual turn."
+],
+"ideas": [
+"Ceramic headers and standoff heat shields; bare FFR pipes rust fast in Washington.",
+"Fan shroud (Breeze 70807) for low-speed and A/C idle cooling.",
+"Driveshaft safety loop on rivnuts."
+],
+"tasks": [
+"Set engine and trans on the mounts",
+"Check oil-pan and intake clearance",
+"Install hydraulic clutch and bleed",
+"Fit shifter position (flip or mid-shift kit)",
+"Install headers and side pipes; check heat shields",
+"Install radiator, fan, shroud and hoses"
+]
+},
+{
+"id": "wiring",
+"num": 7,
+"title": "Wiring, fuel, hydraulics & gauges",
+"window": "Nov 2027 – Apr 2028",
+"hours": "180–250 h",
+"summary": "Ron Francis harness, in-tank EFI pump, hydraulic clutch and brake lines, battery in the nose. Plan the crowded firewall corner where harness, heater hoses and A/C lines all meet.",
+"manual": "Chassis Assembly: wiring harness, fuel tank and EFI in-tank pump, radiator and fan, clutch hydraulics, gauges.",
+"reads": [
+{
+"label": "FFR chassis harness manual (Rev W, PDF)",
+"url": "https://www.factoryfive.com/wp-content/uploads/2021/11/Chassis-Harness-rev-W.pdf"
+},
+{
+"label": "Yellville: wiring",
+"url": "https://www.youtube.com/watch?v=tXn-0cvAkzQ"
+},
+{
+"label": "Walton Racing: first start and wiring lessons",
+"url": "https://www.youtube.com/results?search_query=Walton+Racing+Type+65+Coupe+first+start"
+},
+{
+"label": "Wedel456 Gen 3 (Ron Francis harness, relays)",
+"url": "https://v1.thefactoryfiveforum.com/showthread.php?p=568546"
+},
+{
+"label": "Sniper EFI fuel pump vs FF in-tank",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-46367.html"
+}
+],
+"challenges": [
+"BluePrint ECU/injector data mismatch (lewma); a wrong control pack cost Walton Racing months.",
+"The Sniper 1 internal regulator is a known failure point; Sniper 2 needs a separate regulator and 3/8\" lines.",
+"GPS gauge part number differs between the order form (60312) and catalog (60311)."
+],
+"ideas": [
+"Keyless push-button start, all-LED lighting with electronic flashers, GPS speedometer, laser-etched switch panel (edwardb).",
+"Door-pocket phone chargers (Rocky R.), one aux lead straight to the battery for a tender."
+],
+"tasks": [
+"Mount battery, cutoff switch and bus bar",
+"Route the Ron Francis harness; plan the firewall corner",
+"Install in-tank fuel pump, regulator and lines",
+"Wire the Sniper ECU, O2 sensor and inertia switch",
+"Install gauges and switch panel",
+"Install lighting and test every circuit"
+]
+},
+{
+"id": "hvac",
+"num": 8,
+"title": "A/C, heater & defroster",
+"window": "Before the body goes on",
+"hours": "40–70 h",
+"summary": "Space behind the Gen 3 dash is tight; edwardb concluded the FFR kit (Siroco Boreal 600) is the best and maybe only solution. As delivered it has two always-on outlets and no defrost diverter. Washington rain plus the WSP defroster check makes this the biggest comfort and inspection risk.",
+"manual": "A/C-heater-defroster supplement Rev G: evaporator, condenser, bulkhead fittings, hoses, ducts, wiring, footbox panels.",
+"reads": [
+{
+"label": "FFR Gen 3 A/C-heater-defroster manual Rev G (PDF)",
+"url": "https://www.factoryfive.com/wp-content/uploads/2020/07/AC-HEATER-DEFROSTER-COUPE-Gen-3-REV-G.pdf"
+},
+{
+"label": "Heating and A/C options (FFR vs Old Air vs Vintage Air)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-42300.html"
+},
+{
+"label": "A/C system, which one (ffcars 644773)",
+"url": "https://www.ffcars.com/threads/ffr-type-65-coupe-a-c-system-which-one.644773/"
+},
+{
+"label": "Low Boost Films: Vintage Air install in a coupe",
+"url": "https://www.youtube.com/watch?v=QWqEZuXmUR4"
+},
+{
+"label": "P100DHG #138: 90° bulkhead fittings to clear a small-block",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-29393.html"
+}
+],
+"challenges": [
+"Small evaporator means adequate, not strong, cooling; the hatch glass heat-soaks the cabin.",
+"SBF needs 90° bulkhead fittings; decide footbox heat outlets early.",
+"FFR says have a shop crimp the #6/#8/#10 lines (Mastercool 71550)."
+],
+"ideas": [
+"Y-connections feeding 2 defrost + 4 dash outlets (ffcars builder, 4+ seasons without fogging).",
+"Tint the hatch glass; heated seat pads (30-minute install)."
+],
+"tasks": [
+"Mount the evaporator in the passenger footbox",
+"Mount condenser ahead of the radiator",
+"Install compressor and belt; check PS pump clearance",
+"Run bulkhead fittings and hoses (90° for SBF)",
+"Plumb heater hoses and control valve",
+"Build the defrost path; have lines crimped and charged"
+]
+},
+{
+"id": "gokart",
+"num": 9,
+"title": "Go-kart: first start & first drive",
+"window": "Target May 2028",
+"hours": "20–40 h",
+"summary": "First drive without the body. Weigh the car now to choose spring rates; Gen 3 coupes run well over FFR's 2,400 lb figure (one owner: 2,992 lb wet). Driving in gelcoat for a season is common and finds fit problems before paint.",
+"manual": "Chassis Assembly end-of-chapter checklist before go-kart.",
+"reads": [
+{
+"label": "MJS coupe: first-start debugging and A/C charging",
+"url": "https://v1.thefactoryfiveforum.com/showthread.php?p=593534"
+},
+{
+"label": "Cobra Daytona Build: It's Alive",
+"url": "https://www.youtube.com/watch?v=gaTypEnEQGc"
+},
+{
+"label": "Gen 3 coupe weights thread",
+"url": "https://thefactoryfiveforum.com/thread/124432"
+},
+{
+"label": "Derek R.'s Type 65 (kit Oct 2021, go-kart in 6 months)",
+"url": "https://www.factoryfive.com/whats-new/derek-r-type-65-coupe/"
+}
+],
+"challenges": [
+"Brake bias and residual valves; clutch bleed; leaks at every fitting.",
+"Expect Sniper cold-start enrichment tuning."
+],
+"ideas": [
+"Film it. This is the milestone Coco will remember."
+],
+"tasks": [
+"Fill fluids; check for leaks at every fitting",
+"First start; Sniper learn and cold-start tuning",
+"Bleed brakes and clutch; set bias",
+"First drive without the body",
+"Weigh the car on corner scales",
+"Film it"
+]
+},
+{
+"id": "body",
+"num": 10,
+"title": "Body fit: doors, hood, hatch, windows, lights",
+"window": "May – Oct 2028",
+"hours": "220–320 h",
+"summary": "The coupe-specific job: door gaps, hatch glass, roof line and side windows take far longer than on a roadster. Bodies vary up to 1/2\" side to side. Set hatch glass height and door gaps before paint.",
+"manual": "Body chapter: mounting, door hinges and latches, hood, hatch and glass, side windows, wipers, lights, bumpers.",
+"reads": [
+{
+"label": "John Nizman: body fit and hatch glass",
+"url": "https://www.youtube.com/results?search_query=John+Nizman+Type+65+Coupe+hatch+glass+body+fit"
+},
+{
+"label": "John Nizman: side glass and brackets",
+"url": "https://www.youtube.com/watch?v=Yj_VU2VuGys"
+},
+{
+"label": "Rear hatch alignment",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-52530.html"
+},
+{
+"label": "Side window question (frames differ side to side)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-44127.html"
+},
+{
+"label": "Door latch reliability",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-50609.html"
+},
+{
+"label": "Tim Custer: Forma power window kit install",
+"url": "https://www.youtube.com/results?search_query=Forma+window+kit+Factory+Five+Type+65+Daytona"
+},
+{
+"label": "Kevin's Garage: setting the body (Mk4, transfers)",
+"url": "https://www.youtube.com/results?search_query=Kevin's+Garage+Factory+Five+Mk4+setting+the+body"
+}
+],
+"challenges": [
+"Plastic latch housings crack; add door poppers as a backup and metal handles.",
+"Hood hinge bracket clearance; hatch glass high at the corners (use a temporary D-seal to save the FFR strip).",
+"No Gen 3 builder has documented a fully weather-tight coupe. Plan on FormaCars windows or careful sealing."
+],
+"ideas": [
+"Nose pop-up mod with a BMW E30 hood latch (ffr48).",
+"Quick-release wheel for easier entry; roof NACA ducts if you skip A/C."
+],
+"tasks": [
+"Set the body on the chassis and check gaps",
+"Hang doors; adjust hinges and latches",
+"Fit hood and hatch; set hatch glass height",
+"Install side windows and quarter windows",
+"Install wipers, lights, mirrors",
+"Install weatherstrip; hose test for leaks"
+]
+},
+{
+"id": "title",
+"num": 11,
+"title": "Title in gelcoat (Washington)",
+"window": "Oct – Dec 2028",
+"hours": "20–40 h",
+"summary": "Title before paint so the deadline does not depend on the paint shop. Kit vehicle under RCW 46.12.695: WSP VIN inspection by appointment with the MSO, original receipts, a certified weight slip and the licensing-agent request form. No emissions test in Washington since 2020.",
+"manual": "Not in the FFR manual. See the WSP kit vehicle guide and the titling section of the build plan.",
+"reads": [
+{
+"label": "WSP Kit Vehicle Inspection Guide (PDF)",
+"url": "https://www.wsp.wa.gov/traveler/docs/inspection_guides/kit_vehicle.pdf"
+},
+{
+"label": "WSP Assembled Vehicle guide, R 10/25 (newer format; no copies or screenshots)",
+"url": "https://wsp.wa.gov/wp-content/uploads/2025/10/Assembled_Vehicle_Inspection_Guide.pdf"
+},
+{
+"label": "RCW 46.12.695 kit vehicle title",
+"url": "https://app.leg.wa.gov/rcw/default.aspx?cite=46.12.695"
+},
+{
+"label": "WAC 308-56A-150 (inspection valid 60 days)",
+"url": "https://app.leg.wa.gov/wac/default.aspx?cite=308-56A-150"
+},
+{
+"label": "WA registration how-to, Skagit County 2024",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-49510.html"
+},
+{
+"label": "Latest experience with WA registration (use tax, 1965 model year)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-38492.html"
+}
+],
+"challenges": [
+"Online WSP slots fill in seconds; call the local WSP office. Allow 1–3 months.",
+"Use tax has been assessed on untaxed out-of-state parts (~$4,000 in one case). Ask DOL early.",
+"The WSP checklist lists bumpers, hood latch, defroster if installed, fenders, horn and mirrors. No published Gen 3 bumper outcome exists."
+],
+"ideas": [
+"Register as a collector vehicle; ask for the 1965 model-year precedent.",
+"Order the extra side mirror (12079X/15834X) for the inspection."
+],
+"tasks": [
+"Get the WSP inspection request form from DOL",
+"Get a certified weight slip",
+"Book the WSP appointment (call the local office)",
+"Pass inspection; get the VIN assigned",
+"Title and register within 60 days",
+"Collector or regular registration decided"
+]
+},
+{
+"id": "paint",
+"num": 12,
+"title": "Body prep, paint & livery",
+"window": "Dec 2028 – Apr 2029",
+"hours": "60–300 h yours",
+"summary": "Coupes need more blocking than roadsters (roof, hatch, jambs). Shops take 3–5 months; budget $8k–$20k+. Vinyl will not go over raw gelcoat, so a wrap is an addition to bodywork, not a substitute.",
+"manual": "Body chapter: surface prep.",
+"reads": [
+{
+"label": "SlickWorks: Daytona Coupe bodywork struggles",
+"url": "https://www.youtube.com/watch?v=3zMqs4OKJ-o"
+},
+{
+"label": "John Nizman: quarter-glass groove bodywork",
+"url": "https://www.youtube.com/watch?v=3DjoipIvEDI"
+},
+{
+"label": "John Nizman: paint",
+"url": "https://www.youtube.com/watch?v=ThiE-Ay_EXU"
+},
+{
+"label": "Livery ideas thread",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-40719.html"
+},
+{
+"label": "FFR paint line",
+"url": "https://www.factoryfive.com/factory-five-paint/"
+}
+],
+"challenges": [
+"Inconsistent gelcoat (GT_Rich); set hatch glass and door gaps before paint.",
+"Doing paint before titling makes the deadline depend on the paint shop."
+],
+"ideas": [
+"Bristol Grey with navy leather (SATA/Hatcher coupe), Blu Avio over Wimbledon White (Rocky R.), bare-aluminum look with period decals (Rob M.).",
+"Partial wraps (roof, stone guards, spats) in 3M PPF hold up fine for ~$200."
+],
+"tasks": [
+"Set door gaps and hatch glass before paint",
+"Choose shop; get a written quote and timeline",
+"Deliver the car in gelcoat",
+"Approve color and livery",
+"Collect the painted car; inspect"
+]
+},
+{
+"id": "interior",
+"num": 13,
+"title": "Interior, insulation, seats & dash",
+"window": "Apr – Jul 2029",
+"hours": "150–250 h",
+"summary": "Exhaust is the dominant noise (stock side pipes ~114 dB inside), so quiet pipes matter more than insulation. Seat drop and pedal placement solve headroom for a 6'2\" driver; mount seats to the floor, not tracks, to gain 1–1.5\".",
+"manual": "Final Assembly chapter: carpet, seats and belts, dash, console, weatherstrip, mirrors.",
+"reads": [
+{
+"label": "Quiet-cabin thread",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41720.html"
+},
+{
+"label": "LateApex leather dash",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41661.html"
+},
+{
+"label": "Custom dash dimensions (AaronR)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-52614.html"
+},
+{
+"label": "Seat questions",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-44781.html"
+},
+{
+"label": "Will I physically fit in a Type 65",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-39162.html"
+},
+{
+"label": "6'5\" fit thread",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-21679.html"
+},
+{
+"label": "Backup camera thread",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-48141.html"
+},
+{
+"label": "Heated seats in 30 minutes",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-30759.html"
+}
+],
+"challenges": [
+"The rear diagonal brace limits seat travel; the rear blind spot is real.",
+"edwardb's Corbeaus suit 5'10\"; one builder could not make a Corbeau fit the driver's side and went back to FFR seats."
+],
+"ideas": [
+"Leather-wrapped dash over closed-cell foam; removable gauge panel on rivnuts; hidden tablet or Alpine head unit with backup camera; single low LED for night cabin light."
+],
+"tasks": [
+"Lay carpet and sills",
+"Mount seats (floor or track) and belts",
+"Finish dash, gauges and glovebox",
+"Install headliner and door cards",
+"Install audio, camera and USB",
+"Final trim and weatherstrip check"
+]
+},
+{
+"id": "shakedown",
+"num": 14,
+"title": "Shakedown, alignment & corner balance",
+"window": "Jul – Sep 2029",
+"hours": "30–60 h",
+"summary": "Professional alignment and corner balance after the car settles. Retorque everything after 500 miles. PS pump and A/C leaks show up in the first months.",
+"manual": "Final Assembly: alignment specs, break-in, torque re-check.",
+"reads": [
+{
+"label": "edwardb's 5,000-mile report (what fails in the first year)",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26630-p-5.html"
+},
+{
+"label": "John George Racing Gen 3 setup data (openly shared)",
+"url": "https://www.ffcars.com/threads/feedback-on-a-gen-3-coupe-build.597370/"
+},
+{
+"label": "Coupe heat management",
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-43010.html"
+}
+],
+"challenges": [
+"No FFR-published spring rates or alignment specs for the Gen 3 coupe were found; start with the supplied springs.",
+"edwardb runs 3.5\" front / 4\" rear ride height vs the manual's 4.5\"."
+],
+"ideas": [
+"Join the Northwest summer cruise with it."
+],
+"tasks": [
+"Professional alignment and corner balance",
+"Retorque everything at 500 miles",
+"Fix first-month leaks (PS, A/C)",
+"Set ride height for driveways",
+"Join the Northwest summer cruise"
+]
+}
+]

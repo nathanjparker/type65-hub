@@ -1,0 +1,493 @@
+<header class="topbar">
+  <button class="tocbtn" id="tocbtn" aria-controls="rail" aria-expanded="false">Contents</button>
+  <div class="brand"><span class="no">65</span><h1>Type 65 Coupe Build Hub</h1><small>Gen 3 · 347 EFI · TKX · IRS · WA</small></div>
+  <div class="search"><input id="q" type="search" placeholder="Search parts, part numbers, builders, vendors…" aria-label="Search the hub"><button class="btn ghost" id="clearq" hidden>Clear</button></div>
+</header>
+<div class="shell">
+<nav class="rail" id="rail" aria-label="Contents">
+  <h4>Overview</h4>
+  <a href="#overview"><span class="n">★</span>Build at a glance</a>
+  <a href="#sheet"><span class="n">✓</span>Your build</a>
+  <a href="#order"><span class="n">$</span>Order sheet</a>
+  <a href="#suggest"><span class="n">+</span>Add a part</a>
+  <h4>Build stages</h4>
+  <div id="toc-stages"></div>
+  <h4>Reference</h4>
+  <a href="#tools"><span class="n">T</span>Tools &amp; shop</a>
+  <a href="#builds"><span class="n">B</span>Build threads</a>
+  <a href="#videos"><span class="n">V</span>Video series</a>
+  <a href="#vendors"><span class="n">$</span>Vendor directory</a>
+  <a href="#options"><span class="n">O</span>FFR order form</a>
+  <a href="#community"><span class="n">C</span>Northwest &amp; community</a>
+  <a href="#ask"><span class="n">?</span>Ask the hub</a>
+</nav>
+<main>
+  <section id="overview" class="hero">
+    <h2>Gen 3 Type 65 Coupe, start to finish</h2>
+    <p class="lede">Every part, option and idea Gen 3 coupe builders actually use, in the order the Factory Five manual builds the car. FFR part numbers next to the aftermarket alternatives, who runs each one, and the forum thread or video it came from. Built around a street coupe for Washington rain: BluePrint 347 EFI, Tremec TKX, 2015 IRS, power steering, A/C and heat, side windows, wipers.</p>
+    <div class="strip" id="strip"></div>
+    <div class="twocol">
+      <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div></div>
+      <div class="panel"><h3>Order these with the kit</h3><ol id="upfront"></ol></div>
+      <div class="panel"><h3>Open questions</h3><ul id="gaps"></ul></div>
+      <div class="panel"><h3>What's new</h3><div id="news"></div></div>
+    </div>
+    <p class="status" id="count"></p>
+  </section>
+
+  <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Your build</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
+
+  <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Prices are the low end of what's listed and are rough.</span></div></div></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" id="copyreport">Copy as text</button></div>
+    <div id="report" style="margin-top:12px"></div>
+  </section>
+
+  <section class="stage suggest" id="suggest"><div class="shead"><div class="roundel gold">+</div><div class="t"><h2>Missing a part? Add it here</h2><div class="meta"><span>Running something on your coupe that isn't in the hub? Drop it in. Claude files it into the right stage right away, and the weekly research pass fills in the vendor, part number, price and who else runs it.</span></div></div></div>
+    <div class="panel suggestbox" style="margin-top:14px">
+      <form id="sgform" class="frm">
+        <input id="sg-name" placeholder="Part or idea *" required><input id="sg-model" placeholder="Make / model / part number">
+        <input id="sg-link" placeholder="Link (product page, thread, video)"><input id="sg-who" placeholder="Your name or forum handle">
+        <select id="sg-car"><option value="Gen 3 coupe">On a Gen 3 coupe</option><option value="Gen 1/2 coupe">On a Gen 1/2 coupe</option><option value="roadster">On a roadster</option><option value="idea">Just an idea</option></select>
+        <input id="sg-price" placeholder="What you paid (optional)">
+        <textarea class="wide" id="sg-desc" placeholder="What it is, why you chose it, anything that went wrong *" required></textarea>
+        <div class="wide" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="btn" type="submit" id="sg-btn">Add it to the hub</button><span class="status" id="sg-status">Takes about ten seconds. Claude on this page runs on your own account; the first time you'll be asked to allow it.</span></div>
+      </form>
+    </div>
+  </section>
+
+  <div id="stages"></div>
+
+  <section class="stage" id="tools" data-stage="tools"><div class="shead"><div class="roundel">T</div><div class="t"><h2>Tools &amp; shop</h2><div class="meta"><span>What builders wish they had bought before the first panel went on</span></div><div class="stagepct" id="pct-tools"></div></div></div><div id="parts-tools"></div><div class="notes-wrap" id="notes-tools"></div><div id="owner-tools"></div></section>
+
+  <section class="stage" id="builds"><div class="shead"><div class="roundel">B</div><div class="t"><h2>Build threads to follow</h2><div class="meta"><span>Starred threads are the closest matches to this build. Thread numbers resolve on the v1 archive when the live forum blocks you.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="builds-tbl"><thead><tr><th>Thread</th><th>Builder</th><th>Drivetrain</th><th>Status</th><th>Why read it</th></tr></thead><tbody></tbody></table></div></section>
+
+  <section class="stage" id="videos"><div class="shead"><div class="roundel">V</div><div class="t"><h2>Video series</h2><div class="meta"><span>Watch an episode the week before you do that stage, not all at once.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="videos-tbl"><thead><tr><th>Channel</th><th>Car</th><th>Episodes</th><th>Best for</th></tr></thead><tbody></tbody></table></div></section>
+
+  <section class="stage" id="vendors"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Vendor directory</h2><div class="meta"><span>Who sells what for the coupe, with phone numbers where published.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="vendors-tbl"><thead><tr><th>Vendor</th><th>Sells for the coupe</th><th>Phone</th><th>Notes</th></tr></thead><tbody></tbody></table></div></section>
+
+  <section class="stage" id="options"><div class="shead"><div class="roundel">O</div><div class="t"><h2>FFR order form, street verdicts</h2><div class="meta"><span>Gen 3 Complete Kit options as listed Nov 2026. Confirm prices on a written FFR quote: 508-291-3443.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="options-tbl"><thead><tr><th>Part no.</th><th>Option</th><th>Verdict</th><th>Why</th></tr></thead><tbody></tbody></table></div></section>
+
+  <section class="stage" id="community"><div class="shead"><div class="roundel">C</div><div class="t"><h2>Northwest builders &amp; community</h2><div class="meta"><span>One thing to do this month: ask for a Puget Sound coupe owner who will let you sit in a finished car.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="community-tbl"><thead><tr><th>Where</th><th>What</th><th>How to use it</th></tr></thead><tbody></tbody></table></div></section>
+
+  <section class="stage ask" id="ask"><div class="shead"><div class="roundel">?</div><div class="t"><h2>Ask the hub</h2><div class="meta"><span>Ask a question against everything on this page, including your picks, progress and notes. The owner can save a useful answer as a stage note.</span></div></div></div>
+    <div id="ask-ui" hidden>
+      <div class="in" style="margin-top:12px"><input id="askq" type="text" placeholder="e.g. What's left to finish before go-kart?" aria-label="Question"><button class="btn" id="askbtn">Ask</button><button class="btn ghost" id="askstop" hidden>Stop</button></div>
+      <div class="answer" id="askout"></div>
+      <div id="asksave" hidden style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="askstage" aria-label="Save to stage"></select><button class="btn ghost" id="asksavebtn">Save answer as a note</button></div>
+    </div>
+    <p class="empty" id="ask-off">Asking is available when this page is opened in Claude.</p>
+  </section>
+</main>
+</div>
+<dialog id="notedlg"><div class="dlg"><h3 id="nd-title"></h3><div class="md" id="nd-model"></div><div id="nd-body"></div><div class="acts" id="nd-acts"></div></div></dialog>
+<script>
+(async function(){
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const host=a=>{try{return new URL(a).hostname.replace(/^www\./,'')}catch(e){return ''}};
+let D;
+try{ D=await (await fetch('hub-data.json')).json(); }catch(e){ $('#stages').innerHTML='<p class="empty">The parts data could not be loaded. Reload the page.</p>'; return; }
+
+const STAGE_IDS=D.stages.map(s=>s.id), ALL_IDS=STAGE_IDS.concat(['tools']);
+const GROUPS=Object.fromEntries(D.groups.map(g=>[g.id,g]));
+const hoursMid=s=>{const m=String(s.hours).match(/(\d+)[–-](\d+)/); return m?(+m[1]+ +m[2])/2:30;};
+let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], userId=null, canWriteOwn=null;
+
+/* ---- overview ---- */
+$('#strip').innerHTML=[['Build hours','~1,200','range 900–1,600'],['Budget','$66k–$110k','typical ~$85k before use tax'],['Go-kart','May 2028','first drive, no body'],['Title in gelcoat','late 2028','before paint'],['Done','Sep 2029','Coco\'s senior year']].map(([k,v,s])=>`<div><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+$('#upfront').innerHTML=D.upfront.map(x=>`<li>${esc(x)}</li>`).join('');
+$('#gaps').innerHTML=D.gaps.map(x=>`<li>${esc(x)}</li>`).join('');
+
+/* ---- state helpers ---- */
+function allParts(){ return D.parts.concat(addedParts).concat(suggestions); }
+const st=id=>state[id]||{};
+const isChosen=p=>!!st(p.id).chosen;
+const pctOf=p=>Math.max(0,Math.min(100,+st(p.id).pct||0));
+function groupChosen(gid){ return allParts().some(p=>p.group===gid&&isChosen(p)); }
+function engineFamily(){ const e=allParts().find(p=>p.group==='engine'&&isChosen(p)); return e?e.family||'':''; }
+function compatible(p){ const f=engineFamily(); return !p.family||!f||p.family.split(',').includes(f); }
+function activeWarnings(){
+  const names=new Set(allParts().filter(isChosen).map(p=>p.name)); const out=[];
+  D.warnings.forEach(w=>{ if(w.when.every(n=>names.has(n))) out.push(w.msg); });
+  allParts().filter(p=>isChosen(p)&&!compatible(p)).forEach(p=>out.push(`${p.name} is for a ${D.families[p.family.split(',')[0]]||p.family} engine, but your engine is ${D.families[engineFamily()]||engineFamily()}.`));
+  return out;
+}
+/* tasks: stage units = checklist items (0/100) + chosen parts (pct) */
+function taskList(id){ const s=D.stages.find(x=>x.id===id); const base=(s&&s.tasks)||[]; const ts=taskState[id]||{}; return base.concat(ts.extra||[]).map((t,i)=>({i,t,done:!!(ts.done&&ts.done[i])})); }
+function stagePct(id){
+  const ss=stageState[id];
+  if(ss&&ss.pct!=null&&ss.pct!=='') return {pct:Math.max(0,Math.min(100,+ss.pct)),manual:true};
+  const ch=allParts().filter(p=>p.stage===id&&isChosen(p));
+  const units=ch.map(pctOf).concat(taskList(id).map(t=>t.done?100:0));
+  if(!units.length) return {pct:0,manual:false,none:true};
+  return {pct:Math.round(units.reduce((a,b)=>a+b,0)/units.length),manual:false};
+}
+function overallPct(){
+  let w=0,acc=0;
+  D.stages.forEach(s=>{const h=hoursMid(s); w+=h; acc+=h*stagePct(s.id).pct;});
+  return w?Math.round(acc/w):0;
+}
+
+/* ---- card ---- */
+function cardHTML(p){
+  const fitLabel={yes:'Fits Gen 3',roadster:'Roadster part, verify',unknown:'Gen 3 fit unconfirmed'}[p.fit]||'';
+  const kindLabel={FFR:'Factory Five',aftermarket:'Aftermarket',DIY:'DIY / idea'}[p.kind]||p.kind;
+  const links=[];
+  if(p.url) links.push(`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.vendor||host(p.url)||'Product')}</a>`);
+  else if(p.vendor) links.push(`<span class="row">${esc(p.vendor)}</span>`);
+  if(p.srcUrl) links.push(`<a href="${esc(p.srcUrl)}" target="_blank" rel="noopener">${esc(p.src||'Source')}</a>`);
+  else if(p.src) links.push(`<span class="row">${esc(p.src)}</span>`);
+  if(p.kind!=='DIY'||p.imgUrl){ const iq=encodeURIComponent((p.imgQuery||((p.vendor||'')+' '+p.name)).replace(/\s+/g,' ').trim()); links.push(`<a class="photo" href="${esc(p.imgUrl||('https://www.google.com/search?tbm=isch&q='+iq))}" target="_blank" rel="noopener">Photos</a>`); }
+  const s=st(p.id), chosen=isChosen(p), pct=pctOf(p), hasNote=!!((s.note&&s.note.trim())||(s.photos&&s.photos.length)||s.receipt);
+  let ctl='';
+  if(isOwner){
+    const inGroup=p.group&&!GROUPS[p.group]?.multi;
+    ctl=`<div class="ctl">
+      <label><input type="${inGroup?'radio':'checkbox'}" ${inGroup?`name="g-${esc(p.group)}"`:''} data-choose="${esc(p.id)}" ${chosen?'checked':''}> Chosen</label>
+      ${chosen?`<input type="number" min="0" max="100" step="5" value="${pct}" data-pct="${esc(p.id)}" aria-label="Percent done">%<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div>`:''}
+      <button class="nbtn ${hasNote?'has':''}" data-note="${esc(p.id)}" title="Builder note">✎ note</button>
+      ${p.added?`<button class="nbtn del" data-id="${esc(p.id)}">remove</button>`:''}${p.suggested?`<button class="nbtn delsug" data-doc="${esc(p.docId)}" data-key="${esc(p.key)}">remove</button>`:''}
+    </div>`;
+  } else if(chosen||hasNote){
+    ctl=`<div class="ctl">${chosen?`<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div><span>${pct}%</span>`:''}${hasNote?`<button class="nbtn has" data-note="${esc(p.id)}">✎ note</button>`:''}</div>`;
+  }
+  return `<article class="card ${esc(p.kind)}${p.added?' added':''}${chosen?' chosen':''}" data-id="${esc(p.id)}">
+    <div class="nm">${esc(p.name)}</div>
+    ${p.model?`<div class="md">${esc(p.model)}</div>`:''}
+    <div class="chips">${chosen?'<span class="chip chosenchip">Chosen</span>':''}${p.pop?`<span class="chip pop" title="${esc(p.popWhy||'')}">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)} ${p.pop>=4?'popular':p.pop>=3?'common':p.pop>=2?'a few builds':'rare'}</span>`:''}<span class="chip k-${esc(p.kind)}">${esc(kindLabel)}</span>${fitLabel?`<span class="chip f-${esc(p.fit)}">${fitLabel}</span>`:''}${p.added?`<span class="chip${p.suggestedBy?' sug':''}">${p.suggestedBy?'Suggested by '+esc(p.suggestedBy)+' · researched':'Added by Nate'}</span>`:''}${p.suggested?`<span class="chip sug">Suggested by ${esc(p.by||'a builder')}${p.researched?'':' · research pending'}</span>`:''}${s.receipt?'<span class="chip chosenchip">receipt ✓</span>':''}${s.photos&&s.photos.length?`<span class="chip">${s.photos.length} photo${s.photos.length>1?'s':''}</span>`:''}${!compatible(p)?`<span class="chip f-roadster">${esc(D.families[p.family.split(',')[0]]||p.family)} only</span>`:''}</div>
+    ${p.price?`<div class="price">${esc(p.price)}<i>[${esc(p.tag||'est')}]</i>${p.checked?`<i>· checked ${esc(p.checked)}</i>`:''}</div>`:''}
+    ${p.popWhy?`<div class="row"><b>Who picks it:</b> ${esc(p.popWhy)}</div>`:''}
+    ${p.users?`<div class="row"><b>Used by:</b> ${esc(p.users)}</div>`:''}
+    ${p.notes?`<div class="notes">${esc(p.notes)}</div>`:''}
+    <div class="links">${links.join('')}</div>
+    ${ctl}
+  </article>`;
+}
+function matches(p,q){ return [p.name,p.model,p.cat,p.vendor,p.users,p.notes,p.src,p.price].join(' ').toLowerCase().includes(q); }
+function groupedHTML(list,q){
+  if(!list.length) return '<p class="empty">No matching parts in this stage.</p>';
+  const cats=[...new Set(list.map(p=>p.cat))];
+  return cats.map(c=>{
+    const items=list.filter(p=>p.cat===c);
+    const show=[],hide=[],incompat=[];
+    items.forEach(p=>{ if(!compatible(p)&&!isChosen(p)&&!q) incompat.push(p); else if(p.group&&!GROUPS[p.group]?.multi&&groupChosen(p.group)&&!isChosen(p)&&!q) hide.push(p); else show.push(p); });
+    return `<div class="cat"><h3>${esc(c)}</h3><div class="cards">${show.map(cardHTML).join('')}</div>${hide.length?`<details class="others"><summary>Other options considered (${hide.length})</summary><div class="cards">${hide.map(cardHTML).join('')}</div></details>`:''}${incompat.length?`<details class="others"><summary>Not for your engine (${incompat.length})</summary><div class="cards">${incompat.map(cardHTML).join('')}</div></details>`:''}</div>`;
+  }).join('');
+}
+function stagePctHTML(id){
+  const r=stagePct(id);
+  const ownerIn=isOwner?`<input type="number" min="0" max="100" step="5" data-stagepct="${id}" value="${r.manual?r.pct:''}" placeholder="auto" title="Override this stage's percent" aria-label="Stage percent override">`:'';
+  return `<div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div><span>${r.pct}%${r.manual?' set':r.none?' · nothing chosen yet':''}</span>${ownerIn}`;
+}
+function stageHTML(s){
+  return `<section class="stage" id="${s.id}" data-stage="${s.id}">
+    <div class="shead"><div class="roundel">${s.num}</div><div class="t"><h2>${esc(s.title)}</h2>
+      <div class="meta"><span><b>When:</b> ${esc(s.window)}</span><span><b>Your hours:</b> ${esc(s.hours)}</span></div>
+      <div class="stagepct" id="pct-${s.id}"></div>
+      <p class="summary">${esc(s.summary)}</p>
+      <p class="manual"><b>Manual:</b> ${esc(s.manual)}</p></div></div>
+    <div class="sgrid">
+      <div class="box"><h3>Read first</h3><ul>${s.reads.map(r=>`<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}</a></li>`).join('')}</ul></div>
+      <div class="box"><h3>What goes wrong</h3><ul>${s.challenges.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="box"><h3>Ideas worth stealing</h3><ul>${s.ideas.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+    </div>
+    ${s.id==='title'?'<div class="box" id="receipts" style="margin-top:14px"></div>':''}
+    <div class="box checklist" id="tasks-${s.id}" style="margin-top:14px"></div>
+    <div class="parts" id="parts-${s.id}"></div>
+    <div class="notes-wrap" id="notes-${s.id}"></div>
+    <div id="owner-${s.id}"></div>
+  </section>`;
+}
+$('#stages').innerHTML=D.stages.map(stageHTML).join('');
+$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="n">${s.num}</span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
+
+/* ---- spec sheet ---- */
+function renderSheet(){
+  const w=activeWarnings(); const fam=engineFamily();
+  $('#sheet-warn').innerHTML=(fam?`<p class="status">Engine family: <b>${esc(D.families[fam]||fam)}</b>. Mounts, headers, A/C, steering and driveshaft options are filtered to match.</p>`:'<p class="status">Pick an engine first; mounts, headers, A/C, steering and driveshaft then filter to match it.</p>')+(w.length?`<div class="warnbox"><b>Check before ordering</b><ul>${w.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:'');
+  $('#sheet-body').innerHTML=D.groups.map(g=>{
+    const opts=allParts().filter(p=>p.group===g.id&&(compatible(p)||isChosen(p))).sort((a,b)=>(b.pop||0)-(a.pop||0));
+    if(!opts.length) return '';
+    const top=Math.max(...opts.map(p=>p.pop||0));
+    const dl=D.decideLabels[g.decideBy]||''; const decided=opts.some(isChosen);
+    return `<div class="dec"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>`<button class="opt ${isChosen(p)?'on':''} ${isOwner?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${isOwner?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}</div></div>`;
+  }).join('');
+  // decide-by summary
+  const order=['order','body','paint','any'];
+  const open=D.groups.filter(g=>!allParts().some(p=>p.group===g.id&&isChosen(p)));
+  $('#sheet-deadlines').innerHTML=open.length?`<div class="deadlines">${order.map(k=>{const gs=open.filter(g=>g.decideBy===k); return gs.length?`<div><b>${esc(D.decideLabels[k])}</b> <span class="row">(${gs.length})</span><div class="chips">${gs.map(g=>`<span class="chip ${k}">${esc(g.label)}</span>`).join('')}</div></div>`:'';}).join('')}</div>`:'<p class="status">Every decision has a pick.</p>';
+}
+
+/* ---- order sheet ---- */
+const lowPrice=s=>{const m=String(s||'').replace(/,/g,'').match(/\$\s*(\d+(?:\.\d+)?)/); return m?+m[1]:null;};
+const pnOf=p=>{const m=(p.model||'').match(/#?\b(\d{5})\b/); return m?m[1]:'';};
+const money=n=>'$'+Math.round(n).toLocaleString();
+let reportText='';
+function renderReport(){
+  const chosen=allParts().filter(isChosen);
+  const ffr=chosen.filter(p=>p.kind==='FFR'), other=chosen.filter(p=>p.kind!=='FFR');
+  // FFR options to leave unticked: FFR members of decision groups where a non-FFR item is chosen
+  const skip=[];
+  D.groups.forEach(g=>{ if(g.multi) return; const pick=chosen.find(p=>p.group===g.id); if(pick&&pick.kind!=='FFR'){ allParts().filter(p=>p.group===g.id&&p.kind==='FFR').forEach(p=>skip.push({g,p,pick})); } });
+  const undecided=D.groups.filter(g=>!chosen.some(p=>p.group===g.id)).sort((a,b)=>['order','body','paint','any'].indexOf(a.decideBy)-['order','body','paint','any'].indexOf(b.decideBy));
+  const openOrder=undecided.filter(g=>g.decideBy==='order');
+  const byVendor={};
+  other.forEach(p=>{const v=p.vendor||host(p.url)||'Unspecified vendor'; (byVendor[v]=byVendor[v]||[]).push(p);});
+  const sum=list=>list.reduce((a,p)=>a+(lowPrice(p.price)||0),0);
+  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(host(p.url))}</a>`:''}</td><td class="pn">${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}</td></tr>`).join('');
+  let html='',txt=[];
+  const kitNote='Kit price itself is not in the FFR list below; the Complete Kit is $22,990 plus options.';
+  if(openOrder.length){ html+=`<div class="panel warnbox" style="margin-bottom:14px"><h3>Order form not ready</h3><p>${openOrder.length} decision${openOrder.length>1?'s':''} that lock at the kit order still ${openOrder.length>1?'have':'has'} no pick: ${openOrder.map(g=>esc(g.label)).join(', ')}.</p></div>`; txt.push(`ORDER FORM NOT READY: undecided at order time: ${openOrder.map(g=>g.label).join(', ')}`); txt.push(''); }
+  html+=`<div class="panel" style="margin-bottom:14px"><h3>Factory Five order form</h3><p class="status">${kitNote}</p>${ffr.length?`<div class="tbl"><table><thead><tr><th>Part no.</th><th>Tick this</th><th>Link</th><th>Price</th></tr></thead><tbody>${rows(ffr)}</tbody></table></div><p class="status">FFR options subtotal (low end, where priced): <b>${money(sum(ffr))}</b></p>`:'<p class="empty">No Factory Five items chosen yet.</p>'}
+    ${skip.length?`<h3 style="margin-top:14px;font-size:16px">Leave unticked (buying elsewhere)</h3><ul>${skip.map(s=>`<li><span class="pn">${esc(pnOf(s.p)||'')}</span> ${esc(s.p.name)} <span class="row">→ you chose ${esc(s.pick.name)} from ${esc(s.pick.vendor||host(s.pick.url)||'elsewhere')}</span></li>`).join('')}</ul>`:''}</div>`;
+  txt.push('FACTORY FIVE ORDER FORM'); txt.push(kitNote); ffr.forEach(p=>txt.push(`  [${pnOf(p)||'—'}] ${p.name} · ${p.model||''} · ${p.price||''}`)); txt.push(`  Subtotal (low end): ${money(sum(ffr))}`);
+  if(skip.length){txt.push('  Leave unticked:'); skip.forEach(s=>txt.push(`  [${pnOf(s.p)}] ${s.p.name} -> buying ${s.pick.name} from ${s.pick.vendor||''}`));}
+  Object.entries(byVendor).sort().forEach(([v,list])=>{
+    html+=`<div class="panel" style="margin-bottom:14px"><h3>${esc(v)}</h3><div class="tbl"><table><thead><tr><th>Part no.</th><th>Order</th><th>Link</th><th>Price</th></tr></thead><tbody>${rows(list)}</tbody></table></div><p class="status">Subtotal (low end): <b>${money(sum(list))}</b></p></div>`;
+    txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${p.url||''}`)); txt.push(`  Subtotal: ${money(sum(list))}`);
+  });
+  const total=sum(chosen)+22990;
+  const warns=activeWarnings();
+  if(warns.length){ html+=`<div class="panel warnbox" style="margin-bottom:14px"><h3>Check before ordering</h3><ul>${warns.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`; txt.push(''); txt.push('CHECK BEFORE ORDERING'); warns.forEach(x=>txt.push('  - '+x)); }
+  html+=`<div class="panel"><h3>Running estimate</h3><div class="overall"><div class="big">${money(total)}</div><div class="status">Complete Kit $22,990 + ${chosen.length} chosen items at their low listed price. Unpriced items (call for quote) add to this. Not included: shipping, paint, use tax, consumables.</div></div>
+    ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
+  txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
+  $('#report').innerHTML=html; reportText=txt.join('\n');
+}
+$('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Order sheet copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
+
+/* ---- checklist ---- */
+function tasksHTML(id){
+  const list=taskList(id); const done=list.filter(t=>t.done).length;
+  const rows=list.map(t=>`<li><label><input type="checkbox" data-task="${id}" data-i="${t.i}" ${t.done?'checked':''} ${isOwner?'':'disabled'}> <span class="${t.done?'tdone':''}">${esc(t.t)}</span></label></li>`).join('');
+  const add=isOwner?`<form class="taskadd" data-taskadd="${id}"><input placeholder="Add a step…" aria-label="Add a step" id="ta-${id}"><button class="btn ghost" type="submit">Add</button></form>`:'';
+  return `<h3>Checklist · ${done}/${list.length}</h3><ul class="tasks">${rows}</ul>${add}`;
+}
+function renderNews(){
+  const el=$('#news'); if(!el) return;
+  const items=news.slice().sort((a,b)=>String(b.date||'').localeCompare(String(a.date||''))).slice(0,8);
+  el.innerHTML=items.length?`<ul>${items.map(n=>`<li><span class="pn">${esc((n.date||'').slice(0,10))}</span> ${n.url?`<a href="${esc(n.url)}" target="_blank" rel="noopener">${esc(n.title||'Update')}</a>`:esc(n.title||'Update')}${n.text?` <span class="row">${esc(n.text)}</span>`:''}</li>`).join('')}</ul>`:'<p class="empty">The weekly check hasn\'t run yet. It looks at the FFR order form, parts prices and the starred build threads every Monday and posts what changed here.</p>';
+}
+/* ---- receipt checklist (WSP major components) ---- */
+function receiptsHTML(){
+  const rows=D.receiptItems.map(it=>{
+    const p=it.partId?allParts().find(x=>x.id===it.partId):allParts().find(x=>x.group===it.group&&isChosen(x));
+    const has=p&&st(p.id).receipt;
+    return `<li class="${has?'ok':''}"><span>${has?'✓':'○'}</span> <b>${esc(it.label)}</b> ${p?`<span class="row">${esc(p.name)}${it.note?' · '+esc(it.note):''}</span> <button class="nbtn" data-note="${esc(p.id)}">${has?'receipt':'attach receipt'}</button>`:'<span class="row">no part chosen yet</span>'}</li>`;
+  }).join('');
+  const total=allParts().filter(p=>st(p.id).receipt).length;
+  return `<h3>WSP receipt binder · ${total} receipt${total===1?'':'s'} attached</h3><p class="status">The inspector wants original receipts for the major components. Attach a photo of each receipt to its part; keep the paper originals and packing slips.</p><ul class="receipts">${rows}</ul>`;
+}
+/* ---- render all ---- */
+function renderParts(q){
+  q=(q||'').trim().toLowerCase();
+  let total=0, shown=0;
+  for(const id of ALL_IDS){
+    const list=allParts().filter(p=>p.stage===id&&(!q||matches(p,q))); total+=allParts().filter(p=>p.stage===id).length; shown+=list.length;
+    const el=document.getElementById('parts-'+id); if(el) el.innerHTML=groupedHTML(list,q);
+    const sec=document.getElementById(id); if(sec) sec.hidden=!!q&&list.length===0;
+    const pe=document.getElementById('pct-'+id); if(pe) pe.innerHTML=stagePctHTML(id);
+    const te=document.getElementById('tasks-'+id); if(te) te.innerHTML=tasksHTML(id);
+    if(id==='title'){ const re=document.getElementById('receipts'); if(re) re.innerHTML=receiptsHTML(); }
+    const tp=document.getElementById('tocpct-'+id); if(tp){const r=stagePct(id); tp.innerHTML=`<div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div>${r.pct}%`;}
+  }
+  for(const id of ['builds','videos','vendors','options','community']) filterTable(id,q);
+  const o=overallPct(); $('#overall-pct').textContent=o+'%'; $('#overall-bar').style.width=o+'%';
+  const chosenN=allParts().filter(isChosen).length;
+  $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
+  renderSheet(); renderReport(); renderNews();
+}
+function filterTable(id,q){
+  const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;
+  rows.forEach(r=>{const ok=!q||r.textContent.toLowerCase().includes(q); r.hidden=!ok; if(ok)n++;});
+  sec.hidden=!!q&&n===0;
+}
+
+/* ---- reference tables ---- */
+const link=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
+$('#builds-tbl tbody').innerHTML=D.builds.map(b=>`<tr><td>${b.star?'<span class="star">★</span> ':''}${link(b.url,b.name)}</td><td>${esc(b.builder)}</td><td>${esc(b.drivetrain)}</td><td>${esc(b.status)}</td><td>${esc(b.why)}</td></tr>`).join('');
+$('#videos-tbl tbody').innerHTML=D.videos.map(v=>`<tr><td>${v.star?'<span class="star">★</span> ':''}${link(v.url,v.name)}</td><td>${esc(v.car)}</td><td>${esc(v.eps)}</td><td>${esc(v.best)}</td></tr>`).join('');
+$('#vendors-tbl tbody').innerHTML=D.vendors.map(v=>`<tr><td>${link(v.url,v.name)}${v.parts?`<br><small>${link(v.parts,'coupe parts')}</small>`:''}</td><td>${esc(v.sells)}</td><td class="pn">${esc(v.phone)}</td><td>${esc(v.notes)}</td></tr>`).join('');
+const vcls=v=>/^(yes|recommended|required|powder)/i.test(v)?'v-yes':/^(skip|no)/i.test(v)?'v-skip':/call/i.test(v)?'v-call':'';
+$('#options-tbl tbody').innerHTML=D.options.map(o=>`<tr><td class="pn">${esc(o.pn)}</td><td>${esc(o.opt)}</td><td class="${vcls(o.verdict)}">${esc(o.verdict)}</td><td>${esc(o.why)}</td></tr>`).join('');
+$('#community-tbl tbody').innerHTML=D.community.map(c=>`<tr><td>${link(c.url,c.name)}${c.alt?`<br><small>${link(c.alt,'alternate link')}</small>`:''}</td><td>${esc(c.what)}</td><td>${esc(c.how)}</td></tr>`).join('');
+
+/* ---- search ---- */
+const q=$('#q');
+let t; q.addEventListener('input',()=>{clearTimeout(t); t=setTimeout(()=>{renderParts(q.value); $('#clearq').hidden=!q.value;},120);});
+$('#clearq').addEventListener('click',()=>{q.value=''; renderParts(''); $('#clearq').hidden=true; q.focus();});
+renderParts('');
+
+/* ---- TOC / drawer / scroll spy ---- */
+const rail=$('#rail'), tocbtn=$('#tocbtn'), mq=matchMedia('(max-width:900px)');
+function syncRail(){ if(mq.matches){ rail.hidden=tocbtn.getAttribute('aria-expanded')!=='true'; } else rail.hidden=false; }
+tocbtn.addEventListener('click',()=>{const open=tocbtn.getAttribute('aria-expanded')==='true'; tocbtn.setAttribute('aria-expanded',String(!open)); syncRail();});
+rail.addEventListener('click',e=>{ if(e.target.closest('a')&&mq.matches){ tocbtn.setAttribute('aria-expanded','false'); syncRail(); }});
+mq.addEventListener('change',syncRail); syncRail();
+const obs=new IntersectionObserver(es=>{es.forEach(en=>{ if(en.isIntersecting){ rail.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id)); }});},{rootMargin:'-20% 0px -70% 0px'});
+document.querySelectorAll('main section[id]').forEach(s=>obs.observe(s));
+
+/* ---- note dialog ---- */
+const dlg=$('#notedlg');
+function openNote(id){
+  const p=allParts().find(x=>x.id===id); if(!p) return;
+  const s=st(id);
+  $('#nd-title').textContent=p.name; $('#nd-model').textContent=p.model||'';
+  const photos=(s.photos||[]).map(ph=>`<figure><img src="/_blob/${esc(ph)}" alt="" loading="lazy">${assets?`<button class="nbtn" data-delphoto="${esc(ph)}" title="Remove photo">×</button>`:''}</figure>`).join('');
+  const receipt=s.receipt?`<p class="row"><b>Receipt:</b> <a href="/_blob/${esc(s.receipt)}" target="_blank" rel="noopener">${esc(s.receiptName||'open')}</a>${assets?` <button class="nbtn" data-delreceipt="1">remove</button>`:''}</p>`:'';
+  if(isOwner){
+    $('#nd-body').innerHTML=`<textarea id="nd-text" placeholder="Where you left off, what's ordered, what to check next…">${esc(s.note||'')}</textarea>
+      <div class="photos">${photos}</div>${receipt}
+      ${assets?`<div class="uprow"><label class="btn ghost">Add photo<input type="file" accept="image/*" id="nd-photo" multiple hidden></label><label class="btn ghost">Attach receipt<input type="file" accept="image/*,.pdf" id="nd-receipt" hidden></label><span class="status" id="nd-up"></span></div>`:'<p class="status">Photo and receipt uploads work when this page is opened in Claude.</p>'}`;
+    $('#nd-acts').innerHTML=`<button class="btn ghost" id="nd-cancel">Close</button><button class="btn" id="nd-save">Save note</button>`;
+    $('#nd-cancel').onclick=()=>dlg.close();
+    $('#nd-save').onclick=async()=>{ $('#nd-save').disabled=true; await writeState(id,{note:$('#nd-text').value}); dlg.close(); };
+    if(assets){
+      $('#nd-photo').onchange=async e=>{ const files=[...e.target.files]; if(!files.length) return; $('#nd-up').textContent='Uploading…'; const ids=[]; for(const f of files){ try{ const r=await assets.upload(f); ids.push(r.id);}catch(x){ $('#nd-up').textContent='Upload failed: '+(x.message||x.code||''); } } if(ids.length){ await writeState(id,{photos:(st(id).photos||[]).concat(ids)}); openNote(id);} };
+      $('#nd-receipt').onchange=async e=>{ const f=e.target.files[0]; if(!f) return; $('#nd-up').textContent='Uploading…'; try{ const r=await assets.upload(f); await writeState(id,{receipt:r.id,receiptName:f.name}); openNote(id);}catch(x){ $('#nd-up').textContent='Upload failed: '+(x.message||x.code||''); } };
+      $('#nd-body').querySelectorAll('[data-delphoto]').forEach(b=>b.onclick=async()=>{ const pid=b.dataset.delphoto; try{ await assets.delete(pid);}catch(x){} await writeState(id,{photos:(st(id).photos||[]).filter(x=>x!==pid)}); openNote(id); });
+      const dr=$('#nd-body').querySelector('[data-delreceipt]'); if(dr) dr.onclick=async()=>{ try{ await assets.delete(st(id).receipt);}catch(x){} await writeState(id,{receipt:null,receiptName:null}); openNote(id); };
+    }
+  } else {
+    $('#nd-body').innerHTML=`<div class="ro">${esc(s.note||'')}</div><div class="photos">${photos}</div>${receipt}`;
+    $('#nd-acts').innerHTML=`<button class="btn ghost" id="nd-cancel">Close</button>`;
+    $('#nd-cancel').onclick=()=>dlg.close();
+  }
+  dlg.showModal();
+}
+
+/* ---- db ---- */
+function toast(m){const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600);}
+async function writeState(id,patch){
+  if(!db) return;
+  const cur=Object.assign({},st(id),patch,{updated:new Date().toISOString()});
+  state[id]=cur; renderParts(q.value);
+  try{ await db.doc('state/'+id).set(cur); }catch(e){ toast('Could not save'); }
+}
+async function choose(id,on){
+  const p=allParts().find(x=>x.id===id); if(!p) return;
+  const g=p.group&&GROUPS[p.group];
+  if(on&&g&&!g.multi){
+    for(const o of allParts().filter(x=>x.group===p.group&&x.id!==id&&isChosen(x))) await writeState(o.id,{chosen:false});
+  }
+  await writeState(id,{chosen:on});
+}
+function renderNotes(){
+  for(const id of ALL_IDS){
+    const el=document.getElementById('notes-'+id); if(!el) continue;
+    const n=notes[id];
+    el.innerHTML=n&&n.text?`<div class="box" style="margin-top:14px"><h3>Stage notes</h3><div class="notes-view">${esc(n.text)}</div></div>`:'';
+  }
+}
+function ownerPanelHTML(id){
+  return `<div class="owner"><h3>Owner tools · ${esc(id)}</h3>
+    <label for="note-${id}" class="row">Stage note (visible to everyone)</label>
+    <textarea id="note-${id}">${esc(notes[id]?.text||'')}</textarea>
+    <div style="margin-top:6px"><button class="btn ghost" data-savenote="${id}">Save note</button></div>
+    <details style="margin-top:10px"><summary>Add a part or idea to this stage</summary>
+    <div class="frm">
+      <input id="an-${id}" placeholder="Part / idea name *"><input id="ac-${id}" placeholder="Category (e.g. Seats)">
+      <input id="am-${id}" placeholder="Make, model or FFR part no."><input id="av-${id}" placeholder="Vendor">
+      <input id="au-${id}" placeholder="Product URL"><input id="ap-${id}" placeholder="Price">
+      <select id="ak-${id}"><option value="aftermarket">Aftermarket</option><option value="FFR">Factory Five</option><option value="DIY">DIY / idea</option></select>
+      <select id="af-${id}"><option value="unknown">Gen 3 fit unconfirmed</option><option value="yes">Fits Gen 3</option><option value="roadster">Roadster part</option></select>
+      <select id="ag-${id}"><option value="">Not part of a pick-one decision</option>${D.groups.map(g=>`<option value="${g.id}">${esc(g.label)}</option>`).join('')}</select>
+      <input id="aw-${id}" placeholder="Who is using it">
+      <input id="as-${id}" placeholder="Source thread / video URL">
+      <textarea class="wide" id="ax-${id}" placeholder="Notes"></textarea>
+      <div class="wide"><button class="btn" data-addpart="${id}">Add to hub</button> <span class="status" id="st-${id}"></span></div>
+    </div></details></div>`;
+}
+async function initDb(){
+  const user=await claude.use('user'); db=await claude.use('db'); assets=await claude.use('assets');
+  isOwner=!!(user&&await user.isOwner()); userId=user?await user.id():null; canWriteOwn=user?await user.can('data.write'):null;
+  if(!db){ renderParts(q.value); return; }
+  db.collection('state').onSnapshot(snap=>{state={}; snap.docs.forEach(d=>{state[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('state',e));
+  db.collection('stagestate').onSnapshot(snap=>{stageState={}; snap.docs.forEach(d=>{stageState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('stagestate',e));
+  db.collection('tasks').onSnapshot(snap=>{taskState={}; snap.docs.forEach(d=>{taskState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('tasks',e));
+  db.collection('suggestions').onSnapshot(snap=>{suggestions=[]; snap.docs.forEach(d=>{const data=d.data(); (data.items||[]).filter(it=>!it.researched).forEach((it,i)=>suggestions.push(Object.assign({id:'s-'+d.id+'-'+(it.key||i),suggested:true,docId:d.id,key:it.key||String(i),kind:'aftermarket',fit:'unknown',tag:'forum'},it)));}); renderParts(q.value);},e=>console.warn('suggestions',e));
+  db.collection('news').onSnapshot(snap=>{news=snap.docs.map(d=>d.data()); renderNews();},e=>console.warn('news',e));
+  db.collection('notes').onSnapshot(snap=>{notes={}; snap.docs.forEach(d=>{notes[d.id]=d.data();}); renderNotes(); if(isOwner) ALL_IDS.forEach(id=>{const ta=document.getElementById('note-'+id); if(ta&&document.activeElement!==ta) ta.value=notes[id]?.text||'';});},e=>console.warn('notes',e));
+  db.collection('parts').onSnapshot(snap=>{addedParts=snap.docs.map(d=>Object.assign({id:'u-'+d.id,added:true},d.data())); renderParts(q.value);},e=>console.warn('parts',e));
+  if(isOwner){ ALL_IDS.forEach(id=>{const el=document.getElementById('owner-'+id); if(el) el.innerHTML=ownerPanelHTML(id);}); renderParts(q.value); }
+}
+document.addEventListener('click',async e=>{
+  const nb=e.target.closest('[data-note]'); if(nb){ openNote(nb.dataset.note); return; }
+  if(!isOwner||!db) return;
+  const pk=e.target.closest('[data-pick]'); if(pk){ const id=pk.dataset.pick; await choose(id,!isChosen(allParts().find(x=>x.id===id))); return; }
+  const sn=e.target.closest('[data-savenote]'); if(sn){const id=sn.dataset.savenote; sn.disabled=true; try{await db.doc('notes/'+id).set({text:document.getElementById('note-'+id).value,updated:new Date().toISOString()}); toast('Note saved');}catch(x){toast('Could not save the note');} sn.disabled=false; return;}
+  const ap=e.target.closest('[data-addpart]'); if(ap){const id=ap.dataset.addpart; const g=k=>document.getElementById(k+'-'+id).value.trim(); if(!g('an')){document.getElementById('st-'+id).textContent='A name is required.';return;}
+    ap.disabled=true; try{await db.collection('parts').add({stage:id,name:g('an'),cat:g('ac')||'Added',model:g('am'),vendor:g('av'),url:g('au'),price:g('ap'),tag:'owner',kind:g('ak'),fit:g('af'),group:g('ag'),users:g('aw'),srcUrl:g('as'),src:g('as')?host(g('as')):'',notes:g('ax'),added:new Date().toISOString()}); ['an','ac','am','av','au','ap','aw','as','ax'].forEach(k=>document.getElementById(k+'-'+id).value=''); toast('Added to the hub');}catch(x){toast('Could not add the part');} ap.disabled=false; return;}
+  const ds=e.target.closest('.delsug'); if(ds){ const ref=db.doc('suggestions/'+ds.dataset.doc); const snap=await ref.get(); if(snap.exists){ const data=Object.assign({},snap.data()); data.items=(data.items||[]).filter(it=>String(it.key)!==ds.dataset.key); try{ await ref.set(data); toast('Removed'); }catch(x){ toast('Could not remove'); } } return; }
+  const del=e.target.closest('.del'); if(del){const id=del.dataset.id.replace(/^u-/,''); del.disabled=true; try{await db.doc('parts/'+id).delete(); toast('Removed');}catch(x){toast('Could not remove');} }
+});
+document.addEventListener('change',async e=>{
+  if(!isOwner||!db) return;
+  const c=e.target.closest('[data-choose]'); if(c){ await choose(c.dataset.choose,c.checked); return; }
+  const p=e.target.closest('[data-pct]'); if(p){ await writeState(p.dataset.pct,{pct:Math.max(0,Math.min(100,+p.value||0))}); return; }
+  const tk=e.target.closest('[data-task]'); if(tk){ const id=tk.dataset.task, i=tk.dataset.i; const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); taskState[id]=cur; renderParts(q.value); try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); } return; }
+  const sp=e.target.closest('[data-stagepct]'); if(sp){ const id=sp.dataset.stagepct; const v=sp.value===''?null:Math.max(0,Math.min(100,+sp.value||0)); stageState[id]={pct:v}; renderParts(q.value); try{ await db.doc('stagestate/'+id).set({pct:v,updated:new Date().toISOString()}); }catch(x){toast('Could not save');} }
+});
+
+document.addEventListener('submit',async e=>{
+  if(e.target.id==='sgform'){ e.preventDefault(); await submitSuggestion(); return; }
+  const f=e.target.closest('[data-taskadd]'); if(!f) return; e.preventDefault(); if(!isOwner||!db) return;
+  const id=f.dataset.taskadd; const inp=document.getElementById('ta-'+id); const v=inp.value.trim(); if(!v) return;
+  const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.extra=(cur.extra||[]).concat([v]); taskState[id]=cur; inp.value=''; renderParts(q.value);
+  try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); }
+});
+/* ---- suggestions ---- */
+async function submitSuggestion(){
+  const g=k=>document.getElementById('sg-'+k).value.trim(); const st=$('#sg-status'), btn=$('#sg-btn');
+  if(!g('name')||!g('desc')){ st.textContent='A name and a description are the minimum.'; return; }
+  if(!db||!userId){ st.textContent='Open this page in Claude and sign in to add a part. Or message Nate on the forum and he will add it.'; return; }
+  btn.disabled=true; st.textContent='Filing it…';
+  let filed={stage:'plan',cat:'Suggested',name:g('name'),model:g('model'),notes:g('desc')};
+  if(sample){
+    try{
+      const prompt=`Classify a part suggested for a Factory Five Gen 3 Type 65 Coupe build hub. Return ONLY JSON: {"stage":<one of ${JSON.stringify(ALL_IDS)}>,"cat":<short category label like "Seats","Brakes","Side exhaust","Lighting","Wiring","HVAC","Tools">,"name":<clean part name, max 8 words>,"model":<make, model and part number if given, else "">,"vendor":<vendor or brand name if known, else "">,"summary":<one or two sentences in plain English: what it is and why the builder likes it, from their description>}. Stage ids mean: plan=ordering and engine packages, delivery=unboxing, chassis=panels/insulation/coating, front=front suspension/steering/pedals/brakes, rear=IRS/rear brakes/driveshaft, drivetrain=engine install/clutch/headers/exhaust/cooling, wiring=electrical/fuel/gauges/lighting, hvac=A/C and heat, gokart=first start, body=doors/hood/hatch/windows/wipers/mirrors, title=inspection/registration, paint=bodywork/paint, interior=seats/belts/dash/carpet/audio, shakedown=wheels/tires/alignment, tools=tools and consumables.\n\nSuggestion: name="${g('name')}" model="${g('model')}" link="${g('link')}" car="${g('car')}" price="${g('price')}" description="${g('desc')}"`;
+      const r=await sample.json(prompt,{modelTier:'quick'});
+      if(r&&ALL_IDS.includes(r.stage)) filed={stage:r.stage,cat:r.cat||'Suggested',name:r.name||g('name'),model:r.model||g('model'),vendor:r.vendor||'',notes:r.summary||g('desc')};
+    }catch(x){ /* classification is optional */ }
+  }
+  const item=Object.assign(filed,{key:Date.now().toString(36),by:g('who')||'a builder',car:g('car'),url:g('link'),srcUrl:g('link'),src:g('link')?host(g('link')):'builder submission',price:g('price'),users:(g('who')||'a builder')+' ('+g('car')+')',raw:g('desc'),added:new Date().toISOString(),researched:false});
+  try{
+    const ref=db.doc('suggestions/'+userId); const snap=await ref.get(); const data=snap.exists?Object.assign({},snap.data()):{by:g('who')||'',items:[]};
+    data.items=(data.items||[]).concat([item]); if(g('who')) data.by=g('who');
+    await ref.set(data);
+    st.textContent=`Added to stage "${(D.stages.find(x=>x.id===item.stage)||{title:'Tools'}).title}" as "${item.name}". Thanks. The weekly research pass will fill in the rest.`;
+    ['name','model','link','price','desc'].forEach(k=>document.getElementById('sg-'+k).value='');
+    const sec=document.getElementById(item.stage); if(sec) setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),800);
+  }catch(x){ st.textContent=(x&&x.code==='invalid_argument')?'This link is view-only. Ask Nate for Contributor access, or post the part on the forum and he will add it.':'Could not save. Try again in a moment.'; }
+  btn.disabled=false;
+}
+/* ---- ask the hub (sample) ---- */
+function context(){
+  const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`];
+  D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
+  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
+  D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id}: `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t).join('; '));});
+  activeWarnings().forEach(w=>lines.push('WARNING: '+w));
+  D.builds.forEach(b=>lines.push(`BUILD ${b.name} (${b.builder}; ${b.drivetrain}; ${b.status}): ${b.why} ${b.url}`));
+  Object.entries(notes).forEach(([k,v])=>v.text&&lines.push(`STAGE NOTE ${k}: ${v.text}`));
+  return lines.join('\n');
+}
+async function initAsk(){
+  sample=await claude.use('sample'); if(!sample) return;
+  $('#ask-off').hidden=true; $('#ask-ui').hidden=false;
+  $('#askstage').innerHTML=D.stages.map(s=>`<option value="${s.id}">${s.num}. ${esc(s.title)}</option>`).join('')+'<option value="tools">Tools</option>';
+  $('#asksave').hidden=!isOwner; let ctl;
+  $('#askstop').onclick=()=>ctl?.abort();
+  $('#askbtn').onclick=async()=>{
+    const qq=$('#askq').value.trim(); if(!qq) return;
+    const out=$('#askout'); out.textContent='Thinking…'; $('#askbtn').disabled=true; $('#askstop').hidden=false; ctl=new AbortController();
+    const prompt=`You are answering questions for a Factory Five Gen 3 Type 65 Coupe build hub. The builder is Nate: street car, no donor, BluePrint 347 EFI (Holley Sniper) + Tremec TKX, 2015 IRS, 6'2", Washington State, first-time kit builder, target done September 2029. Answer from the hub data below, which includes his chosen parts, percent complete and builder notes. Cite builders, part numbers and vendors by name, and include source URLs from the data when relevant. If the data does not cover it, say so and suggest where to look (forum thread, FFR tech line 508-291-3443). Keep it under 250 words, plain prose or a short list.\n\nQUESTION: ${qq}\n\nHUB DATA:\n${context()}`;
+    try{ const r=await sample(prompt,{signal:ctl.signal,onText:({text})=>{out.textContent=text;}}); out.textContent=r.text; }
+    catch(e){ out.textContent=e.text||({not_granted:'Asking is turned off for this view.',rate_limited:'Too many questions in a row. Wait a moment.',aborted:'Stopped.'}[e.code]||'That did not go through. Try again.'); }
+    $('#askbtn').disabled=false; $('#askstop').hidden=true;
+  };
+  $('#asksavebtn').onclick=async()=>{ if(!db||!isOwner) return; const id=$('#askstage').value; const prev=notes[id]?.text||''; const txt=(prev?prev+'\n\n':'')+'Q: '+$('#askq').value.trim()+'\n'+$('#askout').textContent; try{await db.doc('notes/'+id).set({text:txt,updated:new Date().toISOString()}); toast('Saved to stage notes');}catch(x){toast('Could not save');} };
+}
+if(window.claude&&claude.use){ initDb().catch(()=>{}); initAsk().catch(()=>{}); }
+})();
+</script>
