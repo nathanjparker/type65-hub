@@ -195,6 +195,11 @@ td.pn{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 .suggestbox{border:2px solid var(--gold);box-shadow:0 0 0 6px var(--gold-soft)}
 .chip.sug{background:var(--gold-soft);color:var(--gold);border-color:transparent}
 .card.aftermarket.sug{border-left-color:var(--gold)}
+.jumps{display:inline-flex;flex-wrap:wrap;gap:6px;margin-left:6px;vertical-align:middle}
+.jump{color:var(--accent);border-color:var(--accent)}
+.flash{animation:flash 2.4s ease-out}
+@keyframes flash{0%,60%{box-shadow:0 0 0 3px var(--gold);background:var(--gold-soft)}100%{box-shadow:none}}
+.dec.flash{border-radius:6px;padding-left:8px;padding-right:8px}
 /* card controls */
 .card .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}
 .card .ctl label{display:flex;align-items:center;gap:5px;cursor:pointer}
