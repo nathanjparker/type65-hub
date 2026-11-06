@@ -512,12 +512,13 @@ function renderGantt(){
     const x1=left+a*colW, x2=left+Math.max(a+1,b)*colW; const pct=stagePct(id).pct;
     const gates=D.gates.filter(gt=>gt.stage===id); const blocked=gates.some(gt=>!gateStatus(gt).ok);
     g+=`<text x="8" y="${y+21}" class="gname">${esc(s.num+'. '+s.title)}</text>`;
-    g+=`<g class="gbar ${w[id].edited?'edited':''}" data-stage="${id}">
+    g+=`<g class="gbar ${w[id].edited?'edited':''}" data-stage="${id}" style="cursor:pointer">
       <rect x="${x1}" y="${y+7}" width="${x2-x1}" height="20" rx="4" class="gfill"/>
       <rect x="${x1}" y="${y+7}" width="${(x2-x1)*pct/100}" height="20" rx="4" class="gdone"/>
       ${blocked?`<rect x="${x1-3}" y="${y+5}" width="6" height="24" rx="2" class="ggate" data-gate="${id}"><title>Gate: something must be finished before this stage starts</title></rect>`:''}
       ${can?`<rect x="${x1-4}" y="${y+7}" width="8" height="20" class="ghandle" data-handle="from" data-stage="${id}"/><rect x="${x2-4}" y="${y+7}" width="8" height="20" class="ghandle" data-handle="to" data-stage="${id}"/>`:''}
-      <text x="${x1+6}" y="${y+21}" class="gtxt">${pct?pct+'%':''}</text>
+      <text x="${x1+6}" y="${y+21}" class="gtxt">${pct?pct+'%':''}${(ganttState()[id]||{}).note?' ✎':''}</text>
+      <title>${esc(s.title)}: ${fmtM(w[id].from)} – ${fmtM(w[id].to)}${w[id].edited?' (moved; plan was '+fmtM(plan().windows[id].from)+' – '+fmtM(plan().windows[id].to)+')':''}${(ganttState()[id]||{}).note?'. '+esc(ganttState()[id].note):''}. ${pct}% done.</title>
     </g>`;
   });
   // dependency arrows
@@ -526,19 +527,31 @@ function renderGantt(){
     const x2=left+monthIndex(w[dp.to].from,origin)*colW, y2=top+j*rowH+17;
     g+=`<path d="M${x1},${y1} L${x1+6},${y1} L${x1+6},${y2} L${x2-2},${y2}" class="garrow"/><polygon points="${x2-2},${y2-4} ${x2+4},${y2} ${x2-2},${y2+4}" class="garrowhead"/>`; });
   // lead-time markers: chosen parts with lead time must be ordered by (stage start - lead)
-  allParts().filter(p=>isChosen(p)&&D.leadTimes[p.id]).forEach(p=>{ const i=ids.indexOf(p.stage); if(i<0) return; const lt=D.leadTimes[p.id]; const start=w[p.stage].from; const by=new Date(start); by.setDate(by.getDate()-lt.weeks*7);
-    const x=left+(monthIndex(by,origin)+by.getDate()/30)*colW, y=top+i*rowH; const st=statusOf(p); const late=today>by&&st==='planned';
-    g+=`<g class="glead ${late?'late':''}"><line x1="${x}" y1="${y+4}" x2="${x}" y2="${y+30}"/><text x="${x+3}" y="${y+6}" class="gleadtxt">order ${esc(p.name.split(' ').slice(0,3).join(' '))}</text><title>${esc(p.name)}: order by ${by.toLocaleDateString()} (${lt.weeks} wk lead). ${esc(lt.note)}</title></g>`; });
+  const leads=allParts().filter(p=>isChosen(p)&&D.leadTimes[p.id]).map(p=>{ const lt=D.leadTimes[p.id]; const sid=lt.needs||p.stage; const i=ids.indexOf(sid); const by=new Date(w[sid].from); by.setDate(by.getDate()-lt.weeks*7); return {p,lt,i,by,sid}; }).filter(l=>l.i>=0);
+  leads.forEach(l=>{ const x=left+(monthIndex(l.by,origin)+l.by.getDate()/30)*colW, y=top+l.i*rowH; const st=statusOf(l.p); const late=today>l.by&&st==='planned'; const done=st!=='planned';
+    g+=`<g class="glead ${late?'late':''} ${done?'ok':''}"><line x1="${x}" y1="${y+6}" x2="${x}" y2="${y+28}"/><circle cx="${x}" cy="${y+6}" r="3"/><title>Order ${esc(l.p.name)} by ${l.by.toLocaleDateString()} (${l.lt.weeks}-week lead, needed for ${esc((D.stages.find(s=>s.id===l.sid)||{}).title||l.sid)}). ${esc(l.lt.note)}${done?' Status: '+st+'.':''}</title></g>`; });
   // today
   if(todayX>left&&todayX<W-right) g+=`<line x1="${todayX}" y1="${top-6}" x2="${todayX}" y2="${H-26}" class="gtoday"/><text x="${todayX+3}" y="${H-14}" class="glab">today</text>`;
   g+='</svg>';
   const gatesHTML=D.gates.map(gt=>{ const st=gateStatus(gt); const s=D.stages.find(x=>x.id===gt.stage);
     return `<li class="gate ${st.ok?'ok':''}"><b>${st.ok?'✓':'■'} ${esc(gt.label)}</b> <span class="row">before ${esc(s.title)}</span><div class="wwhy">${esc(gt.why)}</div><ul class="gsteps">${st.steps.map(x=>`<li class="${x.done?'tdone':''}">${x.done?'☑':'☐'} ${esc(x.text)} <span class="row">(${esc(x.sid)})</span></li>`).join('')}${gt.decision?`<li class="${st.decided?'tdone':''}">${st.decided?'☑':'☐'} Decision made: ${esc(GROUPS[gt.decision]?.label||gt.decision)}</li>`:''}</ul></li>`; }).join('');
   host.innerHTML=`<div class="gwrap" tabindex="0">${g}</div>
-    <div class="gfoot">${can?'<span class="status">Drag a bar\'s edge to move a stage; stages that depend on it shift. </span>':''}<span class="chip">plan</span><span class="chip" style="color:var(--ok)">done</span><span class="chip" style="color:#b3261e">gate</span><span class="chip" style="color:var(--warn)">order-by</span>${can&&Object.keys(ganttState()).length?`<button class="btn ghost" id="greset">Reset to plan</button>`:''}</div>
+    <div class="gfoot"><span class="lg"><i class="sw plan"></i>on plan</span><span class="lg"><i class="sw edited"></i>moved by you</span><span class="lg"><i class="sw done"></i>progress</span><span class="lg"><i class="sw gate"></i>gate: finish these first</span><span class="lg"><i class="sw lead"></i>order-by date for a long-lead part (red = overdue, green = ordered)</span><span class="lg"><i class="sw today"></i>today</span></div>
+    ${can?`<p class="status">Click a bar to set its months or add a note; drag an edge to nudge it. Stages that depend on a moved stage shift with it.${Object.keys(ganttState()).length?` <b>${Object.keys(ganttState()).length} stage${Object.keys(ganttState()).length>1?'s':''} moved.</b> <button class="btn ghost" id="greset">Reset all to plan</button>`:''}</p>`:''}
+    ${leads.length?`<ul class="leadlist">${leads.sort((a,b)=>a.by-b.by).map(l=>{const st=statusOf(l.p); const late=today>l.by&&st==='planned'; return `<li class="${late?'late':st!=='planned'?'ok':''}"><b>${late?'Overdue':st!=='planned'?'✓':'Order by'} ${l.by.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})}</b>: ${esc(l.p.name)} <span class="row">(${l.lt.weeks}-wk lead, needed for ${esc((D.stages.find(s=>s.id===l.sid)||{}).title||l.sid)}${st!=='planned'?', '+st:''})</span></li>`;}).join('')}</ul>`:''}
     <h3 style="margin-top:14px">Gates: stop here until these are done</h3><ul class="gates">${gatesHTML}</ul>`;
   const rs=$('#greset'); if(rs) rs.onclick=()=>saveGantt({}).then(()=>renderGantt());
-  if(can) wireDrag(host.querySelector('svg'),w,origin,colW,left);
+  if(can){ wireDrag(host.querySelector('svg'),w,origin,colW,left); host.querySelectorAll('.gbar').forEach(bar=>bar.addEventListener('click',e=>{ if(e.target.classList.contains('ghandle')) return; openStageEditor(bar.dataset.stage,w); })); }
+}
+function openStageEditor(id,w){
+  const s=D.stages.find(x=>x.id===id); const cur=w[id]; const ed=ganttState()[id]||{}; const base=plan().windows[id];
+  $('#nd-title').textContent=s.title; $('#nd-model').textContent=`Plan: ${fmtM(base.from)} – ${fmtM(base.to)}${cur.edited?' · you moved it':''}`;
+  $('#nd-body').innerHTML=`<div class="frm"><label class="row">Starts<input type="month" id="ge-from" value="${ym(cur.from)}"></label><label class="row">Ends<input type="month" id="ge-to" value="${ym(cur.to)}"></label><textarea class="wide" id="ge-note" placeholder="Why (vacation, waiting on parts, shop busy…)">${esc(ed.note||'')}</textarea></div><p class="status">Moving this stage shifts every stage that depends on it. The calculator's hours don't change; the verdict tells you if the end date slips past your target.</p>`;
+  $('#nd-acts').innerHTML=`<button class="btn ghost" id="ge-reset">Back to plan</button><button class="btn ghost" id="nd-cancel">Cancel</button><button class="btn" id="nd-save">Save</button>`;
+  $('#nd-cancel').onclick=()=>dlg.close();
+  $('#ge-reset').onclick=async()=>{ const e=Object.assign({},ganttState()); delete e[id]; await saveGantt(e); dlg.close(); renderGantt(); renderCalcFromGantt(); };
+  $('#nd-save').onclick=async()=>{ const f=$('#ge-from').value, t=$('#ge-to').value; if(!/^\d{4}-\d{2}$/.test(f)||!/^\d{4}-\d{2}$/.test(t)||parseYM(t)<=parseYM(f)){ toast('End must be after start'); return; } const e=Object.assign({},ganttState()); e[id]={from:f,to:t,note:$('#ge-note').value.trim()}; await saveGantt(e); dlg.close(); renderGantt(); renderCalcFromGantt(); };
+  dlg.showModal();
 }
 function wireDrag(svg,w,origin,colW,left){
   let drag=null;
@@ -549,7 +562,7 @@ function wireDrag(svg,w,origin,colW,left){
       const cur=w[d.id]; let from=new Date(cur.from), to=new Date(cur.to);
       if(d.which==='from'){ from=new Date(from.getFullYear(),from.getMonth()+dm,1); if(from>=to) from=new Date(to.getFullYear(),to.getMonth()-1,1); if(from<origin) from=new Date(origin); }
       else { to=new Date(to.getFullYear(),to.getMonth()+dm,1); if(to<=from) to=new Date(from.getFullYear(),from.getMonth()+1,1); }
-      const ed=Object.assign({},ganttState()); ed[d.id]={from:ym(from),to:ym(to)};
+      const ed=Object.assign({},ganttState()); ed[d.id]=Object.assign({},ed[d.id]||{},{from:ym(from),to:ym(to)});
       await saveGantt(ed); renderGantt(); renderCalcFromGantt();
     });
   });

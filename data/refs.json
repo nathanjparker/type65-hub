@@ -1293,27 +1293,33 @@
 "leadTimes": {
 "p105": {
 "weeks": 10,
+"needs": "body",
 "note": "60371 side windows ship late; often backordered"
 },
 "p069": {
 "weeks": 12,
+"needs": "drivetrain",
 "note": "GAS-N has had months-long delays"
 },
 "p070": {
 "weeks": 12,
+"needs": "drivetrain",
 "note": "GAS-N has had months-long delays"
 },
 "p032": {
 "weeks": 6,
+"needs": "front",
 "note": "ePowerSteering shows 'notify me' at times"
 },
 "p003": {
 "weeks": 10,
+"needs": "drivetrain",
 "note": "BluePrint engine packages run 8–12 weeks"
 },
-"p001": {
-"weeks": 26,
-"note": "FFR kit lead time ~6 months"
+"p061": {
+"weeks": 4,
+"needs": "hvac",
+"note": "FFR A/C kit ships with the kit if ordered up front; otherwise allow a month"
 }
 }
 }
