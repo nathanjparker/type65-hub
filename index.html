@@ -206,6 +206,10 @@ td.pn{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 #src-builders .chip{font-size:12.5px}
 .sandboxbar{margin-top:16px;border-color:var(--gold);background:var(--gold-soft);font-size:14.5px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .copyprompt{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:8px 0;overflow-wrap:anywhere}
+.calc .calcin{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;margin:6px 0 12px}
+.calc label{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
+.calc label input{padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px;font-variant-numeric:tabular-nums}
+.calc label .row{font-weight:400;font-size:12px}
 /* card controls */
 .card .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}
 .card .ctl label{display:flex;align-items:center;gap:5px;cursor:pointer}
@@ -266,7 +270,18 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <section id="overview" class="hero">
     <h2>Gen 3 Type 65 Coupe, start to finish</h2>
     <p class="lede">Every part, option and idea Gen 3 coupe builders actually use, in the order the Factory Five manual builds the car. FFR part numbers next to the aftermarket alternatives, who runs each one, and the forum thread or video it came from. Built around a street coupe for Washington rain: BluePrint 347 EFI, Tremec TKX, 2015 IRS, power steering, A/C and heat, side windows, wipers.</p>
-    <div class="strip" id="strip"></div>
+    <div class="panel calc" id="calc">
+      <h3>Build calculator</h3>
+      <div class="calcin">
+        <label>Kit order <input type="month" id="c-order"></label>
+        <label>Hours per week <input type="number" id="c-hpw" min="1" max="60" step="1"></label>
+        <label>Build hours <input type="number" id="c-hours" min="300" max="3000" step="50"><span class="row">900–1,600 typical for a coupe with outsourced paint</span></label>
+        <label>Target done <input type="month" id="c-target"></label>
+        <label>Paint shop wait <input type="number" id="c-paint" min="0" max="12" step="1"><span class="row">months the body is away</span></label>
+      </div>
+      <div class="strip" id="strip"></div>
+      <p class="status" id="c-verdict"></p>
+    </div>
     <div class="twocol">
       <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div></div>
       <div class="panel"><h3>Order these with the kit</h3><ol id="upfront"></ol></div>
@@ -357,8 +372,49 @@ const GROUPS=Object.fromEntries(D.groups.map(g=>[g.id,g]));
 const hoursMid=s=>{const m=String(s.hours).match(/(\d+)[–-](\d+)/); return m?(+m[1]+ +m[2])/2:30;};
 let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], refs=[], addedBuilds=[], userId=null, canWriteOwn=null, priv={}, mine=null, sandbox=false;
 
+/* ---- build calculator ---- */
+const CALC_DEFAULT={order:'2026-12',hpw:10,hours:1200,target:'2029-09',paint:3};
+let calc=Object.assign({},CALC_DEFAULT);
+function stageWeights(){ const w={}; D.stages.forEach(s=>{w[s.id]=hoursMid(s);}); return w; }
+function addMonths(ym,m){ const [y,mo]=ym.split('-').map(Number); const d=new Date(y,mo-1+m,1); return d; }
+function fmtM(d){ return d.toLocaleDateString(undefined,{month:'short',year:'numeric'}); }
+function monthsBetween(a,b){ const [ay,am]=a.split('-').map(Number),[by,bm]=b.split('-').map(Number); return (by-ay)*12+(bm-am); }
+function plan(){
+  const c=calc; const months=Math.max(1,monthsBetween(c.order,c.target)); const weeks=months*4.345;
+  const buildWeeks=Math.max(1,weeks-(c.paint||0)*4.345);   // paint months are the shop's, not yours
+  const avail=buildWeeks*c.hpw; const needed=c.hours; const needHpw=needed/buildWeeks;
+  // milestone dates: cumulative share of hours by stage order, mapped onto build weeks; paint stage inserted as a fixed block
+  const w=stageWeights(); const total=Object.values(w).reduce((a,b)=>a+b,0);
+  const order=D.stages.map(s=>s.id); const out={}; let cum=0; let paintOffset=0;
+  // kit arrives ~6 months after order (FFR lead time); stage 1 runs during the wait
+  const leadMonths=6; const start=c.order;
+  order.forEach(id=>{ const share=w[id]/total; const from=cum; cum+=share;
+    let fromM=Math.round(from*buildWeeks/4.345)+paintOffset, toM=Math.round(cum*buildWeeks/4.345)+paintOffset;
+    if(id==='plan'){ fromM=0; toM=Math.min(toM,leadMonths); }
+    if(id==='paint'){ toM=fromM+(c.paint||0); paintOffset+=(c.paint||0); }
+    out[id]={from:addMonths(start,fromM),to:addMonths(start,toM)}; });
+  return {months,weeks,buildWeeks,avail,needed,needHpw,windows:out,ok:avail>=needed};
+}
+function renderCalc(){
+  $('#c-order').value=calc.order; $('#c-hpw').value=calc.hpw; $('#c-hours').value=calc.hours; $('#c-target').value=calc.target; $('#c-paint').value=calc.paint;
+  const p=plan(); const w=p.windows;
+  const tiles=[['Order to done',`${p.months} mo`,`${Math.round(p.weeks)} weeks`],['Hours available',Math.round(p.avail).toLocaleString(),`${calc.hpw} h/wk × ${Math.round(p.buildWeeks)} build weeks`],['Hours needed',p.needed.toLocaleString(),p.ok?`${Math.round(p.avail-p.needed).toLocaleString()} h of slack`:`short by ${Math.round(p.needed-p.avail).toLocaleString()} h`],['Go-kart',fmtM(w.gokart.to),'first drive, no body'],['Title in gelcoat',fmtM(w.title.to),'before paint'],['Done',fmtM(w.shakedown.to),calc.target===CALC_DEFAULT.target?"Coco's senior year":'your target']];
+  $('#strip').innerHTML=tiles.map(([k,v,s])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div><div class="s">${esc(s)}</div></div>`).join('');
+  $('#c-verdict').innerHTML=p.ok?`<b style="color:var(--ok)">The plan holds.</b> ${calc.hpw} hours a week covers ${p.needed.toLocaleString()} hours with ${Math.round((p.avail-p.needed)/p.hpw||0)} weeks to spare. At ${Math.ceil(p.needHpw)} h/week you'd finish with no slack.`:`<b style="color:var(--warn)">Doesn't fit.</b> You'd need about <b>${Math.ceil(p.needHpw)} hours a week</b>, or push the target to ${fmtM(addMonths(calc.order,Math.ceil(p.needed/calc.hpw/4.345+(calc.paint||0))))}, or outsource more (body prep, wiring, A/C plumbing) to bring the hours down.`;
+  D.stages.forEach(s=>{ const el=document.getElementById('when-'+s.id); if(el){ const x=w[s.id]; el.textContent=`${fmtM(x.from)} – ${fmtM(x.to)}`; } });
+}
+async function saveCalc(){
+  if(sandbox&&mine){ mine.calc=calc; await saveMine(); return; }
+  if(isOwner&&db){ try{ await db.doc('settings/calc').set(Object.assign({},calc,{updated:new Date().toISOString()})); }catch(e){ if(db.doc('x').get) toast('Could not save'); } }
+}
+document.addEventListener('input',e=>{
+  const m={'c-order':'order','c-hpw':'hpw','c-hours':'hours','c-target':'target','c-paint':'paint'}[e.target.id]; if(!m) return;
+  const v=e.target.value; if(m==='order'||m==='target'){ if(!/^\d{4}-\d{2}$/.test(v)) return; calc[m]=v; } else { calc[m]=Math.max(0,+v||0); if(m==='hpw'&&calc.hpw<1) calc.hpw=1; if(m==='hours'&&calc.hours<100) calc.hours=100; }
+  renderCalc(); clearTimeout(calcT); calcT=setTimeout(saveCalc,500);
+});
+let calcT;
 /* ---- overview ---- */
-$('#strip').innerHTML=[['Build hours','~1,200','range 900–1,600'],['Budget','$66k–$110k','typical ~$85k before use tax'],['Go-kart','May 2028','first drive, no body'],['Title in gelcoat','late 2028','before paint'],['Done','Sep 2029','Coco\'s senior year']].map(([k,v,s])=>`<div><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+renderCalc();
 $('#upfront').innerHTML=D.upfront.map(x=>`<li>${esc(x)}</li>`).join('');
 $('#gaps').innerHTML=D.gaps.map(x=>`<li>${esc(x)}</li>`).join('');
 
@@ -446,7 +502,7 @@ function stagePctHTML(id){
 function stageHTML(s){
   return `<section class="stage" id="${s.id}" data-stage="${s.id}">
     <div class="shead"><div class="roundel">${s.num}</div><div class="t"><h2>${esc(s.title)}</h2>
-      <div class="meta"><span><b>When:</b> ${esc(s.window)}</span><span><b>Your hours:</b> ${esc(s.hours)}</span></div>
+      <div class="meta"><span><b>When:</b> <span id="when-${s.id}">${esc(s.window)}</span></span><span><b>Your hours:</b> ${esc(s.hours)}</span></div>
       <div class="stagepct" id="pct-${s.id}"></div>
       <p class="summary">${esc(s.summary)}</p>
       <p class="manual"><b>Manual:</b> ${esc(s.manual)}</p></div></div>
@@ -463,6 +519,7 @@ function stageHTML(s){
   </section>`;
 }
 $('#stages').innerHTML=D.stages.map(stageHTML).join('');
+renderCalc();
 $('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="n">${s.num}</span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
 
 /* ---- spec sheet ---- */
@@ -727,6 +784,8 @@ async function initDb(){
   if(!db){ renderParts(q.value); return; }
   if(isOwner){ db.collection('private').onSnapshot(snap=>{priv={}; snap.docs.forEach(d=>{priv[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('private',e)); }
   else if(userId){ const ref=db.doc('data/users/'+userId+'/hub'); try{ const snap=await ref.get(); mine=snap.exists?Object.assign({state:{},stagestate:{},tasks:{}},snap.data()):{state:{},stagestate:{},tasks:{}}; if(canWriteOwn!==false){ sandbox=true; } }catch(e){ mine=null; } renderSandboxBar(); }
+  if(isOwner){ try{ const cs=await db.doc('settings/calc').get(); if(cs.exists) { calc=Object.assign({},CALC_DEFAULT,cs.data()); renderCalc(); } }catch(e){} }
+  else if(mine&&mine.calc){ calc=Object.assign({},CALC_DEFAULT,mine.calc); renderCalc(); }
   db.collection('state').onSnapshot(snap=>{state={}; snap.docs.forEach(d=>{state[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('state',e));
   db.collection('stagestate').onSnapshot(snap=>{stageState={}; snap.docs.forEach(d=>{stageState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('stagestate',e));
   db.collection('tasks').onSnapshot(snap=>{taskState={}; snap.docs.forEach(d=>{taskState[d.id]=d.data();}); renderParts(q.value);},e=>console.warn('tasks',e));
@@ -803,7 +862,7 @@ async function submitSuggestion(){
 const LKEY='type65hub.v1';
 function initLocal(){
   let saved={}; try{ saved=JSON.parse(localStorage.getItem(LKEY)||'{}')||{}; }catch(e){}
-  state=saved.state||{}; stageState=saved.stagestate||{}; taskState=saved.tasks||{}; notes=saved.notes||{}; addedParts=saved.addedParts||[]; priv={};
+  state=saved.state||{}; stageState=saved.stagestate||{}; taskState=saved.tasks||{}; notes=saved.notes||{}; addedParts=saved.addedParts||[]; priv={}; if(saved.calc) calc=Object.assign({},CALC_DEFAULT,saved.calc); renderCalc();
   isOwner=true; db=localDb();
   ALL_IDS.forEach(id=>{const el=document.getElementById('owner-'+id); if(el) el.innerHTML=ownerPanelHTML(id);});
   renderNotes(); renderParts(q.value);
@@ -817,17 +876,17 @@ function initLocal(){
   const cp=$('#copyprompt'); if(cp){ cp.closest('.panel').innerHTML='<h3>This is your copy</h3><p class="status">Everything you pick or note here is saved in this browser. Use Export at the top to back it up or move it to another device.</p>'; }
   document.querySelectorAll('#sgform, #rfform').forEach(f=>{ f.querySelector('.status').innerHTML=readOnlyMsg(f.id==='sgform'?'part':'link'); f.querySelectorAll('input,textarea,select,button').forEach(el=>el.disabled=true); });
 }
-function localSnapshot(){ return {v:1,exported:new Date().toISOString(),state,stagestate:stageState,tasks:taskState,notes,addedParts}; }
+function localSnapshot(){ return {v:1,exported:new Date().toISOString(),state,stagestate:stageState,tasks:taskState,notes,addedParts,calc}; }
 function persistLocal(){ try{ localStorage.setItem(LKEY,JSON.stringify(localSnapshot())); }catch(e){ toast('Could not save in this browser'); } }
 function localDb(){
   // minimal stand-in for the db capability: only the calls the page makes
-  const doc=path=>({ async set(data){ const [c,id]=path.split('/'); if(c==='state') state[id]=data; else if(c==='private') state[id]=Object.assign({},state[id]||{},data); else if(c==='stagestate') stageState[id]=data; else if(c==='tasks') taskState[id]=data; else if(c==='notes') notes[id]=data; else if(c==='parts') addedParts=addedParts.map(p=>p.id==='u-'+id?Object.assign({},p,data):p); persistLocal(); renderNotes(); renderParts(q.value); }, async delete(){ const [c,id]=path.split('/'); if(c==='parts') addedParts=addedParts.filter(p=>p.id!=='u-'+id); persistLocal(); renderParts(q.value); }, async get(){ return {exists:false,data:()=>undefined}; } });
+  const doc=path=>({ async set(data){ const [c,id]=path.split('/'); if(c==='state') state[id]=data; else if(c==='private') state[id]=Object.assign({},state[id]||{},data); else if(c==='stagestate') stageState[id]=data; else if(c==='tasks') taskState[id]=data; else if(c==='notes') notes[id]=data; else if(c==='settings') calc=Object.assign({},calc,data); else if(c==='parts') addedParts=addedParts.map(p=>p.id==='u-'+id?Object.assign({},p,data):p); persistLocal(); renderNotes(); renderParts(q.value); }, async delete(){ const [c,id]=path.split('/'); if(c==='parts') addedParts=addedParts.filter(p=>p.id!=='u-'+id); persistLocal(); renderParts(q.value); }, async get(){ return {exists:false,data:()=>undefined}; } });
   const collection=c=>({ async add(data){ const id=Date.now().toString(36); if(c==='parts'){ addedParts=addedParts.concat([Object.assign({id:'u-'+id,added:true},data)]); persistLocal(); renderParts(q.value); } return {id}; } });
   return {doc,collection};
 }
 /* ---- ask the hub (sample) ---- */
 function context(){
-  const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`];
+  const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`];
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
   allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
   D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id}: `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t).join('; '));});
