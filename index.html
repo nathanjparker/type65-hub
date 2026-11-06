@@ -449,9 +449,17 @@ function activeWarnings(){
   chosen.filter(p=>!compatible(p)).forEach(p=>out.push({id:'fam-'+p.id,msg:`${p.name} is for a ${D.families[p.family.split(',')[0]]||p.family} engine, but your engine is ${D.families[engineFamily()]||engineFamily()}.`,why:'Mounts, headers, A/C and steering kits are engine-specific.',fix:'Pick the version for your engine family; the matching options are listed on the spec sheet.',parts:[p],scope:'conflict'}));
   return out;
 }
+const warnKey=w=>w.id+':'+w.parts.map(p=>p.id).sort().join('+');
 function resolvedSet(){ const r=(sandbox&&mine?mine.resolved:(stageState.__resolved&&stageState.__resolved.ids))||[]; return new Set(r); }
-async function setResolved(id,on){
-  const cur=resolvedSet(); on?cur.add(id):cur.delete(id); const ids=[...cur];
+// a resolution only lives while its warning is active: once the picks change and the warning drops out, forget it, so a re-pick brings the check back
+let lastActiveKeys=null;
+function pruneResolved(){
+  const active=new Set(activeWarnings().map(warnKey)); const cur=resolvedSet(); let changed=false;
+  cur.forEach(k=>{ if(!active.has(k)){ cur.delete(k); changed=true; } });
+  if(changed){ const ids=[...cur]; if(sandbox&&mine){ mine.resolved=ids; saveMine(); } else if(isOwner&&db){ stageState.__resolved={ids}; db.doc('stagestate/__resolved').set({ids,updated:new Date().toISOString()}).catch(()=>{}); } }
+}
+async function setResolved(key,on){
+  const cur=resolvedSet(); on?cur.add(key):cur.delete(key); const ids=[...cur];
   if(sandbox&&mine){ mine.resolved=ids; renderParts(q.value); await saveMine(); return; }
   stageState.__resolved={ids}; renderParts(q.value); try{ await db.doc('stagestate/__resolved').set({ids,updated:new Date().toISOString()}); }catch(e){ toast('Could not save'); }
 }
@@ -592,7 +600,7 @@ function renderReport(){
     txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${p.url||''}`)); txt.push(`  Subtotal: ${money(sum(list))}`);
   });
   const total=sum(chosen)+22990;
-  const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(w.id));
+  const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(warnKey(w)));
   if(warns.length){ html+=`<div style="margin-bottom:14px">${warnBoxHTML(warns,'Check before ordering')}</div>`; if(openW.length){ txt.push(''); txt.push('CHECK BEFORE ORDERING'); openW.forEach(x=>txt.push('  - '+x.msg+(x.fix?' -> '+x.fix:''))); } }
   html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${money(total)}</div><div class="status">Complete Kit $22,990 + ${chosen.length} chosen items at their low listed price. Unpriced items (call for quote) add to this. Not included: shipping, paint, use tax, consumables.</div></div>
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
@@ -647,13 +655,13 @@ function warnHTML(w){
   return `<li class="warn ${esc(w.scope||'')}"><div class="wtitle"><span class="wkind">${w.scope==='conflict'?'Conflict':'Check'}</span> ${esc(w.msg)}</div>
     ${w.why?`<div class="wwhy"><b>Why:</b> ${esc(w.why)}</div>`:''}
     ${w.fix?`<div class="wwhy"><b>What to do:</b> ${esc(w.fix)}</div>`:''}
-    <div class="jumps">${w.srcUrl?`<a class="nbtn jump" href="${esc(w.srcUrl)}" target="_blank" rel="noopener">Read the source: ${esc(w.src||host(w.srcUrl))} ↗</a>`:''}${targets.map(t=>`<button class="nbtn jump" data-jump="${esc(t.id)}">Take me to ${esc(t.label)} →</button>`).join('')}${canResolve&&w.scope!=='conflict'?`<button class="nbtn resolve" data-resolve="${esc(w.id)}">✓ Resolved, hide this</button>`:''}</div></li>`;
+    <div class="jumps">${w.srcUrl?`<a class="nbtn jump" href="${esc(w.srcUrl)}" target="_blank" rel="noopener">Read the source: ${esc(w.src||host(w.srcUrl))} ↗</a>`:''}${targets.map(t=>`<button class="nbtn jump" data-jump="${esc(t.id)}">Take me to ${esc(t.label)} →</button>`).join('')}${canResolve&&w.scope!=='conflict'?`<button class="nbtn resolve" data-resolve="${esc(warnKey(w))}" title="Hides it until you change the picks involved">✓ Resolved, hide this</button>`:''}</div></li>`;
 }
 function warnBoxHTML(all,heading){
-  const res=resolvedSet(); const open=all.filter(w=>!res.has(w.id)); const hidden=all.filter(w=>res.has(w.id));
+  const res=resolvedSet(); const open=all.filter(w=>!res.has(warnKey(w))); const hidden=all.filter(w=>res.has(warnKey(w)));
   if(!open.length&&!hidden.length) return '';
   const canResolve=isOwner||sandbox;
-  return `<div class="warnbox"><b>${heading}</b>${open.length?`<ul>${open.map(warnHTML).join('')}</ul>`:'<p class="status">Nothing open. Every check has been resolved.</p>'}${hidden.length?`<details class="others"><summary>${hidden.length} resolved</summary><ul>${hidden.map(w=>`<li class="warn done">${esc(w.msg)} ${canResolve?`<button class="nbtn" data-unresolve="${esc(w.id)}">reopen</button>`:''}</li>`).join('')}</ul></details>`:''}</div>`;
+  return `<div class="warnbox"><b>${heading}</b>${open.length?`<ul>${open.map(warnHTML).join('')}</ul>`:'<p class="status">Nothing open. Every check has been resolved.</p>'}${hidden.length?`<details class="others"><summary>${hidden.length} resolved (comes back if you change the picks involved)</summary><ul>${hidden.map(w=>`<li class="warn done">${esc(w.msg)} ${canResolve?`<button class="nbtn" data-unresolve="${esc(warnKey(w))}">reopen</button>`:''}</li>`).join('')}</ul></details>`:''}</div>`;
 }
 document.addEventListener('click',async e=>{
   const r=e.target.closest('[data-resolve]'); if(r){ await setResolved(r.dataset.resolve,true); toast('Marked resolved'); return; }
@@ -725,7 +733,7 @@ function renderParts(q){
   const chosenN=allParts().filter(isChosen).length;
   const ch=allParts().filter(isChosen); $('#overall-status').innerHTML=STATUSES.map(([v,l])=>`<span class="chip st-${v}">${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}</span>`).join('');
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
-  renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds();
+  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds();
 }
 function filterTable(id,q){
   const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;
@@ -947,7 +955,7 @@ function context(){
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
   allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
   D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id}: `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t).join('; '));});
-  { const rs=resolvedSet(); activeWarnings().forEach(w=>lines.push((rs.has(w.id)?'RESOLVED CHECK: ':'OPEN WARNING: ')+w.msg+' '+(w.why||'')+' '+(w.fix||''))); }
+  { const rs=resolvedSet(); activeWarnings().forEach(w=>lines.push((rs.has(warnKey(w))?'RESOLVED CHECK: ':'OPEN WARNING: ')+w.msg+' '+(w.why||'')+' '+(w.fix||''))); }
   D.builds.forEach(b=>lines.push(`BUILD ${b.name} (${b.builder}; ${b.drivetrain}; ${b.status}): ${b.why} ${b.url}`));
   Object.entries(notes).forEach(([k,v])=>v.text&&lines.push(`STAGE NOTE ${k}: ${v.text}`));
   return lines.join('\n');
