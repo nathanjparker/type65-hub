@@ -980,65 +980,119 @@
 },
 "warnings": [
 {
+"id": "irs-pindrive",
 "when": [
 "2015 Mustang-based IRS"
 ],
-"msg": "The IRS does not fit pin-drive wheels; stick with bolt-on Halibrands (Jeff Kleiner)."
+"msg": "The IRS does not fit pin-drive (knock-off) wheels.",
+"why": "Pin-drive hubs need a narrower track than the IRS and the Gen 3 front spindles give. Jeff Kleiner: \"the IRS is not compatible with pin drive width so the only option there is a narrowed solid axle,\" and the Gen 3 spindles \"do not accommodate the narrow pin drive width.\"",
+"fix": "Stay with bolt-on wheels (FFR Halibrands, Vintage Wheel Works, Forgestar). If you want knock-offs, you need the 3-link with a narrowed axle and Mustang spindles, with worse geometry. Resolve this once your wheel pick is bolt-on.",
+"src": "Pre-sales coupe questions (TFFF)",
+"srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-46176.html",
+"scope": "general"
 },
 {
+"id": "ps-ac-belt",
 "when": [
 "Hydraulic power steering kit",
 "FFR A/C-heater-defroster for 302/351W"
 ],
-"msg": "PS pump and A/C compressor share the 347's front drive; confirm BluePrint's A/C front-drive option carries both before ordering 16799."
+"msg": "PS pump and A/C compressor both hang on the 347's front drive.",
+"why": "BluePrint's standard 347 front drive carries the alternator; the A/C option adds a compressor. A hydraulic PS pump needs its own bracket and pulley position, and nobody has documented all three on the BluePrint drive in a Gen 3.",
+"fix": "Call BluePrint (1-800-483-4263) and ask for the front-drive option with both A/C compressor and PS pump, or switch steering to electric assist (ePowerSteering KIT-26) and skip the pump. Resolve once BluePrint confirms in writing.",
+"src": "FFR + BluePrint 347 package page",
+"srcUrl": "https://factoryfiveengines.com/ford-347-c-i-fuel-injected-2/",
+"scope": "general"
 },
 {
-"when": [
-"Gen 3 Coyote 5.0 + TKX package"
-],
-"msg": "FFR's FAQ says the small-block gives more footroom; sit in a Coyote coupe first at 6'2\"."
-},
-{
-"when": [
-"Kirkey aluminum seats",
-"Seat track"
-],
-"msg": "Tall drivers usually floor-mount Kirkeys and skip the track to gain headroom."
-},
-{
-"when": [
-"Hydraulic clutch master cylinder kit",
-"Tilton hydraulic release bearing setup"
-],
-"msg": "BluePrint's package already includes a hydraulic throw-out bearing; the Tilton bearing duplicates it."
-},
-{
+"id": "wilwood-15",
 "when": [
 "Wilwood 12.88\" front, drilled & slotted",
 "FFR 15\" Halibrand replicas"
 ],
-"msg": "Wilwood 12.88\" fronts do not clear 15\" wheels. Pick 17\" or 18\" Halibrands, or the standard 11\" brakes."
+"msg": "Wilwood 12.88\" fronts do not clear 15\" wheels.",
+"why": "The 12.88\" rotor and Dynapro 6 caliper need a 17\" minimum wheel; Wilwood lists 17\" minimum for this kit on the Type 65 Coupe.",
+"fix": "Pick 17\" or 18\" Halibrands, or keep the standard 11\" brakes with the 15s.",
+"src": "Wilwood 140-12048-DR application page",
+"srcUrl": "https://wilwood.com/BrakeKits/BrakeKitsProdFront.aspx?itemno=140-12048-DR&year=9998&make=Factory%20Five%20Racing&model=Type%2065%20Coupe&option=1994-2004%20Mustang%20Spindle%20%2F%208.8%20Rear%20End",
+"scope": "conflict"
 },
 {
+"id": "levy14-15",
 "when": [
 "Levy Racing Wilwood 6-piston front / 4-piston rear",
 "FFR 15\" Halibrand replicas"
 ],
-"msg": "14\" rotors need 18\" or 19\" wheels; 15\" will not clear."
+"msg": "14\" rotors do not clear 15\" wheels.",
+"why": "A 14\" rotor plus caliper needs an 18\" or 19\" wheel.",
+"fix": "Pick 18\" Halibrands or Forgestar 19s, or step down to the 12.88\" Wilwoods with 17s.",
+"src": "Ron L. (14\" Wilwood, Forgestar 19s)",
+"srcUrl": "https://www.factoryfive.com/whats-new/ron-l-graduates-his-type-65-coupe-build/",
+"scope": "conflict"
 },
 {
+"id": "levy14-17",
 "when": [
 "Levy Racing Wilwood 6-piston front / 4-piston rear",
 "FFR 17\" Halibrand replicas"
 ],
-"msg": "14\" rotors need 18\" or 19\" wheels; confirm with Levy before pairing with 17s."
+"msg": "14\" rotors probably do not clear 17\" wheels.",
+"why": "Ron L. runs this brake on 19s; no Gen 3 build shows it on 17s.",
+"fix": "Confirm with Levy Racing before pairing, or go to 18s.",
+"src": "Ron L. graduates",
+"srcUrl": "https://www.factoryfive.com/whats-new/ron-l-graduates-his-type-65-coupe-build/",
+"scope": "conflict"
 },
 {
+"id": "wilwood-rear-15",
 "when": [
 "Wilwood 12.88\" IRS rear",
 "FFR 15\" Halibrand replicas"
 ],
-"msg": "12.88\" rear Wilwoods will not clear 15\" wheels."
+"msg": "12.88\" rear Wilwoods do not clear 15\" wheels.",
+"why": "Same rotor and caliper size as the fronts; 17\" minimum.",
+"fix": "Pick 17\" or 18\" wheels, or the IRS 11.65\" rear brakes.",
+"src": "Wilwood 140-15138-R application page",
+"srcUrl": "https://www.wilwood.com/brakekits/BrakeKitsProdRear?itemno=140-15138-R&year=2015&make=factory+five+racing&model=type+65+coupe&option=1994-2004+mustang+spindle+%2F+irs+rear+end",
+"scope": "conflict"
+},
+{
+"id": "coyote-footroom",
+"when": [
+"Gen 3 Coyote 5.0 + TKX package"
+],
+"msg": "The Coyote is tighter at the footbox than a small-block.",
+"why": "FFR's own FAQ says the small-block is the better choice for footroom; the Coyote's width pushes the footbox walls in.",
+"fix": "Sit in a Coyote coupe before ordering if you're over 6 feet. Resolve once you've checked.",
+"src": "Gen 3 Coupe FAQ",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/faqs/",
+"scope": "general"
+},
+{
+"id": "kirkey-track",
+"when": [
+"Kirkey aluminum seats",
+"Seat track"
+],
+"msg": "Kirkeys on a seat track cost you headroom.",
+"why": "Tall drivers floor-mount Kirkeys to gain 1–1.5\" of headroom; a track puts it back.",
+"fix": "Skip the track (12077) with Kirkeys, or keep the track with FFR seats. Resolve if you've sat in the car and it fits.",
+"src": "Will I physically fit in a Type 65",
+"srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-39162.html",
+"scope": "general"
+},
+{
+"id": "tilton-dup",
+"when": [
+"Hydraulic clutch master cylinder kit",
+"Tilton hydraulic release bearing setup"
+],
+"msg": "The Tilton bearing duplicates the one in the BluePrint package.",
+"why": "BluePrint's 347/TKX package ships with a McLeod hydraulic throw-out bearing; FFR's 34158 master kit is all you need.",
+"fix": "Drop the Tilton bearing unless you're not using the BluePrint package.",
+"src": "BluePrint B347FKTKX",
+"srcUrl": "https://blueprintengines.com/products/blueprint-engines-builder-series-347ci-stroker-engine-and-tkx-manual-trans-package-small-block-ford-style-dressed-longblock-with-fuel-injection-aluminum-heads-roller-cam",
+"scope": "conflict"
 }
 ],
 "decideLabels": {
