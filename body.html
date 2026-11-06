@@ -51,7 +51,7 @@
   <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Your build</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
 
   <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Prices are the low end of what's listed and are rough.</span></div></div></div>
-    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn ghost" id="copyreport">Copy as text</button></div>
+    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><span class="status">Excel copy pastes into cells: one row per part with a clickable link, a status column and a subtotal per vendor.</span></div>
     <div id="report" style="margin-top:12px"></div>
   </section>
 
@@ -301,7 +301,7 @@ function renderSheet(){
 const lowPrice=s=>{const m=String(s||'').replace(/,/g,'').match(/\$\s*(\d+(?:\.\d+)?)/); return m?+m[1]:null;};
 const pnOf=p=>{const m=(p.model||'').match(/#?\b(\d{5})\b/); return m?m[1]:'';};
 const money=n=>'$'+Math.round(n).toLocaleString();
-let reportText='';
+let reportText='', reportHTML='', reportTSV='';
 function renderReport(){
   const chosen=allParts().filter(isChosen);
   const ffr=chosen.filter(p=>p.kind==='FFR'), other=chosen.filter(p=>p.kind!=='FFR');
@@ -333,7 +333,24 @@ function renderReport(){
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   $('#report').innerHTML=html; reportText=txt.join('\n');
+  // spreadsheet export: one flat table
+  const cols=['Section','Vendor','Part no.','Part','Make / model','Qty','Unit price (low)','Price as listed','Status','Ordered','Received','Installed','Link','Source','Notes'];
+  const flat=[];
+  const pushRows=(section,list)=>list.forEach(p=>{const stt=statusOf(p); flat.push([section,p.vendor||host(p.url)||'',pnOf(p)||'',p.name,p.model||'',1,lowPrice(p.price)||'',p.price||'',STATUSES.find(x=>x[0]===stt)[1],['ordered','received','installed'].includes(stt)?'☑':'☐',['received','installed'].includes(stt)?'☑':'☐',stt==='installed'?'☑':'☐',p.url||'',p.srcUrl||'',(p.notes||'').replace(/\s+/g,' ')]);});
+  flat.push(['Factory Five','Factory Five','','Gen 3 Complete Kit','Complete Kit',1,22990,'$22,990','Planned','☐','☐','☐','https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/','','Base kit; options below']);
+  pushRows('Factory Five options',ffr);
+  Object.entries(byVendor).sort().forEach(([v,list])=>pushRows(v,list));
+  const cell=(v,i)=>{ if(i===12||i===13){ return v?`<a href="${esc(v)}">${esc(host(v)||v)}</a>`:''; } return esc(v); };
+  reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (low end, kit + chosen)</td><td style="font-weight:bold">${sum(chosen)+22990}</td><td colspan="8"></td></tr></tbody></table>`;
+  reportTSV=[cols.join('\t')].concat(flat.map(r=>r.map(v=>String(v).replace(/[\t\n]/g,' ')).join('\t'))).join('\n');
 }
+$('#copyxls').addEventListener('click',async()=>{
+  try{
+    if(navigator.clipboard&&window.ClipboardItem){ await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([reportHTML],{type:'text/html'}),'text/plain':new Blob([reportTSV],{type:'text/plain'})})]); }
+    else { await navigator.clipboard.writeText(reportTSV); }
+    toast('Copied. Paste into Excel or Google Sheets.');
+  }catch(e){ try{ await navigator.clipboard.writeText(reportTSV); toast('Copied as tab-separated text'); }catch(x){ toast('Clipboard blocked here; use Copy as text'); } }
+});
 $('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Order sheet copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
 
 /* ---- checklist ---- */
