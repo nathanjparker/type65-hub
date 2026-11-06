@@ -271,6 +271,17 @@ li.warn.done .nbtn{text-decoration:none}
 .moves li{margin:8px 0}
 .moves .wwhy{font-size:13.5px}
 .moves .jumps{margin-top:4px}
+.planways{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:8px}
+.planways.one{grid-template-columns:1fr}
+.planways>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.planways h4{font-size:14.5px;font-weight:600;margin:0}
+.planways>div:nth-child(2) h4{color:var(--ok)}
+.cmp{display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:2px 8px;margin-left:8px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--muted);vertical-align:2px}
+.cmp:hover{border-color:var(--accent);color:var(--fg)}
+.cmptbl{table-layout:fixed;min-width:860px} .cmptbl td{vertical-align:top;font-size:13.5px;white-space:normal} .cmptbl th:nth-child(1){width:17%} .cmptbl th:nth-child(2){width:11%} .cmptbl th:nth-child(3){width:11%} .cmptbl th:nth-child(4){width:12%} .cmptbl th:nth-child(5){width:12%} .cmptbl th:nth-child(7){width:70px} .cmptbl td.pn{white-space:normal;word-break:break-word} .cmptbl tr.on td{background:var(--gold-soft)}
+.cmptbl .dots{font-size:10px;letter-spacing:1px;color:var(--gold)}
+.cmpwrap{overflow:auto;max-height:60vh}
+dialog.wide{width:min(960px,94vw)}
 tr.top td{color:var(--muted)}
 /* card controls */
 .card .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}

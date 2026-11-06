@@ -4,6 +4,21 @@ Source for the Factory Five Gen 3 Type 65 Coupe build hub: a stage-by-stage part
 
 The live page is a Claude artifact. This repo is the versioned copy of its data and page source.
 
+## About
+
+I'm Nate, a first-time kit builder in Washington State putting together a Gen 3 Type 65 Coupe as a street car (no donor, BluePrint 347 EFI + Tremec TKX, 2015 IRS, A/C, side windows, wipers) with my daughter, target finish September 2029. Researching the build meant reading the same forty threads and videos over and over, so I had the parts, prices, who-runs-what and the gotchas filed into one page in the order the FFR manual builds the car. This is that page, shared so you don't have to redo the reading.
+
+What's in it:
+
+- **14 build stages** in manual order, each with what to read first, what goes wrong, ideas worth stealing and a checklist.
+- **195 parts and ideas**: FFR part numbers next to the aftermarket alternatives, list price, who runs it (with the thread or video it came from), Gen 3 fit, and dots for how many documented coupes chose it.
+- **Your build**: pick one option per decision, compare every option side by side, see which decisions lock at the kit order, and get warnings when two picks don't go together.
+- **Order sheet** generated from your picks (tick this on the FFR form, buy this elsewhere), with an Excel copy.
+- **Build calculator and schedule**: hours per week in, go-kart / title / done dates out, on an editable Gantt with gates and order-by dates for long-lead parts.
+- **Plans that cross stages**: cabin comfort, driver fit at 6'2", and Washington rain. Pick what you want the car to be and it tells you the fewest and the cheapest changes that get you there.
+
+Nothing here is FFR-official and prices go stale; every figure is tagged with where it came from. Found something wrong or have a part that should be in it? Open an issue or post in the forum thread linked from the page.
+
 ## Layout
 
 - `data/stages.json` — the 14 build stages in manual order: window, hours, summary, read-first links, challenges, ideas, default checklist.

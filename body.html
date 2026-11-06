@@ -99,7 +99,7 @@
     </div>
     <div class="panel" style="margin-top:14px"><h3>Make your own copy</h3>
       <p class="status">Want this hub for your own build? Open the free web version and start picking; your picks, progress and notes save on your device, and Export moves them between phone and laptop. No account needed.</p>
-      <p><a class="btn" id="copyprompt" href="https://nathanjparker.github.io/type65-hub/" target="_blank" rel="noopener">Open the free version →</a> <a class="btn ghost" href="https://github.com/nathanjparker/type65-hub" target="_blank" rel="noopener">Source on GitHub</a></p>
+      <p><a class="btn" id="copyprompt" href="https://nathanjparker.github.io/type65-hub/" target="_blank" rel="noopener">Open the free version →</a> <a class="btn ghost" href="https://github.com/nathanjparker/type65-hub" target="_blank" rel="noopener">Source on GitHub</a><span id="forumlink"></span></p>
     </div>
     <div class="panel suggestbox" style="margin-top:14px">
       <h3>Add your build or a resource you trust</h3>
@@ -187,6 +187,7 @@ document.addEventListener('input',e=>{
 let calcT;
 /* ---- overview ---- */
 $('#upfront').innerHTML=D.upfront.map(x=>`<li>${esc(x)}</li>`).join('');
+if(D.forumThread){ const fl=$('#forumlink'); if(fl) fl.innerHTML=` <a class="btn ghost" href="${esc(D.forumThread)}" target="_blank" rel="noopener">Forum thread</a>`; const ss=$('#sg-status'); if(ss) ss.innerHTML=`Works for the owner and invited builders. On the public link, <a href="${esc(D.forumThread)}" target="_blank" rel="noopener">reply in the forum thread</a> instead; the weekly pass reads it.`; }
 $('#gaps').innerHTML=D.gaps.map(x=>`<li>${esc(x)}</li>`).join('');
 
 /* ---- state helpers ---- */
@@ -324,7 +325,7 @@ function renderSheet(){
     if(!opts.length) return '';
     const top=Math.max(...opts.map(p=>p.pop||0));
     const dl=D.decideLabels[g.decideBy]||''; const decided=opts.some(isChosen);
-    return `<div class="dec" id="dec-${esc(g.id)}"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>` <button class="opt ${isChosen(p)?'on':''} ${(isOwner||sandbox)?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${(isOwner||sandbox)?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}${agreement(g)}</div></div>`;
+    return `<div class="dec" id="dec-${esc(g.id)}"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}${opts.length>1?`<button class="cmp" data-compare="${esc(g.id)}" title="See every option side by side">⇄ compare</button>`:''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>` <button class="opt ${isChosen(p)?'on':''} ${(isOwner||sandbox)?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${(isOwner||sandbox)?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}${agreement(g)}</div></div>`;
   }).join('');
   // decide-by summary
   const order=['order','body','paint','any'];
@@ -332,6 +333,32 @@ function renderSheet(){
   $('#sheet-deadlines').innerHTML=open.length?`<div class="deadlines">${order.map(k=>{const gs=open.filter(g=>g.decideBy===k); return gs.length?`<div><b>${esc(D.decideLabels[k])}</b> <span class="row">(${gs.length})</span><div class="chips">${gs.map(g=>`<span class="chip ${k}">${esc(g.label)}</span>`).join('')}</div></div>`:'';}).join('')}</div>`:'<p class="status">Every decision has a pick.</p>';
 }
 
+/* ---- compare view: every option in a decision, side by side ---- */
+function planPoints(p){ const out=[]; (D.plans||[]).forEach(pl=>{ pl.rows.forEach(r=>{ if(r.group===p.group&&r.scores[p.name]!=null) out.push(`${r.scores[p.name]} ${pl.title.replace(/ plan$/i,'')}`); }); if(pl.extras.includes(p.name)) out.push(`+1 ${pl.title.replace(/ plan$/i,'')}`); }); return out; }
+function openCompare(gid){
+  const g=GROUPS[gid]; if(!g) return; const can=isOwner||sandbox;
+  const opts=allParts().filter(p=>p.group===gid).sort((a,b)=>(isChosen(b)?1:0)-(isChosen(a)?1:0)||(b.pop||0)-(a.pop||0));
+  const idx=builderIndex(); const who=p=>Object.keys(idx).filter(n=>idx[n].parts.includes(p));
+  const fitLabel={yes:'Fits Gen 3',roadster:'Roadster part, verify',unknown:'Unconfirmed'};
+  $('#nd-title').textContent=g.label; $('#nd-model').textContent=(g.multi?'Pick any that apply. ':'Pick one. ')+(D.decideLabels[g.decideBy]||'')+(g.tradeoff?' · '+g.tradeoff:'');
+  const rows=opts.map(p=>{ const on=isChosen(p), s=st(p.id), names=who(p), pts=planPoints(p);
+    return `<tr class="${on?'on':''}"><td><b>${esc(p.name)}</b>${p.model?`<br><small class="row">${esc(p.model)}</small>`:''}<br><small class="chip k-${esc(p.kind)}">${esc({FFR:'Factory Five',aftermarket:'Aftermarket',DIY:'DIY / idea'}[p.kind]||p.kind)}</small>${!compatible(p)?`<br><small class="chip f-roadster">${esc(D.families[p.family.split(',')[0]]||p.family)} only</small>`:''}</td>
+      <td class="pn">${s.quote?`<b>${money(s.quote)}</b> <small>${s.quoteKind==='paid'?'paid':'quoted'}</small><br><small class="row">list ${esc(p.price||'—')}</small>`:esc(p.price||'—')}${p.tag&&!s.quote?` <small class="row">[${esc(p.tag)}]</small>`:''}</td>
+      <td>${p.pop?`<span class="dots">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span><br>`:''}<small class="row">${esc(p.popWhy||'')}</small></td>
+      <td>${names.length?names.map(n=>`<button class="nbtn" data-builder="${esc(n)}" data-closecmp="1">${esc(n)}</button>`).join(' '):`<small class="row">${esc(p.users||'—')}</small>`}</td>
+      <td><span class="chip f-${esc(p.fit)}">${esc(fitLabel[p.fit]||p.fit||'—')}</span>${pts.length?`<br><small class="row">${esc(pts.join(' · '))}</small>`:''}</td>
+      <td>${esc(p.notes||'')}<div class="links" style="margin-top:4px">${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.vendor||host(p.url))}</a>`:''}${p.srcUrl?` <a href="${esc(p.srcUrl)}" target="_blank" rel="noopener">${esc(p.src||'source')}</a>`:''}</div></td>
+      <td>${on?'<span class="chip chosenchip">Chosen</span>':can?`<button class="nbtn resolve" data-cmppick="${esc(p.id)}">${g.multi?'Add':'Pick'}</button>`:''}<br><button class="nbtn jump" data-jump="card:${esc(p.id)}" data-closecmp="1">card →</button></td></tr>`; }).join('');
+  $('#nd-body').innerHTML=`<div class="cmpwrap tbl"><table class="cmptbl"><thead><tr><th>Option</th><th>Price</th><th>How many builds</th><th>Who runs it</th><th>Fit · plan points</th><th>What builders say</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  $('#nd-acts').innerHTML=`<button class="btn ghost" id="nd-cancel">Close</button>`;
+  $('#nd-cancel').onclick=()=>{ dlg.close(); dlg.classList.remove('wide'); };
+  dlg.classList.add('wide'); dlg.showModal();
+}
+document.addEventListener('click',async e=>{
+  const c=e.target.closest('[data-compare]'); if(c){ openCompare(c.dataset.compare); return; }
+  const pk=e.target.closest('[data-cmppick]'); if(pk){ const p=allParts().find(x=>x.id===pk.dataset.cmppick); if(!p) return; await choose(p.id,true); toast(`${p.name} is now your pick`); openCompare(p.group); return; }
+  if(e.target.closest('[data-closecmp]')&&dlg.open){ dlg.close(); dlg.classList.remove('wide'); if(e.target.closest('[data-builder]')){ const b=document.getElementById('builders'); if(b) setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'start'}),50); } }
+});
 /* ---- order sheet ---- */
 const lowPrice=s=>{const m=String(s||'').replace(/,/g,'').match(/\$\s*(\d+(?:\.\d+)?)/); return m?+m[1]:null;};
 const pnOf=p=>{const m=(p.model||'').match(/#?\b(\d{5})\b/); return m?m[1]:'';};
@@ -630,25 +657,50 @@ function renderPlans(){
   const el=$('#plans-body'); if(!el) return; const can=isOwner||sandbox;
   el.innerHTML=D.plans.map(pl=>{
     const tgt=planTarget(pl.id)||pl.targets[0].id; const need=pl.need[tgt]||0; const tlabel=pl.targets.find(t=>t.id===tgt).label;
-    let score=0; const moves=[];
+    let score=0; const cands=[], rowNow=[];   // every move that would add points: {row, gain, cost, part, pick, multi, extra}
     const rows=pl.rows.map(r=>{
-      const picks=allParts().filter(p=>p.group===r.group&&isChosen(p)); let s=0; picks.forEach(p=>{ s+=(r.scores[p.name]||0); }); if(!r.multi&&picks.length) s=Math.max(...picks.map(p=>r.scores[p.name]||0)); score+=s;
-      const better=Object.entries(r.scores).filter(([n,v])=>v>s&&!picks.some(p=>p.name===n)).sort((a,b)=>b[1]-a[1]);
-      if(better.length){ const [n,v]=better[0]; const part=allParts().find(p=>p.name===n); moves.push({label:r.label,gain:v-s,part,pick:picks[0],multi:!!r.multi}); }
+      // scored parts in the decision group are the alternatives; a scored part outside the group (quiet inserts on stock pipes) is an add-on that lifts the row
+      const picks=allParts().filter(p=>isChosen(p)&&(p.group===r.group||(r.scores[p.name]!=null&&p.group!==r.group))); let s=0; picks.forEach(p=>{ s+=(r.scores[p.name]||0); }); if(!r.multi&&picks.length) s=Math.max(...picks.map(p=>r.scores[p.name]||0)); score+=s; rowNow.push(s);
+      const groupPick=picks.find(p=>p.group===r.group);
+      const better=Object.entries(r.scores).filter(([n,v])=>(r.multi?v>0:v>s)&&!picks.some(p=>p.name===n)).sort((a,b)=>b[1]-a[1]);
+      better.forEach(([n,v])=>{ const part=allParts().find(p=>p.name===n); if(part) cands.push({row:r.label,gain:r.multi?v:v-s,cost:lowPrice(part.price),part,pick:groupPick,multi:!!r.multi,addon:part.group!==r.group}); });
       const top=!better.length;
-      return `<tr class="${top?'top':''}"><td><b>${esc(r.label)}</b><br><small class="row">${esc(r.note)}</small></td><td>${picks.length?picks.map(p=>esc(p.name)).join('<br>'):'<span class="row">nothing picked</span>'}</td><td class="pn">${s} / ${Math.max(...Object.values(r.scores))}</td></tr>`;
+      return `<tr class="${top?'top':''}"><td><b>${esc(r.label)}</b><br><small class="row">${esc(r.note)}</small></td><td>${picks.length?picks.map(p=>esc(p.name)).join('<br>'):'<span class="row">nothing picked</span>'}</td><td class="pn">${s} / ${r.multi?Object.values(r.scores).reduce((a,b)=>a+b,0):Math.max(...Object.values(r.scores))}</td></tr>`;
     });
-    const extras=pl.extras.map(n=>{ const p=allParts().find(x=>x.name===n); const on=p&&isChosen(p); if(on) score+=1; else if(p) moves.push({label:'Extra',gain:1,part:p,extra:true}); return `<span class="chip ${on?'chosenchip':''}">${on?'✓ ':''}${esc(n)}</span>`; }).join('');
-    const ok=score>=need; const gap=need-score;
-    moves.sort((a,b)=>b.gain-a.gain);
+    const extras=pl.extras.map(n=>{ const p=allParts().find(x=>x.name===n); const on=p&&isChosen(p); if(on) score+=1; else if(p) cands.push({row:'Extra',gain:1,cost:lowPrice(p.price),part:p,extra:true}); return `<span class="chip ${on?'chosenchip':''}">${on?'✓ ':''}${esc(n)}</span>`; }).join('');
+    const gap=need-score;
+    // greedy: take moves in the given order, at most one per pick-one row, until the gap closes
+    // some targets need a floor on one decision (a cruiser needs quiet pipes whatever the mat count): satisfy those first, then fill the gap
+    const mins=(pl.mins||{})[tgt]||{}; const rowScore={}; pl.rows.forEach((r,i)=>{ rowScore[r.label]=rowNow[i]; });
+    const short=Object.entries(mins).filter(([row,min])=>(rowScore[row]||0)<min);
+    const pick=order=>{ let acc=0; const out=[], used=new Set();
+      for(const [row,min] of short){ const m=order.find(c=>c.row===row&&!c.multi&&(rowScore[row]||0)+c.gain>=min)||order.find(c=>c.row===row&&(rowScore[row]||0)+c.gain>=min); if(!m) return null; out.push(m); used.add(row); acc+=m.gain; }
+      for(const m of order){ if(acc>=gap) break; if(out.includes(m)) continue; if(!m.multi&&!m.extra&&used.has(m.row)) continue; out.push(m); used.add(m.row); acc+=m.gain; } return acc>=gap?out:null; };
+    const byGain=cands.slice().sort((a,b)=>b.gain-a.gain||(a.cost??1e9)-(b.cost??1e9));
+    const priced=cands.filter(m=>m.cost!=null).sort((a,b)=>a.cost/a.gain-b.cost/b.gain||b.gain-a.gain);
+    const shortest=pick(byGain); const cheapest=pick(priced.concat(byGain.filter(m=>m.cost==null)));
+    const ok=score>=need&&!short.length;
+    const key=list=>list.map(m=>m.part.id).sort().join('|');
+    const floorNote=short.length?`<p class="status">"${esc(tlabel)}" also needs ${short.map(([row,min])=>`<b>${esc(row)}</b> at ${min}+ (you're at ${rowScore[row]||0})`).join(' and ')}, whatever the total.</p>`:'';
+    const total=list=>{ const known=list.filter(m=>m.cost!=null); const unk=list.length-known.length; const sum=known.reduce((a,m)=>a+m.cost,0); return (known.length?'about '+money(sum)+' at the low listed prices':'')+(unk?`${known.length?', plus ':''}${unk} with no listed price`:''); };
+    const moveList=list=>`<ol class="moves">${list.map(m=>`<li><b>${m.extra||m.multi||m.addon?'Add':'Switch to'} ${esc(m.part.name)}</b> <span class="row">(+${m.gain}${m.pick&&!m.multi&&!m.extra?(m.addon?`, on top of ${esc(m.pick.name)}`:`, replaces ${esc(m.pick.name)}`):''}${m.part.price?`, ${esc(m.part.price)}`:', no listed price'})</span>${m.part.notes?`<div class="wwhy">${esc(m.part.notes)}</div>`:''}<div class="jumps">${can?`<button class="nbtn resolve" data-applymove="${esc(m.part.id)}">${m.extra||m.multi||m.addon?'Add it to my build':'Make this my pick'}</button>`:''}<button class="nbtn jump" data-jump="card:${esc(m.part.id)}">See the part →</button></div></li>`).join('')}</ol>`;
     let advice='';
-    if(ok) advice=`<div class="planscore ok"><b>Your picks get you there.</b> ${score} of ${need} points for "${esc(tlabel)}". Nothing to change unless you want quieter still.</div>`;
-    else{
-      // pick the smallest set of top moves that closes the gap
-      let acc=0; const plan=[]; for(const m of moves){ if(acc>=gap) break; plan.push(m); acc+=m.gain; }
-      advice=`<div class="planscore"><b>${gap} point${gap>1?'s':''} short</b> of "${esc(tlabel)}" (${score} of ${need}). The shortest way there:</div>
-      <ol class="moves">${plan.map(m=>`<li><b>${m.extra?'Add':m.multi?'Add':'Switch to'} ${esc(m.part.name)}</b> <span class="row">(+${m.gain}${m.pick&&!m.multi?`, replaces ${esc(m.pick.name)}`:''}${m.part.price?`, ${esc(m.part.price)}`:''})</span>${m.part.notes?`<div class="wwhy">${esc(m.part.notes)}</div>`:''}<div class="jumps">${can?`<button class="nbtn resolve" data-applymove="${esc(m.part.id)}">${m.extra||m.multi?'Add it to my build':'Make this my pick'}</button>`:''}<button class="nbtn jump" data-jump="card:${esc(m.part.id)}">See the part →</button></div></li>`).join('')}</ol>
-      ${moves.length>plan.length?`<details class="others"><summary>Other ways to gain points</summary><ul>${moves.slice(plan.length).map(m=>`<li>${esc(m.label)}: ${esc(m.part.name)} (+${m.gain})</li>`).join('')}</ul></details>`:''}`;
+    if(ok){
+      const up=pl.targets.filter(t=>(pl.need[t.id]||0)>score).sort((a,b)=>pl.need[a.id]-pl.need[b.id])[0];
+      advice=`<div class="planscore ok"><b>Your picks get you there.</b> ${score} of ${need} points for "${esc(tlabel)}".${up?` The next step up, "${esc(up.label)}", is ${pl.need[up.id]-score} point${pl.need[up.id]-score>1?'s':''} away; pick it above to see the moves.`:' That is the top target for this plan.'}</div>`;
+    } else if(!shortest){
+      advice=`<div class="planscore"><b>${Math.max(gap,0)} point${gap===1?'':'s'} short</b> of "${esc(tlabel)}" (${score} of ${need}). The hub doesn't list enough options to get there; the best available moves are below.</div>${floorNote}${moveList(byGain.slice(0,4))}`;
+    } else {
+      const same=cheapest&&key(cheapest)===key(shortest);
+      const shown=new Set(shortest.concat(cheapest||[]).map(m=>m.part.id));
+      const rest=byGain.filter(m=>!shown.has(m.part.id));
+      advice=`<div class="planscore"><b>${gap>0?`${gap} point${gap>1?'s':''} short`:'Points are there, but a floor isn\'t met'}</b> ${gap>0?'of':'for'} "${esc(tlabel)}" (${score} of ${need}).</div>${floorNote}
+      <div class="planways${same||!cheapest?' one':''}">
+        <div><h4>Fewest changes${shortest.length>1?` (${shortest.length})`:''}</h4><p class="status">${total(shortest)}</p>${moveList(shortest)}</div>
+        ${cheapest&&!same?`<div><h4>Cheapest${cheapest.length>1?` (${cheapest.length} changes)`:''}</h4><p class="status">${total(cheapest)}</p>${moveList(cheapest)}</div>`:''}
+      </div>
+      ${same&&cheapest?'<p class="status">That is also the cheapest route the hub can price.</p>':''}
+      ${rest.length?`<details class="others"><summary>Other ways to gain points</summary><ul>${rest.map(m=>`<li>${esc(m.row)}: ${esc(m.part.name)} (+${m.gain}${m.part.price?', '+esc(m.part.price):''})</li>`).join('')}</ul></details>`:''}`;
     }
     return `<div class="panel planbox"><h3>${esc(pl.title)}</h3><p class="status">${esc(pl.intro)}</p>
       <div class="chips" style="margin:8px 0"><span class="row">What do you want the car to be?</span>${pl.targets.map(t=>`<button class="opt ${t.id===tgt?'on':''} ${can?'':'ro'}" data-plantarget="${pl.id}:${t.id}" ${can?'':'disabled'} title="${esc(t.desc)}">${esc(t.label)}</button>`).join('')}</div>
@@ -757,7 +809,7 @@ function openTaskLog(id,i){
 }
 document.addEventListener('click',e=>{ const b=e.target.closest('[data-tlog]'); if(b){ openTaskLog(b.dataset.tlog,b.dataset.i); } });
 /* ---- note dialog ---- */
-const dlg=$('#notedlg');
+const dlg=$('#notedlg'); dlg.addEventListener('close',()=>dlg.classList.remove('wide'));
 function openNote(id){
   const p=allParts().find(x=>x.id===id); if(!p) return;
   const s=st(id);
@@ -919,14 +971,14 @@ function initLocal(){
   isOwner=true; db=localDb();
   ALL_IDS.forEach(id=>{const el=document.getElementById('owner-'+id); if(el) el.innerHTML=ownerPanelHTML(id);});
   renderNotes(); renderParts(q.value);
-  const bar=$('#sandbox'); if(bar){ bar.hidden=false; bar.innerHTML=`<b>Your copy.</b> Picks, progress and notes are saved in this browser only. <button class="btn ghost" id="lc-export">Export my build</button> <label class="btn ghost" style="cursor:pointer">Import<input type="file" accept="application/json" id="lc-import" hidden></label> <button class="btn ghost" id="lc-nate">Start from Nate's picks</button> <button class="btn ghost" id="lc-clear">Clear</button>`;
+  const bar=$('#sandbox'); if(bar){ bar.hidden=false; bar.innerHTML=`<b>Your copy.</b> Picks, progress and notes are saved in this browser only. <button class="btn ghost" id="lc-export">Export my build</button> <label class="btn ghost" style="cursor:pointer">Import<input type="file" accept="application/json" id="lc-import" hidden></label> <button class="btn ghost" id="lc-nate">Start from Nate's picks</button> <button class="btn ghost" id="lc-clear">Clear</button> <a class="btn ghost" href="https://github.com/nathanjparker/type65-hub#readme" target="_blank" rel="noopener">About this hub</a>${D.forumThread?` <a class="btn ghost" href="${esc(D.forumThread)}" target="_blank" rel="noopener">Forum thread</a>`:''}`;
     $('#lc-export').onclick=()=>{ const blob=new Blob([JSON.stringify(localSnapshot(),null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='my-type65-build.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); };
     $('#lc-import').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const d=JSON.parse(r.result); state=d.state||{}; stageState=d.stagestate||{}; taskState=d.tasks||{}; notes=d.notes||{}; addedParts=d.addedParts||[]; persistLocal(); renderNotes(); renderParts(q.value); toast('Build imported'); }catch(x){ toast('That file is not a hub export'); } }; r.readAsText(f); };
     $('#lc-nate').onclick=()=>{ state={}; (D.natePicks||[]).forEach(id=>{state[id]={chosen:true,pct:0};}); persistLocal(); renderParts(q.value); toast("Nate's picks loaded"); };
     $('#lc-clear').onclick=()=>{ state={}; stageState={}; taskState={}; notes={}; addedParts=[]; persistLocal(); renderNotes(); renderParts(q.value); toast('Cleared'); };
   }
   $('#ask-off').textContent='Asking the hub is a feature of the Claude version. This copy keeps everything else.';
-  const cp=$('#copyprompt'); if(cp){ cp.closest('.panel').innerHTML='<h3>This is your copy</h3><p class="status">Everything you pick or note here is saved in this browser. Use Export at the top to back it up or move it to another device.</p>'; }
+  const cp=$('#copyprompt'); if(cp){ cp.closest('.panel').innerHTML=`<h3>This is your copy</h3><p class="status">Everything you pick or note here is saved in this browser. Use Export at the top to back it up or move it to another device.</p><p><a class="btn ghost" href="https://github.com/nathanjparker/type65-hub#readme" target="_blank" rel="noopener">About this hub</a> <a class="btn ghost" href="https://github.com/nathanjparker/type65-hub" target="_blank" rel="noopener">Source on GitHub</a>${D.forumThread?` <a class="btn ghost" href="${esc(D.forumThread)}" target="_blank" rel="noopener">Forum thread</a>`:''}</p>`; }
   document.querySelectorAll('#sgform, #rfform').forEach(f=>{ f.querySelector('.status').innerHTML=readOnlyMsg(f.id==='sgform'?'part':'link'); f.querySelectorAll('input,textarea,select,button').forEach(el=>el.disabled=true); });
 }
 function localSnapshot(){ return {v:1,exported:new Date().toISOString(),state,stagestate:stageState,tasks:taskState,notes,addedParts,calc}; }

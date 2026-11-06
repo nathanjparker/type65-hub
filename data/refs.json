@@ -1408,6 +1408,16 @@
 "loud": 4,
 "cruise": 7,
 "gt": 10
+},
+"mins": {
+"cruise": {
+"Exhaust": 2
+},
+"gt": {
+"Exhaust": 3,
+"Windows": 3,
+"A/C and heat": 2
+}
 }
 },
 {
@@ -1418,7 +1428,7 @@
 {
 "id": "ok",
 "label": "Fits, helmet optional",
-"desc": ""
+"desc": "Stock-style seat on tracks and a 14\" wheel. Comfortable to about 6'0\"; a helmet is tight."
 },
 {
 "id": "tall",
@@ -1465,6 +1475,98 @@
 "need": {
 "ok": 2,
 "tall": 5
+},
+"mins": {
+"tall": {
+"Seats": 3
+}
+}
+},
+{
+"id": "rain",
+"title": "Washington rain plan",
+"intro": "Nobody has documented a fully weather-tight Gen 3 coupe. How dry and how safe it is in the wet comes down to the windows, the wipers, the defrost path and what you do about the bare steel.",
+"targets": [
+{
+"id": "dry",
+"label": "Dry days only",
+"desc": "Sliders, stock wipers, garage-kept. Fine for summer cruises."
+},
+{
+"id": "rain",
+"label": "Caught in the rain, no drama",
+"desc": "Wipers that clear the big windshield, a real defrost path, bulb seals on the doors, coated pipes."
+},
+{
+"id": "nov",
+"label": "Driven in November anyway",
+"desc": "Roll-down windows, sealed marine wipers, LED lighting, a rear camera, coated chassis and exhaust."
+}
+],
+"need": {
+"dry": 2,
+"rain": 8,
+"nov": 12
+},
+"rows": [
+{
+"label": "Side windows",
+"group": "side-windows",
+"note": "Sliders leak a little and seal poorly; roll-downs are the wet-climate answer and the only part here you can't add after paint.",
+"scores": {
+"FFR Gen 3 side window components": 1,
+"FormaCars electric roll-down window kit": 3
+}
+},
+{
+"label": "Wipers",
+"group": "wipers",
+"note": "FFR's kit is 'OK but marginal' on the coupe's windshield. Marine motors are sealed to IP66.",
+"scores": {
+"FFR vintage Lucas 2-speed wiper kit": 1,
+"Specialty Power Windows wiper kit": 2,
+"Marine wipers (Wexco / Schmidt Ongaro)": 3
+}
+},
+{
+"label": "Defrost",
+"group": "hvac",
+"note": "A fogged windshield is the real rain problem. FFR's kit has two always-on outlets and no diverter; plan the Y-connections or go FormaCars.",
+"scores": {
+"FFR A/C-heater-defroster for 302/351W": 2,
+"FFR coupe A/C kit without compressor": 2,
+"FormaCars HVAC": 3,
+"Vintage Air Gen II Mini": 1,
+"Southern Rods SuperFrost": 1,
+"Siroco Boreal 600 evaporator (direct)": 1
+}
+}
+],
+"extras": [
+"Trim-Lok / McMaster EPDM bulb seal",
+"Jet-Hot / Swain Tech ceramic coating",
+"Powder-coated chassis, black",
+"Breeze LED headlight and exterior kits",
+"Auto-Vox camera mirror + rear camera",
+"Sikaflex 221 / 3M 5200 / 4200"
+],
+"facts": [
+"wallace18 stayed dry through two rainstorms with the FFR windows plus added foam and reworked frames, but says it won't match a production car.",
+"Wayne Yoshida (Gen 1 coupe) skipped ceramic coating and the bare pipes rusted in a year.",
+"edwardb runs the Specialty Power Windows wiper kit; builders call the FFR wipers marginal on the big windshield.",
+"The hatch glass heat-soaks the cabin in sun and fogs in rain; tint it and give the defrost a path to it.",
+"Seal the footbox-to-body gap and every panel seam with Sikaflex before the body goes on; water finds the same gaps the heat does.",
+"The coupe's rear blind spot is real; a camera mirror is the common fix and matters more in the wet."
+],
+"mins": {
+"rain": {
+"Wipers": 2,
+"Defrost": 2
+},
+"nov": {
+"Side windows": 3,
+"Wipers": 3
+}
 }
 }
 ],
