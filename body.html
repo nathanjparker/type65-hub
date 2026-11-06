@@ -39,7 +39,7 @@
       <p class="status" id="c-verdict"></p>
     </div>
     <div class="twocol">
-      <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div></div>
+      <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div><div class="chips" id="overall-status"></div></div>
       <div class="panel"><h3>Order these with the kit</h3><ol id="upfront"></ol></div>
       <div class="panel"><h3>Open questions</h3><ul id="gaps"></ul></div>
       <div class="panel"><h3>What's new</h3><div id="news"></div></div>
@@ -176,6 +176,8 @@ $('#gaps').innerHTML=D.gaps.map(x=>`<li>${esc(x)}</li>`).join('');
 
 /* ---- state helpers ---- */
 function allParts(){ return D.parts.concat(addedParts).concat(suggestions); }
+const STATUSES=[['planned','Planned'],['ordered','Ordered'],['received','Received'],['installed','Installed']];
+const statusOf=p=>st(p.id).status||'planned';
 const st=id=>{ if(sandbox&&mine) return (mine.state&&mine.state[id])||{}; const base=state[id]||{}; return isOwner?Object.assign({},base,priv[id]||{}):base; };
 const isChosen=p=>!!st(p.id).chosen;
 const pctOf=p=>Math.max(0,Math.min(100,+st(p.id).pct||0));
@@ -220,7 +222,7 @@ function cardHTML(p){
     const inGroup=p.group&&!GROUPS[p.group]?.multi;
     ctl=`<div class="ctl">
       <label><input type="${inGroup?'radio':'checkbox'}" ${inGroup?`name="g-${esc(p.group)}"`:''} data-choose="${esc(p.id)}" ${chosen?'checked':''}> Chosen</label>
-      ${chosen?`<input type="number" min="0" max="100" step="5" value="${pct}" data-pct="${esc(p.id)}" aria-label="Percent done">%<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div>`:''}
+      ${chosen?`<select data-status="${esc(p.id)}" aria-label="Status">${STATUSES.map(([v,l])=>`<option value="${v}" ${statusOf(p)===v?'selected':''}>${l}</option>`).join('')}</select><input type="number" min="0" max="100" step="5" value="${pct}" data-pct="${esc(p.id)}" aria-label="Percent done">%<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div>`:''}
       ${isOwner?`<button class="nbtn ${hasNote?'has':''}" data-note="${esc(p.id)}" title="Builder note">✎ note</button>`:''}
       ${p.added&&isOwner?`<button class="nbtn del" data-id="${esc(p.id)}">remove</button>`:''}${p.suggested&&isOwner?`<button class="nbtn delsug" data-doc="${esc(p.docId)}" data-key="${esc(p.key)}">remove</button>`:''}
     </div>`;
@@ -230,7 +232,7 @@ function cardHTML(p){
   return `<article class="card ${esc(p.kind)}${p.added?' added':''}${chosen?' chosen':''}" data-id="${esc(p.id)}">
     <div class="nm">${esc(p.name)}</div>
     ${p.model?`<div class="md">${esc(p.model)}</div>`:''}
-    <div class="chips">${chosen?'<span class="chip chosenchip">Chosen</span>':''}${p.pop?`<span class="chip pop" title="${esc(p.popWhy||'')}">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)} ${p.pop>=4?'popular':p.pop>=3?'common':p.pop>=2?'a few builds':'rare'}</span>`:''}<span class="chip k-${esc(p.kind)}">${esc(kindLabel)}</span>${fitLabel?`<span class="chip f-${esc(p.fit)}">${fitLabel}</span>`:''}${p.added?`<span class="chip${p.suggestedBy?' sug':''}">${p.suggestedBy?'Suggested by '+esc(p.suggestedBy)+' · researched':'Added by Nate'}</span>`:''}${p.suggested?`<span class="chip sug">Suggested by ${esc(p.by||'a builder')}${p.researched?'':' · research pending'}</span>`:''}${s.receipt?'<span class="chip chosenchip">receipt ✓</span>':''}${s.photos&&s.photos.length?`<span class="chip">${s.photos.length} photo${s.photos.length>1?'s':''}</span>`:''}${!compatible(p)?`<span class="chip f-roadster">${esc(D.families[p.family.split(',')[0]]||p.family)} only</span>`:''}</div>
+    <div class="chips">${chosen?`<span class="chip chosenchip st-${statusOf(p)}">${statusOf(p)==='planned'?'Chosen':STATUSES.find(x=>x[0]===statusOf(p))[1]}</span>`:''}${p.pop?`<span class="chip pop" title="${esc(p.popWhy||'')}">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)} ${p.pop>=4?'popular':p.pop>=3?'common':p.pop>=2?'a few builds':'rare'}</span>`:''}<span class="chip k-${esc(p.kind)}">${esc(kindLabel)}</span>${fitLabel?`<span class="chip f-${esc(p.fit)}">${fitLabel}</span>`:''}${p.added?`<span class="chip${p.suggestedBy?' sug':''}">${p.suggestedBy?'Suggested by '+esc(p.suggestedBy)+' · researched':'Added by Nate'}</span>`:''}${p.suggested?`<span class="chip sug">Suggested by ${esc(p.by||'a builder')}${p.researched?'':' · research pending'}</span>`:''}${s.receipt?'<span class="chip chosenchip">receipt ✓</span>':''}${s.photos&&s.photos.length?`<span class="chip">${s.photos.length} photo${s.photos.length>1?'s':''}</span>`:''}${!compatible(p)?`<span class="chip f-roadster">${esc(D.families[p.family.split(',')[0]]||p.family)} only</span>`:''}</div>
     ${p.price?`<div class="price">${esc(p.price)}<i>[${esc(p.tag||'est')}]</i>${p.checked?`<i>· checked ${esc(p.checked)}</i>`:''}</div>`:''}
     ${p.popWhy?`<div class="row"><b>Who picks it:</b> ${esc(p.popWhy)}</div>`:''}
     ${p.users?`<div class="row"><b>Used by:</b> ${esc(p.users)}</div>`:''}
@@ -311,22 +313,23 @@ function renderReport(){
   const byVendor={};
   other.forEach(p=>{const v=p.vendor||host(p.url)||'Unspecified vendor'; (byVendor[v]=byVendor[v]||[]).push(p);});
   const sum=list=>list.reduce((a,p)=>a+(lowPrice(p.price)||0),0);
-  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(host(p.url))}</a>`:''}</td><td class="pn">${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}</td></tr>`).join('');
+  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(host(p.url))}</a>`:''}</td><td class="pn">${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}</td><td><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td></tr>`).join('');
+  const counts=STATUSES.map(([v,l])=>[l,chosen.filter(p=>statusOf(p)===v).length]);
   let html='',txt=[];
   const kitNote='Kit price itself is not in the FFR list below; the Complete Kit is $22,990 plus options.';
   if(openOrder.length){ html+=`<div class="panel warnbox" style="margin-bottom:14px"><h3>Order form not ready</h3><p>${openOrder.length} decision${openOrder.length>1?'s':''} that lock at the kit order still ${openOrder.length>1?'have':'has'} no pick: ${openOrder.map(g=>esc(g.label)).join(', ')}.</p></div>`; txt.push(`ORDER FORM NOT READY: undecided at order time: ${openOrder.map(g=>g.label).join(', ')}`); txt.push(''); }
-  html+=`<div class="panel" style="margin-bottom:14px"><h3>Factory Five order form</h3><p class="status">${kitNote}</p>${ffr.length?`<div class="tbl"><table><thead><tr><th>Part no.</th><th>Tick this</th><th>Link</th><th>Price</th></tr></thead><tbody>${rows(ffr)}</tbody></table></div><p class="status">FFR options subtotal (low end, where priced): <b>${money(sum(ffr))}</b></p>`:'<p class="empty">No Factory Five items chosen yet.</p>'}
+  html+=`<div class="panel" style="margin-bottom:14px"><h3>Factory Five order form</h3><p class="status">${kitNote}</p>${ffr.length?`<div class="tbl"><table><thead><tr><th>Part no.</th><th>Tick this</th><th>Link</th><th>Price</th><th>Status</th></tr></thead><tbody>${rows(ffr)}</tbody></table></div><p class="status">FFR options subtotal (low end, where priced): <b>${money(sum(ffr))}</b></p>`:'<p class="empty">No Factory Five items chosen yet.</p>'}
     ${skip.length?`<h3 style="margin-top:14px;font-size:16px">Leave unticked (buying elsewhere)</h3><ul>${skip.map(s=>`<li><span class="pn">${esc(pnOf(s.p)||'')}</span> ${esc(s.p.name)} <span class="row">→ you chose ${esc(s.pick.name)} from ${esc(s.pick.vendor||host(s.pick.url)||'elsewhere')}</span></li>`).join('')}</ul>`:''}</div>`;
   txt.push('FACTORY FIVE ORDER FORM'); txt.push(kitNote); ffr.forEach(p=>txt.push(`  [${pnOf(p)||'—'}] ${p.name} · ${p.model||''} · ${p.price||''}`)); txt.push(`  Subtotal (low end): ${money(sum(ffr))}`);
   if(skip.length){txt.push('  Leave unticked:'); skip.forEach(s=>txt.push(`  [${pnOf(s.p)}] ${s.p.name} -> buying ${s.pick.name} from ${s.pick.vendor||''}`));}
   Object.entries(byVendor).sort().forEach(([v,list])=>{
-    html+=`<div class="panel" style="margin-bottom:14px"><h3>${esc(v)}</h3><div class="tbl"><table><thead><tr><th>Part no.</th><th>Order</th><th>Link</th><th>Price</th></tr></thead><tbody>${rows(list)}</tbody></table></div><p class="status">Subtotal (low end): <b>${money(sum(list))}</b></p></div>`;
+    html+=`<div class="panel" style="margin-bottom:14px"><h3>${esc(v)}</h3><div class="tbl"><table><thead><tr><th>Part no.</th><th>Order</th><th>Link</th><th>Price</th><th>Status</th></tr></thead><tbody>${rows(list)}</tbody></table></div><p class="status">Subtotal (low end): <b>${money(sum(list))}</b></p></div>`;
     txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${p.url||''}`)); txt.push(`  Subtotal: ${money(sum(list))}`);
   });
   const total=sum(chosen)+22990;
   const warns=activeWarnings();
   if(warns.length){ html+=`<div class="panel warnbox" style="margin-bottom:14px"><h3>Check before ordering</h3><ul>${warns.map(warnHTML).join('')}</ul></div>`; txt.push(''); txt.push('CHECK BEFORE ORDERING'); warns.forEach(x=>txt.push('  - '+x.msg)); }
-  html+=`<div class="panel"><h3>Running estimate</h3><div class="overall"><div class="big">${money(total)}</div><div class="status">Complete Kit $22,990 + ${chosen.length} chosen items at their low listed price. Unpriced items (call for quote) add to this. Not included: shipping, paint, use tax, consumables.</div></div>
+  html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${money(total)}</div><div class="status">Complete Kit $22,990 + ${chosen.length} chosen items at their low listed price. Unpriced items (call for quote) add to this. Not included: shipping, paint, use tax, consumables.</div></div>
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   $('#report').innerHTML=html; reportText=txt.join('\n');
@@ -424,6 +427,7 @@ function renderParts(q){
   for(const id of ['builds','videos','vendors','options','community']) filterTable(id,q);
   const o=overallPct(); $('#overall-pct').textContent=o+'%'; $('#overall-bar').style.width=o+'%';
   const chosenN=allParts().filter(isChosen).length;
+  const ch=allParts().filter(isChosen); $('#overall-status').innerHTML=STATUSES.map(([v,l])=>`<span class="chip st-${v}">${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}</span>`).join('');
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
   renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds();
 }
@@ -570,6 +574,7 @@ document.addEventListener('click',async e=>{
 document.addEventListener('change',async e=>{
   if(!(isOwner||sandbox)||!db) return;
   const c=e.target.closest('[data-choose]'); if(c){ await choose(c.dataset.choose,c.checked); return; }
+  const ss=e.target.closest('[data-status]'); if(ss){ const v=ss.value; const patch={status:v}; if(v==='installed') patch.pct=100; else if(v==='planned'&&pctOf(allParts().find(x=>x.id===ss.dataset.status))===100) patch.pct=0; await writeState(ss.dataset.status,patch); return; }
   const p=e.target.closest('[data-pct]'); if(p){ await writeState(p.dataset.pct,{pct:Math.max(0,Math.min(100,+p.value||0))}); return; }
   const tk=e.target.closest('[data-task]'); if(tk&&sandbox){ const id=tk.dataset.task, i=tk.dataset.i; mine.tasks=mine.tasks||{}; const cur=Object.assign({done:{},extra:[]},mine.tasks[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); mine.tasks[id]=cur; renderParts(q.value); await saveMine(); return; }
   const tk2=tk; if(tk2){ const id=tk.dataset.task, i=tk.dataset.i; const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); taskState[id]=cur; renderParts(q.value); try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); } return; }
@@ -644,7 +649,7 @@ function localDb(){
 function context(){
   const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`];
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
-  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
+  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
   D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id}: `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t).join('; '));});
   activeWarnings().forEach(w=>lines.push('WARNING: '+w.msg));
   D.builds.forEach(b=>lines.push(`BUILD ${b.name} (${b.builder}; ${b.drivetrain}; ${b.status}): ${b.why} ${b.url}`));
