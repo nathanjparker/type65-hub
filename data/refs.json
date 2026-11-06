@@ -496,10 +496,16 @@
 "community": [
 {
 "name": "The Factory Five Forum (and v1 archive)",
-"what": "Nearly every Gen 3 coupe build lives here",
+"what": "Most Gen 3 coupe build threads and Q&A; the v1 archive is what the hub reads",
 "url": "https://thefactoryfiveforum.com/",
 "alt": "https://v1.thefactoryfiveforum.com/",
 "how": "Live site needs JavaScript; thread numbers resolve on the v1 archive, which is faster on a phone."
+},
+{
+"name": "ffcars.com FFR Type 65 Coupe subforum",
+"what": "The other big coupe board: 340+ pages, with the pinned Map of Coupe Owners (find Washington owners to visit) and Official Finished Coupes threads",
+"url": "https://www.ffcars.com/forums/ffr-type-65-coupe.42/",
+"how": "Blocks automated reading, so the hub only cites it second-hand. Read it yourself; paste anything worth keeping into Add your build or a resource."
 },
 {
 "name": "ffcars.com Northwest Region subforum",
@@ -761,7 +767,8 @@
 "How WSP handles the bumper line for a bumperless Gen 3 coupe. No published outcome.",
 "Whether Washington use tax applies to all out-of-state parts at titling.",
 "No published total-hours log for any Gen 3 coupe; the 1,200 h estimate uses Gen 1/2 logs.",
-"No FFR-published spring rates or alignment specs for the Gen 3 coupe."
+"No FFR-published spring rates or alignment specs for the Gen 3 coupe.",
+"ffcars.com's Type 65 Coupe subforum (340+ pages, owners map) can't be read automatically; everything from it in the hub is second-hand until someone pastes threads in."
 ],
 "groups": [
 {
