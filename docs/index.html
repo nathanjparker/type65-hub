@@ -256,6 +256,17 @@ li.warn.done .nbtn{text-decoration:none}
 .glead circle{fill:var(--warn)} .glead.late circle{fill:#b3261e} .glead.ok line{stroke:var(--ok)} .glead.ok circle{fill:var(--ok)}
 .leadlist{list-style:none;margin:8px 0 0;padding:0;font-size:14px;display:grid;gap:4px}
 .leadlist li.late b{color:#b3261e} .leadlist li.ok{color:var(--muted)} .leadlist li.ok b{color:var(--ok)}
+.thisweek{border-left:4px solid var(--accent)}
+.tw{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;font-size:14.5px}
+.tw li{display:flex;gap:8px;align-items:flex-start}
+.tw .dot{width:9px;height:9px;border-radius:50%;margin-top:7px;flex:none;background:var(--muted)}
+.tw li.hot .dot{background:#b3261e} .tw li.warn .dot{background:var(--warn)} .tw li.info .dot{background:var(--accent)}
+.tw li span:nth-child(2){flex:1;min-width:0}
+.tw li b{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-weight:500}
+.price.quoted{color:var(--ok)}
+.planscore{font-size:15px;margin:6px 0 10px;color:var(--warn)} .planscore.ok{color:var(--ok)}
+.planbox{margin-bottom:14px}
+.agree{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
 /* card controls */
 .card .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}
 .card .ctl label{display:flex;align-items:center;gap:5px;cursor:pointer}
@@ -299,6 +310,8 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <a href="#overview"><span class="n">★</span>Build at a glance</a>
   <a href="#sheet"><span class="n">✓</span>Your build</a>
   <a href="#schedule"><span class="n">⟶</span>Schedule</a>
+  <a href="#plans"><span class="n">☰</span>Plans</a>
+  <a href="#builders"><span class="n">👤</span>Builders</a>
   <a href="#order"><span class="n">$</span>Order sheet</a>
   <a href="#suggest"><span class="n">+</span>Add a part</a>
   <h4>Build stages</h4>
@@ -329,6 +342,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
       <div class="strip" id="strip"></div>
       <p class="status" id="c-verdict"></p>
     </div>
+    <div class="panel thisweek" id="thisweek"></div>
     <div class="twocol">
       <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div><div class="chips" id="overall-status"></div><div class="status" id="overall-hours"></div></div>
       <div class="panel"><h3>Order these with the kit</h3><ol id="upfront"></ol></div>
@@ -342,6 +356,10 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Your build</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
 
   <section class="stage" id="schedule"><div class="shead"><div class="roundel">⟶</div><div class="t"><h2>Schedule</h2><div class="meta"><span>Every stage on one timeline from the build calculator. Arrows are "must finish before"; red gates are the things you can't undo once the next stage starts; amber ticks are order-by dates for long-lead parts.</span></div></div></div><div id="gantt" style="margin-top:14px"></div></section>
+
+  <section class="stage" id="plans"><div class="shead"><div class="roundel">☰</div><div class="t"><h2>Plans that cross stages</h2><div class="meta"><span>Some decisions only make sense together. Each plan scores your picks against a target you choose.</span></div></div></div><div id="plans-body" style="margin-top:14px"></div></section>
+
+  <section class="stage" id="builders"><div class="shead"><div class="roundel">👤</div><div class="t"><h2>Builders</h2><div class="meta"><span>Every builder the hub cites, with the parts credited to them. Click a name to see their build as a spec.</span></div></div></div><div id="builders-body" style="margin-top:14px"></div></section>
 
   <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Prices are the low end of what's listed and are rough.</span></div></div></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><span class="status">Excel copy pastes into cells: one row per part with a clickable link, a status column and a subtotal per vendor.</span></div>
@@ -378,7 +396,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   <section class="stage" id="sources"><div class="shead"><div class="roundel">≡</div><div class="t"><h2>Sources</h2><div class="meta"><span>Where everything on this page comes from: the forums, sites, builders and build threads it cites. Add yours and the weekly pass will read it and file what it finds.</span></div></div></div>
     <div class="twocol" style="margin-top:14px">
       <div class="panel"><h3>Forums &amp; sites</h3><ul class="srclist" id="src-sites"></ul></div>
-      <div class="panel"><h3>Builders referenced</h3><div class="chips" id="src-builders"></div></div>
+      <div class="panel"><h3>Builders referenced</h3><p class="status">See the <a href="#builders">Builders</a> section for each one's parts.</p><div class="chips" id="src-builders"></div></div>
     </div>
     <div class="panel" style="margin-top:14px"><h3>Make your own copy</h3>
       <p class="status">Want this hub for your own build? Open the free web version and start picking; your picks, progress and notes save on your device, and Export moves them between phone and laptop. No account needed.</p>
@@ -538,6 +556,7 @@ function cardHTML(p){
     const inGroup=p.group&&!GROUPS[p.group]?.multi;
     ctl=`<div class="ctl">
       <label><input type="${inGroup?'radio':'checkbox'}" ${inGroup?`name="g-${esc(p.group)}"`:''} data-choose="${esc(p.id)}" ${chosen?'checked':''}> Chosen</label>
+ ${chosen&&(isOwner||sandbox)?`<button class="nbtn ${s.quote?'has':''}" data-quote="${esc(p.id)}" title="Enter the price you were actually quoted or paid">$ quote</button>`:''}
       ${chosen?`<select data-status="${esc(p.id)}" aria-label="Status">${STATUSES.map(([v,l])=>`<option value="${v}" ${statusOf(p)===v?'selected':''}>${l}</option>`).join('')}</select><input type="number" min="0" max="100" step="5" value="${pct}" data-pct="${esc(p.id)}" aria-label="Percent done">%<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div>`:''}
       ${isOwner?`<button class="nbtn ${hasNote?'has':''}" data-note="${esc(p.id)}" title="Builder note">✎ note</button>`:''}
       ${p.added&&isOwner?`<button class="nbtn del" data-id="${esc(p.id)}">remove</button>`:''}${p.suggested&&isOwner?`<button class="nbtn delsug" data-doc="${esc(p.docId)}" data-key="${esc(p.key)}">remove</button>`:''}
@@ -550,6 +569,7 @@ function cardHTML(p){
     ${p.model?`<div class="md">${esc(p.model)}</div>`:''}
     <div class="chips">${chosen?`<span class="chip chosenchip st-${statusOf(p)}">${statusOf(p)==='planned'?'Chosen':STATUSES.find(x=>x[0]===statusOf(p))[1]}</span>`:''}${p.pop?`<span class="chip pop" title="${esc(p.popWhy||'')}">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)} ${p.pop>=4?'popular':p.pop>=3?'common':p.pop>=2?'a few builds':'rare'}</span>`:''}<span class="chip k-${esc(p.kind)}">${esc(kindLabel)}</span>${fitLabel?`<span class="chip f-${esc(p.fit)}">${fitLabel}</span>`:''}${p.added?`<span class="chip${p.suggestedBy?' sug':''}">${p.suggestedBy?'Suggested by '+esc(p.suggestedBy)+' · researched':'Added by Nate'}</span>`:''}${p.suggested?`<span class="chip sug">Suggested by ${esc(p.by||'a builder')}${p.researched?'':' · research pending'}</span>`:''}${s.receipt?'<span class="chip chosenchip">receipt ✓</span>':''}${s.photos&&s.photos.length?`<span class="chip">${s.photos.length} photo${s.photos.length>1?'s':''}</span>`:''}${!compatible(p)?`<span class="chip f-roadster">${esc(D.families[p.family.split(',')[0]]||p.family)} only</span>`:''}</div>
     ${p.price?`<div class="price">${esc(p.price)}<i>[${esc(p.tag||'est')}]</i>${p.checked?`<i>· checked ${esc(p.checked)}</i>`:''}</div>`:''}
+    ${s.quote?`<div class="price quoted">${money(s.quote)}<i>${s.quoteKind==='paid'?'paid':'quoted'} ${esc(s.quoteDate||'')}${s.quoteFrom?' · '+esc(s.quoteFrom):''}${quoteStale(s)?' · over 90 days old':''}</i></div>`:''}
     ${p.popWhy?`<div class="row"><b>Who picks it:</b> ${esc(p.popWhy)}</div>`:''}
     ${p.users?`<div class="row"><b>Used by:</b> ${esc(p.users)}</div>`:''}
     ${p.notes?`<div class="notes">${esc(p.notes)}</div>`:''}
@@ -605,7 +625,7 @@ function renderSheet(){
     if(!opts.length) return '';
     const top=Math.max(...opts.map(p=>p.pop||0));
     const dl=D.decideLabels[g.decideBy]||''; const decided=opts.some(isChosen);
-    return `<div class="dec" id="dec-${esc(g.id)}"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>` <button class="opt ${isChosen(p)?'on':''} ${(isOwner||sandbox)?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${(isOwner||sandbox)?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}</div></div>`;
+    return `<div class="dec" id="dec-${esc(g.id)}"><div class="lab">${esc(g.label)}${g.multi?' <span class="row">(pick any)</span>':''}<div class="when ${esc(g.decideBy)} ${decided?'done':''}">${decided?'✓ decided':esc(dl)}</div></div><div class="optwrap"><div class="opts">${opts.map(p=>` <button class="opt ${isChosen(p)?'on':''} ${(isOwner||sandbox)?'':'ro'}" data-pick="${esc(p.id)}" data-group="${esc(g.id)}" ${(isOwner||sandbox)?'':'disabled'} title="${esc(p.popWhy||'')}">${esc(p.name)}${p.pop?`<span class="dots" aria-label="popularity ${p.pop} of 5">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span>`:''}${p.pop&&p.pop===top&&top>=4?'<span class="most">most builders</span>':''}</button>`).join('')}</div>${g.tradeoff?`<p class="tradeoff">${esc(g.tradeoff)}</p>`:''}${agreement(g)}</div></div>`;
   }).join('');
   // decide-by summary
   const order=['order','body','paint','any'];
@@ -628,8 +648,10 @@ function renderReport(){
   const openOrder=undecided.filter(g=>g.decideBy==='order');
   const byVendor={};
   other.forEach(p=>{const v=p.vendor||host(p.url)||'Unspecified vendor'; (byVendor[v]=byVendor[v]||[]).push(p);});
-  const sum=list=>list.reduce((a,p)=>a+(lowPrice(p.price)||0),0);
-  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(host(p.url))}</a>`:''}</td><td class="pn">${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}</td><td><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td></tr>`).join('');
+  const eff=p=>{const s=st(p.id); return s.quote?+s.quote:(lowPrice(p.price)||0);};
+  const sum=list=>list.reduce((a,p)=>a+eff(p),0);
+  const quoted=chosen.filter(p=>st(p.id).quote).length, stale=chosen.filter(p=>quoteStale(st(p.id))).length;
+  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(host(p.url))}</a>`:''}</td><td class="pn">${st(p.id).quote?`<b>${money(st(p.id).quote)}</b> <small>${st(p.id).quoteKind==='paid'?'paid':'quoted'}${quoteStale(st(p.id))?' · stale':''}</small><br><small class="row">list ${esc(p.price||'')}</small>`:`${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}`}</td><td><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td></tr>`).join('');
   const counts=STATUSES.map(([v,l])=>[l,chosen.filter(p=>statusOf(p)===v).length]);
   let html='',txt=[];
   const kitNote='Kit price itself is not in the FFR list below; the Complete Kit is $22,990 plus options.';
@@ -645,19 +667,19 @@ function renderReport(){
   const total=sum(chosen)+22990;
   const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(warnKey(w)));
   if(warns.length){ html+=`<div style="margin-bottom:14px">${warnBoxHTML(warns,'Check before ordering')}</div>`; if(openW.length){ txt.push(''); txt.push('CHECK BEFORE ORDERING'); openW.forEach(x=>txt.push('  - '+x.msg+(x.fix?' -> '+x.fix:''))); } }
-  html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${money(total)}</div><div class="status">Complete Kit $22,990 + ${chosen.length} chosen items at their low listed price. Unpriced items (call for quote) add to this. Not included: shipping, paint, use tax, consumables.</div></div>
+  html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${money(total)}</div><div class="status">Complete Kit $22,990 + ${chosen.length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at the low listed price.${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} Unpriced items (call for quote) add to this. Not included: shipping, paint, use tax, consumables.</div></div>
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   $('#report').innerHTML=html; reportText=txt.join('\n');
   // spreadsheet export: one flat table
-  const cols=['Section','Vendor','Part no.','Part','Make / model','Qty','Unit price (low)','Price as listed','Status','Ordered','Received','Installed','Link','Source','Notes'];
+  const cols=['Section','Vendor','Part no.','Part','Make / model','Qty','Unit price (low)','Price as listed','Your quote / paid','Status','Ordered','Received','Installed','Link','Source','Notes'];
   const flat=[];
-  const pushRows=(section,list)=>list.forEach(p=>{const stt=statusOf(p); flat.push([section,p.vendor||host(p.url)||'',pnOf(p)||'',p.name,p.model||'',1,lowPrice(p.price)||'',p.price||'',STATUSES.find(x=>x[0]===stt)[1],['ordered','received','installed'].includes(stt)?'☑':'☐',['received','installed'].includes(stt)?'☑':'☐',stt==='installed'?'☑':'☐',p.url||'',p.srcUrl||'',(p.notes||'').replace(/\s+/g,' ')]);});
-  flat.push(['Factory Five','Factory Five','','Gen 3 Complete Kit','Complete Kit',1,22990,'$22,990','Planned','☐','☐','☐','https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/','','Base kit; options below']);
+  const pushRows=(section,list)=>list.forEach(p=>{const stt=statusOf(p); flat.push([section,p.vendor||host(p.url)||'',pnOf(p)||'',p.name,p.model||'',1,eff(p)||'',p.price||'',st(p.id).quote?money(st(p.id).quote)+' '+(st(p.id).quoteKind||'quote'):'',STATUSES.find(x=>x[0]===stt)[1],['ordered','received','installed'].includes(stt)?'☑':'☐',['received','installed'].includes(stt)?'☑':'☐',stt==='installed'?'☑':'☐',p.url||'',p.srcUrl||'',(p.notes||'').replace(/\s+/g,' ')]);});
+  flat.push(['Factory Five','Factory Five','','Gen 3 Complete Kit','Complete Kit',1,22990,'$22,990','','Planned','☐','☐','☐','https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/','','Base kit; options below']);
   pushRows('Factory Five options',ffr);
   Object.entries(byVendor).sort().forEach(([v,list])=>pushRows(v,list));
-  const cell=(v,i)=>{ if(i===12||i===13){ return v?`<a href="${esc(v)}">${esc(host(v)||v)}</a>`:''; } return esc(v); };
-  reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (low end, kit + chosen)</td><td style="font-weight:bold">${sum(chosen)+22990}</td><td colspan="8"></td></tr></tbody></table>`;
+  const cell=(v,i)=>{ if(i===13||i===14){ return v?`<a href="${esc(v)}">${esc(host(v)||v)}</a>`:''; } return esc(v); };
+  reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (kit + chosen; quotes where entered)</td><td style="font-weight:bold">${sum(chosen)+22990}</td><td colspan="9"></td></tr></tbody></table>`;
   reportTSV=[cols.join('\t')].concat(flat.map(r=>r.map(v=>String(v).replace(/[\t\n]/g,' ')).join('\t'))).join('\n');
 }
 $('#copyxls').addEventListener('click',async()=>{
@@ -716,7 +738,7 @@ document.addEventListener('click',async e=>{
 document.addEventListener('click',e=>{
   const j=e.target.closest('[data-jump]'); if(!j) return;
   const id=j.dataset.jump; let el;
-  if(id.startsWith('card:')) el=document.querySelector(`.card[data-id="${CSS.escape(id.slice(5))}"]`); else el=document.getElementById('dec-'+id);
+  if(id.startsWith('card:')) el=document.querySelector(`.card[data-id="${CSS.escape(id.slice(5))}"]`); else el=document.getElementById('dec-'+id)||document.getElementById(id);
   if(!el) return;
   el.scrollIntoView({behavior:'smooth',block:'center'});
   el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),2400);
@@ -864,6 +886,88 @@ function renderCalcFromGantt(){
   D.stages.forEach(s=>{ const el=document.getElementById('when-'+s.id); if(el){ const x=w[s.id]; el.textContent=`${fmtM(x.from)} – ${fmtM(x.to)}`+(x.edited?' (edited)':''); } });
 }
 
+/* ---- quotes ---- */
+function quoteStale(s){ if(!s.quoteDate||s.quoteKind==='paid') return false; return (Date.now()-new Date(s.quoteDate))/86400000>90; }
+function openQuote(id){
+  const p=allParts().find(x=>x.id===id); if(!p) return; const s=st(id);
+  $('#nd-title').textContent=p.name; $('#nd-model').textContent=`Listed: ${p.price||'no listed price'}`;
+  $('#nd-body').innerHTML=`<div class="frm"><label class="row">Amount ($)<input type="number" id="qt-amt" min="0" step="1" value="${esc(s.quote||'')}"></label><label class="row">This is a<select id="qt-kind"><option value="quote" ${s.quoteKind!=='paid'?'selected':''}>Quote</option><option value="paid" ${s.quoteKind==='paid'?'selected':''}>Price paid</option></select></label><label class="row">Date<input type="date" id="qt-date" value="${esc(s.quoteDate||new Date().toISOString().slice(0,10))}"></label><label class="row">From<input id="qt-from" placeholder="FFR sales, BluePrint, Levy…" value="${esc(s.quoteFrom||'')}"></label></div><p class="status">The order sheet and running estimate use this instead of the listed price. Quotes older than 90 days get flagged.</p>`;
+  $('#nd-acts').innerHTML=`<button class="btn ghost" id="qt-clear">Clear</button><button class="btn ghost" id="nd-cancel">Cancel</button><button class="btn" id="nd-save">Save</button>`;
+  $('#nd-cancel').onclick=()=>dlg.close();
+  $('#qt-clear').onclick=async()=>{ await writeState(id,{quote:null,quoteKind:null,quoteDate:null,quoteFrom:null}); dlg.close(); };
+  $('#nd-save').onclick=async()=>{ const a=+$('#qt-amt').value; if(!a){ toast('Enter an amount'); return; } await writeState(id,{quote:a,quoteKind:$('#qt-kind').value,quoteDate:$('#qt-date').value,quoteFrom:$('#qt-from').value.trim()}); dlg.close(); };
+  dlg.showModal();
+}
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-quote]'); if(b) openQuote(b.dataset.quote); });
+/* ---- this week: what's due, from dates, statuses and gates ---- */
+function thisWeekItems(){
+  const items=[]; const today=new Date(); const w=(typeof effectiveWindows==='function')?effectiveWindows():plan().windows;
+  const daysTo=d=>Math.round((d-today)/86400000);
+  const orderDate=parseYM(calc.order); const dOrder=daysTo(orderDate);
+  const openOrder=D.groups.filter(g=>g.decideBy==='order'&&!allParts().some(p=>p.group===g.id&&isChosen(p)));
+  if(openOrder.length&&dOrder>-30) items.push({lvl:dOrder<21?'hot':'warn',text:`${openOrder.length} decision${openOrder.length>1?'s':''} that lock at the kit order still open: ${openOrder.map(g=>g.label).join(', ')}.`,when:dOrder>0?`kit order in ${dOrder} days`:'kit order month is here',jump:'sheet'});
+  const rs=resolvedSet(); const openW=activeWarnings().filter(x=>!rs.has(warnKey(x)));
+  if(openW.length) items.push({lvl:openW.some(x=>x.scope==='conflict')?'hot':'warn',text:`${openW.length} check${openW.length>1?'s':''} before ordering: ${openW.map(x=>x.msg).join(' ')}`,when:'',jump:'order'});
+  allParts().filter(p=>isChosen(p)&&D.leadTimes[p.id]&&statusOf(p)==='planned').forEach(p=>{ const lt=D.leadTimes[p.id]; const sid=lt.needs||p.stage; const by=new Date(w[sid].from); by.setDate(by.getDate()-lt.weeks*7); const d=daysTo(by);
+    if(d<=60) items.push({lvl:d<0?'hot':d<21?'warn':'info',text:`Order ${p.name} (${lt.weeks}-week lead for ${(D.stages.find(s=>s.id===sid)||{}).title||sid}).`,when:d<0?`${-d} days overdue`:`due in ${d} days`,jump:'card:'+p.id}); });
+  const cur=D.stages.find(s=>w[s.id].from<=today&&today<w[s.id].to);
+  if(cur){ const r=stagePct(cur.id); items.push({lvl:'info',text:`You're in stage ${cur.num}, ${cur.title}: ${r.pct}% done, window ends ${fmtM(w[cur.id].to)}.`,when:'',jump:cur.id});
+    const nxt=D.stages.find(s=>s.num===cur.num+1); if(nxt){ D.gates.filter(g=>g.stage===nxt.id).forEach(g=>{ const st=gateStatus(g); if(!st.ok){ const left=st.steps.filter(x=>!x.done).map(x=>x.text).concat(g.decision&&!st.decided?['decide '+(GROUPS[g.decision]?.label||g.decision)]:[]); items.push({lvl:'warn',text:`Before ${nxt.title} can start: ${g.label}. Still open: ${left.join('; ')}.`,when:`stage ${nxt.num} starts ${fmtM(w[nxt.id].from)}`,jump:'schedule'}); } }); } }
+  const tt=taskList('title').find(t=>/pass inspection/i.test(t.t)); if(tt&&tt.done&&tt.m.date){ const exp=new Date(tt.m.date); exp.setDate(exp.getDate()+60); const d=daysTo(exp); if(d>=0&&d<=60) items.push({lvl:d<14?'hot':'warn',text:'WSP inspection certificate expires; title and register before then.',when:`${d} days left`,jump:'title'}); }
+  allParts().filter(p=>isChosen(p)&&statusOf(p)==='ordered').forEach(p=>{ const u=st(p.id).updated; if(u){ const d=-daysTo(new Date(u)); if(d>45) items.push({lvl:'info',text:`${p.name} has been on order ${d} days; chase it.`,when:'',jump:'card:'+p.id}); } });
+  if(typeof effectiveWindows==='function'){ const end=w.shakedown.to; const tgt=parseYM(calc.target); if(end>tgt) items.push({lvl:'warn',text:`Your edited schedule ends ${fmtM(end)}, past the ${fmtM(tgt)} target.`,when:'',jump:'schedule'}); }
+  const p=plan(); if(!p.ok) items.push({lvl:'warn',text:`Hours don't fit: ${calc.hpw} h/week leaves you ${Math.round(p.needed-p.avail)} hours short of the estimate.`,when:'',jump:'calc'});
+  const order={hot:0,warn:1,info:2}; return items.sort((a,b)=>order[a.lvl]-order[b.lvl]);
+}
+function renderThisWeek(){
+  const el=$('#thisweek'); if(!el) return; const items=thisWeekItems();
+  const d=new Date().toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});
+  el.innerHTML=`<h3>This week <span class="row" style="font-weight:400">· ${esc(d)}</span></h3>`+(items.length?`<ul class="tw">${items.map(it=>`<li class="${it.lvl}"><span class="dot"></span><span>${esc(it.text)}${it.when?` <b>${esc(it.when)}</b>`:''}</span> <button class="nbtn jump" data-jump="${esc(it.jump)}">→</button></li>`).join('')}</ul>`:'<p class="status">Nothing due. Go turn a wrench.</p>');
+}
+/* ---- cross-stage plans ---- */
+function planTarget(id){ return (sandbox&&mine?(mine.planTargets||{})[id]:(stageState.__plans&&stageState.__plans[id]))||null; }
+async function setPlanTarget(id,t){ if(sandbox&&mine){ mine.planTargets=Object.assign({},mine.planTargets||{},{[id]:t}); renderPlans(); await saveMine(); return; } stageState.__plans=Object.assign({},stageState.__plans||{},{[id]:t}); renderPlans(); if(isOwner&&db){ try{ await db.doc('stagestate/__plans').set(Object.assign({},stageState.__plans,{updated:new Date().toISOString()})); }catch(e){ toast('Could not save'); } } }
+function renderPlans(){
+  const el=$('#plans-body'); if(!el) return; const can=isOwner||sandbox;
+  el.innerHTML=D.plans.map(pl=>{
+    const tgt=planTarget(pl.id)||pl.targets[0].id; const need=pl.need[tgt]||0;
+    let score=0; const rows=pl.rows.map(r=>{ const picks=allParts().filter(p=>p.group===r.group&&isChosen(p)); let s=0; picks.forEach(p=>{ s+= (r.scores[p.name]||0); }); if(!r.multi&&picks.length) s=Math.max(...picks.map(p=>r.scores[p.name]||0)); score+=s;
+      const better=Object.entries(r.scores).filter(([n,v])=>v>s&&!picks.some(p=>p.name===n)).sort((a,b)=>b[1]-a[1])[0];
+      return `<tr><td><b>${esc(r.label)}</b><br><small class="row">${esc(r.note)}</small></td><td>${picks.length?picks.map(p=>esc(p.name)).join('<br>'):'<span class="row">nothing picked</span>'}</td><td class="pn">${s}</td><td><small>${better?`${esc(better[0])} (+${better[1]-s})`:'<span class="row">already the top option</span>'}</small></td><td><button class="nbtn jump" data-jump="${esc(r.group)}">→</button></td></tr>`; });
+    const extras=pl.extras.map(n=>{ const p=allParts().find(x=>x.name===n); const on=p&&isChosen(p); if(on) score+=1; return `<span class="chip ${on?'chosenchip':''}">${on?'✓ ':''}${esc(n)}</span>`; }).join('');
+    const ok=score>=need;
+    return `<div class="panel planbox"><h3>${esc(pl.title)}</h3><p class="status">${esc(pl.intro)}</p>
+      <div class="chips" style="margin:8px 0">${pl.targets.map(t=>`<button class="opt ${t.id===tgt?'on':''} ${can?'':'ro'}" data-plantarget="${pl.id}:${t.id}" ${can?'':'disabled'} title="${esc(t.desc)}">${esc(t.label)}</button>`).join('')}</div>
+      <div class="planscore ${ok?'ok':''}"><b>${score} of ${need}</b> toward "${esc(pl.targets.find(t=>t.id===tgt).label)}"${ok?' · your picks get there':' · not yet; the Step up column shows where points are'}</div>
+      <div class="tbl"><table><thead><tr><th>Decision</th><th>Your pick</th><th>Score</th><th>Step up</th><th></th></tr></thead><tbody>${rows.join('')}</tbody></table></div>
+      <div class="chips" style="margin-top:8px"><span class="row">Extras (+1 each):</span>${extras}</div>
+      <details class="others" style="margin-top:8px"><summary>What builders learned</summary><ul>${pl.facts.map(f=>`<li>${esc(f)}</li>`).join('')}</ul></details></div>`;
+  }).join('');
+}
+document.addEventListener('click',e=>{ const t=e.target.closest('[data-plantarget]'); if(t){ const [pid,tid]=t.dataset.plantarget.split(':'); setPlanTarget(pid,tid); } });
+/* ---- builder profiles ---- */
+function builderIndex(){
+  const idx={}; const al=D.builderAliases||{};
+  const hit=(txt)=>{ const t=String(txt||'').toLowerCase(); return Object.keys(al).filter(n=>al[n].some(a=>t.includes(a.toLowerCase()))); };
+  allParts().forEach(p=>{ hit(p.users).forEach(n=>{ (idx[n]=idx[n]||{parts:[],builds:[]}).parts.push(p); }); });
+  D.builds.concat(addedBuilds).forEach(bd=>{ hit(bd.builder+' '+bd.name).forEach(n=>{ (idx[n]=idx[n]||{parts:[],builds:[]}).builds.push(bd); }); });
+  return idx;
+}
+let openBuilder=null;
+function renderBuilders(){
+  const el=$('#builders-body'); if(!el) return; const idx=builderIndex();
+  const names=Object.keys(idx).sort((a,b)=>(idx[b].parts.length+idx[b].builds.length*3)-(idx[a].parts.length+idx[a].builds.length*3));
+  const chips=names.map(n=>`<button class="opt ${openBuilder===n?'on':''}" data-builder="${esc(n)}">${esc(n)} <span class="pn">${idx[n].parts.length}</span></button>`).join('');
+  let detail='';
+  if(openBuilder&&idx[openBuilder]){ const b=idx[openBuilder]; const mine=allParts().filter(isChosen); const same=b.parts.filter(p=>mine.includes(p)); const groups={}; b.parts.forEach(p=>{(groups[p.cat]=groups[p.cat]||[]).push(p);});
+    detail=`<div class="panel" style="margin-top:12px"><h3>${esc(openBuilder)}</h3>${b.builds.map(bd=>`<p class="row"><b>${esc(bd.drivetrain||'')}</b> · ${esc(bd.status||'')} · ${link(bd.url,bd.name)}<br>${esc(bd.why||'')}</p>`).join('')}
+      <p class="status">${b.parts.length} parts credited to this builder${same.length?`; <b>${same.length}</b> are also in your build`:''}.</p>
+      <div class="tbl"><table><thead><tr><th>Category</th><th>Part</th><th>Yours too?</th><th></th></tr></thead><tbody>${Object.entries(groups).map(([c,ps])=>ps.map((p,i)=>`<tr>${i===0?`<td rowspan="${ps.length}">${esc(c)}</td>`:''}<td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${mine.includes(p)?'<span class="chip chosenchip">yes</span>':(p.group&&mine.some(x=>x.group===p.group)?'<span class="chip">different pick</span>':'')}</td><td><button class="nbtn jump" data-jump="card:${esc(p.id)}">→</button></td></tr>`).join('')).join('')}</tbody></table></div></div>`; }
+  el.innerHTML=`<div class="chips">${chips}</div>${detail}`;
+}
+document.addEventListener('click',e=>{ const bt=e.target.closest('[data-builder]'); if(bt){ openBuilder=openBuilder===bt.dataset.builder?null:bt.dataset.builder; renderBuilders(); } });
+// spec sheet: agreement counts per decision
+function agreement(g){ const idx=builderIndex(); const mine=allParts().find(p=>p.group===g.id&&isChosen(p)); if(!mine) return ''; const withMe=[],other=[]; Object.entries(idx).forEach(([n,b])=>{ const inGroup=b.parts.filter(p=>p.group===g.id); if(!inGroup.length) return; (inGroup.includes(mine)?withMe:other).push(n); }); if(!withMe.length&&!other.length) return ''; return `<div class="agree">${withMe.length} builder${withMe.length===1?'':'s'} made your pick${other.length?`; ${other.length} went another way (${esc(other.slice(0,4).join(', '))}${other.length>4?'…':''})`:''}</div>`; }
 /* ---- render all ---- */
 function renderParts(q){
   q=(q||'').trim().toLowerCase();
@@ -883,7 +987,7 @@ function renderParts(q){
   { const hl=totalHoursLogged(); $('#overall-hours').textContent=hl?`${hl} hours logged of ~${calc.hours.toLocaleString()} estimated (${Math.round(hl/calc.hours*100)}%).`:'No hours logged yet. Use "log" on any checklist step.'; }
   const ch=allParts().filter(isChosen); $('#overall-status').innerHTML=STATUSES.map(([v,l])=>`<span class="chip st-${v}">${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}</span>`).join('');
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
-  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt();
+  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt(); renderThisWeek(); renderPlans(); renderBuilders();
 }
 function filterTable(id,q){
   const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;
@@ -1122,7 +1226,7 @@ function localDb(){
 function context(){
   const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`];
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
-  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
+  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done${st(p.id).quote?`, ${st(p.id).quoteKind||'quoted'} $${st(p.id).quote} ${st(p.id).quoteDate||''}`:''}`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
   D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id} (${stageHoursLogged(s.id)} h logged): `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t+(t.m.hours?` (${t.m.hours}h${t.m.date?' '+t.m.date:''})`:'')+(t.m.gotcha?` GOTCHA: ${t.m.gotcha}`:'')).join('; '));});
   { const rs=resolvedSet(); activeWarnings().forEach(w=>lines.push((rs.has(warnKey(w))?'RESOLVED CHECK: ':'OPEN WARNING: ')+w.msg+' '+(w.why||'')+' '+(w.fix||''))); }
   D.builds.forEach(b=>lines.push(`BUILD ${b.name} (${b.builder}; ${b.drivetrain}; ${b.status}): ${b.why} ${b.url}`));

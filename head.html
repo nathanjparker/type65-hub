@@ -256,6 +256,17 @@ li.warn.done .nbtn{text-decoration:none}
 .glead circle{fill:var(--warn)} .glead.late circle{fill:#b3261e} .glead.ok line{stroke:var(--ok)} .glead.ok circle{fill:var(--ok)}
 .leadlist{list-style:none;margin:8px 0 0;padding:0;font-size:14px;display:grid;gap:4px}
 .leadlist li.late b{color:#b3261e} .leadlist li.ok{color:var(--muted)} .leadlist li.ok b{color:var(--ok)}
+.thisweek{border-left:4px solid var(--accent)}
+.tw{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:6px;font-size:14.5px}
+.tw li{display:flex;gap:8px;align-items:flex-start}
+.tw .dot{width:9px;height:9px;border-radius:50%;margin-top:7px;flex:none;background:var(--muted)}
+.tw li.hot .dot{background:#b3261e} .tw li.warn .dot{background:var(--warn)} .tw li.info .dot{background:var(--accent)}
+.tw li span:nth-child(2){flex:1;min-width:0}
+.tw li b{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-weight:500}
+.price.quoted{color:var(--ok)}
+.planscore{font-size:15px;margin:6px 0 10px;color:var(--warn)} .planscore.ok{color:var(--ok)}
+.planbox{margin-bottom:14px}
+.agree{font-size:12.5px;color:var(--muted);font-family:var(--mono)}
 /* card controls */
 .card .ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;padding-top:8px;border-top:1px solid var(--line);font-size:13px}
 .card .ctl label{display:flex;align-items:center;gap:5px;cursor:pointer}

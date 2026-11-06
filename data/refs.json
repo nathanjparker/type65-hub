@@ -1321,5 +1321,284 @@
 "needs": "hvac",
 "note": "FFR A/C kit ships with the kit if ordered up front; otherwise allow a month"
 }
+},
+"plans": [
+{
+"id": "cabin",
+"title": "Cabin comfort plan",
+"intro": "The Gen 3 cabin is hot and loud, and every fix goes in before the body does. Four decisions share that one truth. Pick a target, and the plan tells you whether your combination gets there.",
+"targets": [
+{
+"id": "loud",
+"label": "Track car, earplugs fine",
+"desc": "Stock pipes, minimal insulation."
+},
+{
+"id": "cruise",
+"label": "Weekend cruiser, can talk at 60",
+"desc": "Quiet pipes or inserts, butyl mat, footbox shields."
+},
+{
+"id": "gt",
+"label": "Grand tourer, long drives in the rain",
+"desc": "Quiet pipes, full spray insulation + MLV, FFR A/C with a defrost path, roll-down windows."
+}
+],
+"facts": [
+"Stock FFR side pipes measured about 114 dB inside; the exhaust is the dominant noise source, more than any insulation choice.",
+"After extensive insulation a coupe still read above 80 dB at cruise (ffcars Planning thread); insulation lowers the floor, it does not make a quiet car.",
+"Most cockpit heat is engine-bay air pushed along the footbox-to-body gap, not conduction; dense foam at that gap beats another layer of mat.",
+"FFR's evaporator has two always-on outlets and no defrost diverter; builders add Y-connections to defrost and dash outlets. Washington's inspection checks the defroster if installed.",
+"Lizard Skin and mat must go on before carpet, and the footbox-to-body gap is unreachable once the body is on."
+],
+"rows": [
+{
+"group": "sidepipes",
+"label": "Exhaust",
+"scores": {
+"FFR stainless coupe side exhaust": 1,
+"Flowmaster Slimline quiet inserts": 2,
+"GAS-N Daytona Coupe side pipes": 2,
+"Boig Motorsport headers + quiet side pipes": 3,
+"Spintech 5\" oval Daytona Coupe pipes": 2,
+"Under-car exhaust + solenoid side cutouts": 3
+},
+"note": "Biggest single lever. Inserts are the cheap fix on either FFR or GAS-N pipes."
+},
+{
+"group": "insulation",
+"label": "Insulation",
+"scores": {
+"Lizard Skin ceramic + sound control": 2,
+"Butyl mat: Dynamat Xtreme / Kilmat / Noico / HushMat": 1,
+"Mass-loaded vinyl + Damplifier Pro + Dynaliner": 3
+},
+"note": "Spray goes on first, then mat, then MLV under the carpet. Pick more than one.",
+"multi": true
+},
+{
+"group": "hvac",
+"label": "A/C and heat",
+"scores": {
+"FFR A/C-heater-defroster for 302/351W": 2,
+"FFR coupe A/C kit without compressor": 2,
+"FormaCars HVAC": 3,
+"Vintage Air Gen II Mini": 1,
+"Southern Rods SuperFrost": 1,
+"Siroco Boreal 600 evaporator (direct)": 1
+},
+"note": "FFR's kit fits; plan the defrost Y-connections. FormaCars is the better-defrost route."
+},
+{
+"group": "side-windows",
+"label": "Windows",
+"scores": {
+"FFR Gen 3 side window components": 1,
+"FormaCars electric roll-down window kit": 3
+},
+"note": "Sliders leak a little and seal poorly; roll-downs are the wet-climate answer."
+}
+],
+"extras": [
+"Aero vents + footbox vents",
+"Thermo-Tec / DEI reflective footbox shield",
+"Heated seat pads"
+],
+"need": {
+"loud": 4,
+"cruise": 7,
+"gt": 10
+}
+},
+{
+"id": "fit",
+"title": "Driver fit plan (6'2\")",
+"intro": "Headroom and legroom in a Gen 3 come from five choices that interact. The rear brace limits seat travel, so the seat choice does most of the work.",
+"targets": [
+{
+"id": "ok",
+"label": "Fits, helmet optional",
+"desc": ""
+},
+{
+"id": "tall",
+"label": "Fits at 6'2\" with a helmet",
+"desc": "Thin-shell seat on the floor, small wheel, quick release."
+}
+],
+"facts": [
+"Floor-mounting the seat instead of using the track gains 1 to 1.5 inches of headroom.",
+"FFR's low-back aluminum seats are the ones FFR itself markets for tall drivers; Kirkey's shell is thinner still.",
+"A 13-inch wheel adds knee room; a quick-release hub adds entry room, which matters more in a coupe.",
+"One builder could not make a Corbeau fit the driver's side at all and went back to FFR seats.",
+"Sit in a finished coupe before buying seats; Fredscoupe in Everett offered."
+],
+"rows": [
+{
+"group": "seats",
+"label": "Seats",
+"scores": {
+"FFR vintage low-back aluminum seats": 3,
+"Kirkey aluminum seats": 3,
+"FFR roadster seats, vinyl / leather / diamond stitch": 1,
+"Corbeau Sportline Evolution-X / A4 / LG1": 1,
+"Sparco R100": 1
+},
+"note": "Thin shell, floor-mounted."
+},
+{
+"group": "steering-wheel",
+"label": "Steering wheel",
+"scores": {
+"FFR 14\" wood or leather wheel": 1,
+"Moto-Lita Mk3/Mk4 14\"": 1,
+"Ford Performance × Sparco racing wheel, 13\" Alcantara": 2
+},
+"note": "Smaller is more knee room."
+}
+],
+"extras": [
+"Quick-release hub, 6-bolt",
+"Dogleg gas pedal kit",
+"Dead pedal"
+],
+"need": {
+"ok": 2,
+"tall": 5
+}
+}
+],
+"builderAliases": {
+"edwardb": [
+"edwardb"
+],
+"Westley B.": [
+"Westley B"
+],
+"Hank": [
+"Hank"
+],
+"Ron L.": [
+"Ron L.",
+"Ron L "
+],
+"Bob Brandle": [
+"Bob Brandle",
+"Bob B."
+],
+"Jom": [
+"Jom"
+],
+"Papa": [
+"Papa"
+],
+"lewma": [
+"lewma"
+],
+"LateApex": [
+"LateApex"
+],
+"MSumners": [
+"MSumners",
+"MJS"
+],
+"P100DHG": [
+"P100DHG"
+],
+"wedel456": [
+"wedel456"
+],
+"GT_Rich": [
+"GT_Rich"
+],
+"Rocky R.": [
+"Rocky R",
+"Mike 'Rocky' R"
+],
+"David F.": [
+"David F."
+],
+"nskaats": [
+"nskaats"
+],
+"jgray": [
+"jgray"
+],
+"Derek R.": [
+"Derek R"
+],
+"Power Surge": [
+"Power Surge"
+],
+"Fredscoupe": [
+"Fredscoupe"
+],
+"David W. #16": [
+"David W."
+],
+"ffr48": [
+"ffr48"
+],
+"Deimos": [
+"Deimos"
+],
+"Rob M.": [
+"Rob M."
+],
+"Ron V.": [
+"Ron V."
+],
+"Carl N.": [
+"Carl N."
+],
+"Donny N.": [
+"Donny N."
+],
+"Walton Racing": [
+"Walton Racing",
+"Walton"
+],
+"Yellville": [
+"Yellville"
+],
+"Art Shand": [
+"Art Shand"
+],
+"Logan": [
+"Logan"
+],
+"Tim Custer": [
+"Tim Custer"
+],
+"John George Racing": [
+"John George"
+],
+"Drewr": [
+"Drewr"
+],
+"R. Button": [
+"R. Button"
+],
+"Dave Tabor": [
+"Dave Tabor"
+],
+"PNWTim": [
+"PNWTim"
+],
+"JC Krueger": [
+"JC Krueger"
+],
+"AaronR": [
+"AaronR"
+],
+"wallace18": [
+"wallace18"
+],
+"SATA build": [
+"SATA"
+],
+"Jeff Kleiner": [
+"Jeff Kleiner"
+]
 }
 }
