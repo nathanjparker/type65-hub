@@ -8,6 +8,7 @@
   <h4>Overview</h4>
   <a href="#overview"><span class="n">★</span>Build at a glance</a>
   <a href="#sheet"><span class="n">✓</span>Your build</a>
+  <a href="#schedule"><span class="n">⟶</span>Schedule</a>
   <a href="#order"><span class="n">$</span>Order sheet</a>
   <a href="#suggest"><span class="n">+</span>Add a part</a>
   <h4>Build stages</h4>
@@ -39,7 +40,7 @@
       <p class="status" id="c-verdict"></p>
     </div>
     <div class="twocol">
-      <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div><div class="chips" id="overall-status"></div></div>
+      <div class="panel overall"><h3>Build progress</h3><div class="big" id="overall-pct">0%</div><div class="pbar"><i id="overall-bar" style="width:0%"></i></div><div class="status" id="overall-note">Weighted by each stage's hour estimate. Chosen items count; unchosen alternatives don't.</div><div class="chips" id="overall-status"></div><div class="status" id="overall-hours"></div></div>
       <div class="panel"><h3>Order these with the kit</h3><ol id="upfront"></ol></div>
       <div class="panel"><h3>Open questions</h3><ul id="gaps"></ul></div>
       <div class="panel"><h3>What's new</h3><div id="news"></div></div>
@@ -49,6 +50,8 @@
 
   <div class="panel sandboxbar" id="sandbox" hidden></div>
   <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Your build</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
+
+  <section class="stage" id="schedule"><div class="shead"><div class="roundel">⟶</div><div class="t"><h2>Schedule</h2><div class="meta"><span>Every stage on one timeline from the build calculator. Arrows are "must finish before"; red gates are the things you can't undo once the next stage starts; amber ticks are order-by dates for long-lead parts.</span></div></div></div><div id="gantt" style="margin-top:14px"></div></section>
 
   <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Prices are the low end of what's listed and are rough.</span></div></div></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><span class="status">Excel copy pastes into cells: one row per part with a clickable link, a status column and a subtotal per vendor.</span></div>
@@ -129,6 +132,10 @@ const hoursMid=s=>{const m=String(s.hours).match(/(\d+)[–-](\d+)/); return m?(
 let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], refs=[], addedBuilds=[], userId=null, canWriteOwn=null, priv={}, mine=null, sandbox=false;
 
 /* ---- build calculator ---- */
+const ym=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+const parseYM=s=>{const [y,m]=s.split('-').map(Number); return new Date(y,m-1,1);};
+function monthIndex(d,origin){ return (d.getFullYear()-origin.getFullYear())*12+(d.getMonth()-origin.getMonth()); }
+
 const CALC_DEFAULT={order:'2026-12',hpw:10,hours:1200,target:'2029-09',paint:3};
 let calc=Object.assign({},CALC_DEFAULT);
 function stageWeights(){ const w={}; D.stages.forEach(s=>{w[s.id]=hoursMid(s);}); return w; }
@@ -136,28 +143,30 @@ function addMonths(ym,m){ const [y,mo]=ym.split('-').map(Number); const d=new Da
 function fmtM(d){ return d.toLocaleDateString(undefined,{month:'short',year:'numeric'}); }
 function monthsBetween(a,b){ const [ay,am]=a.split('-').map(Number),[by,bm]=b.split('-').map(Number); return (by-ay)*12+(bm-am); }
 function plan(){
-  const c=calc; const months=Math.max(1,monthsBetween(c.order,c.target)); const weeks=months*4.345;
-  const buildWeeks=Math.max(1,weeks-(c.paint||0)*4.345);   // paint months are the shop's, not yours
-  const avail=buildWeeks*c.hpw; const needed=c.hours; const needHpw=needed/buildWeeks;
-  // milestone dates: cumulative share of hours by stage order, mapped onto build weeks; paint stage inserted as a fixed block
-  const w=stageWeights(); const total=Object.values(w).reduce((a,b)=>a+b,0);
-  const order=D.stages.map(s=>s.id); const out={}; let cum=0; let paintOffset=0;
-  // kit arrives ~6 months after order (FFR lead time); stage 1 runs during the wait
-  const leadMonths=6; const start=c.order;
-  order.forEach(id=>{ const share=w[id]/total; const from=cum; cum+=share;
-    let fromM=Math.round(from*buildWeeks/4.345)+paintOffset, toM=Math.round(cum*buildWeeks/4.345)+paintOffset;
-    if(id==='plan'){ fromM=0; toM=Math.min(toM,leadMonths); }
-    if(id==='paint'){ toM=fromM+(c.paint||0); paintOffset+=(c.paint||0); }
-    out[id]={from:addMonths(start,fromM),to:addMonths(start,toM)}; });
-  return {months,weeks,buildWeeks,avail,needed,needHpw,windows:out,ok:avail>=needed};
+  const c=calc; const months=Math.max(1,monthsBetween(c.order,c.target));
+  const leadMonths=6;                                   // FFR kit lead time: planning runs during the wait
+  const paintM=c.paint||0;
+  const workMonths=Math.max(1,months-leadMonths-paintM); // months you actually turn wrenches
+  const buildWeeks=workMonths*4.345; const avail=buildWeeks*c.hpw; const needed=c.hours; const needHpw=needed/buildWeeks;
+  const w=stageWeights(); const order=D.stages.map(s=>s.id);
+  const total=order.filter(id=>id!=='plan'&&id!=='paint').reduce((a,id)=>a+w[id],0);
+  const out={}; let cursor=leadMonths;                   // months after order
+  order.forEach(id=>{
+    if(id==='plan'){ out[id]={from:addMonths(c.order,0),to:addMonths(c.order,leadMonths)}; return; }
+    if(id==='paint'){ out[id]={from:addMonths(c.order,cursor),to:addMonths(c.order,cursor+Math.max(1,paintM))}; cursor+=paintM; return; }
+    const len=Math.max(1,Math.round(w[id]/total*workMonths));
+    out[id]={from:addMonths(c.order,cursor),to:addMonths(c.order,cursor+len)}; cursor+=len;
+  });
+  return {months,weeks:months*4.345,buildWeeks,avail,needed,needHpw,windows:out,ok:avail>=needed,end:cursor};
 }
 function renderCalc(){
   $('#c-order').value=calc.order; $('#c-hpw').value=calc.hpw; $('#c-hours').value=calc.hours; $('#c-target').value=calc.target; $('#c-paint').value=calc.paint;
   const p=plan(); const w=p.windows;
-  const tiles=[['Order to done',`${p.months} mo`,`${Math.round(p.weeks)} weeks`],['Hours available',Math.round(p.avail).toLocaleString(),`${calc.hpw} h/wk × ${Math.round(p.buildWeeks)} build weeks`],['Hours needed',p.needed.toLocaleString(),p.ok?`${Math.round(p.avail-p.needed).toLocaleString()} h of slack`:`short by ${Math.round(p.needed-p.avail).toLocaleString()} h`],['Go-kart',fmtM(w.gokart.to),'first drive, no body'],['Title in gelcoat',fmtM(w.title.to),'before paint'],['Done',fmtM(w.shakedown.to),calc.target===CALC_DEFAULT.target?"Coco's senior year":'your target']];
+  const tiles=[['Order to done',`${p.months} mo`,`6 mo kit wait + ${Math.round(p.buildWeeks/4.345)} mo building + ${calc.paint} mo paint`],['Hours available',Math.round(p.avail).toLocaleString(),`${calc.hpw} h/wk × ${Math.round(p.buildWeeks)} build weeks`],['Hours needed',p.needed.toLocaleString(),p.ok?`${Math.round(p.avail-p.needed).toLocaleString()} h of slack`:`short by ${Math.round(p.needed-p.avail).toLocaleString()} h`],['Go-kart',fmtM(w.gokart.to),'first drive, no body'],['Title in gelcoat',fmtM(w.title.to),'before paint'],['Done',fmtM(w.shakedown.to),calc.target===CALC_DEFAULT.target?"Coco's senior year":'your target']];
   $('#strip').innerHTML=tiles.map(([k,v,s])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div><div class="s">${esc(s)}</div></div>`).join('');
   $('#c-verdict').innerHTML=p.ok?`<b style="color:var(--ok)">The plan holds.</b> ${calc.hpw} hours a week covers ${p.needed.toLocaleString()} hours with ${Math.round((p.avail-p.needed)/p.hpw||0)} weeks to spare. At ${Math.ceil(p.needHpw)} h/week you'd finish with no slack.`:`<b style="color:var(--warn)">Doesn't fit.</b> You'd need about <b>${Math.ceil(p.needHpw)} hours a week</b>, or push the target to ${fmtM(addMonths(calc.order,Math.ceil(p.needed/calc.hpw/4.345+(calc.paint||0))))}, or outsource more (body prep, wiring, A/C plumbing) to bring the hours down.`;
   D.stages.forEach(s=>{ const el=document.getElementById('when-'+s.id); if(el){ const x=w[s.id]; el.textContent=`${fmtM(x.from)} – ${fmtM(x.to)}`; } });
+  if(typeof renderGantt==='function'&&$('#gantt')) { renderGantt(); renderCalcFromGantt(); }
 }
 async function saveCalc(){
   if(sandbox&&mine){ mine.calc=calc; await saveMine(); return; }
@@ -170,7 +179,6 @@ document.addEventListener('input',e=>{
 });
 let calcT;
 /* ---- overview ---- */
-renderCalc();
 $('#upfront').innerHTML=D.upfront.map(x=>`<li>${esc(x)}</li>`).join('');
 $('#gaps').innerHTML=D.gaps.map(x=>`<li>${esc(x)}</li>`).join('');
 
@@ -205,7 +213,11 @@ async function setResolved(key,on){
   stageState.__resolved={ids}; renderParts(q.value); try{ await db.doc('stagestate/__resolved').set({ids,updated:new Date().toISOString()}); }catch(e){ toast('Could not save'); }
 }
 /* tasks: stage units = checklist items (0/100) + chosen parts (pct) */
-function taskList(id){ const s=D.stages.find(x=>x.id===id); const base=(s&&s.tasks)||[]; const ts=(sandbox&&mine?((mine.tasks||{})[id]):taskState[id])||{}; return base.concat(ts.extra||[]).map((t,i)=>({i,t,done:!!(ts.done&&ts.done[i])})); }
+function tState(id){ return (sandbox&&mine?((mine.tasks||{})[id]):taskState[id])||{}; }
+function taskList(id){ const s=D.stages.find(x=>x.id===id); const base=(s&&s.tasks)||[]; const ts=tState(id); const meta=ts.meta||{}; return base.concat(ts.extra||[]).map((t,i)=>({i,t,done:!!(ts.done&&ts.done[i]),m:meta[i]||{}})); }
+function stageHoursLogged(id){ return taskList(id).reduce((a,t)=>a+(+t.m.hours||0),0); }
+function totalHoursLogged(){ return ALL_IDS.reduce((a,id)=>a+stageHoursLogged(id),0); }
+async function saveTask(id,cur){ if(sandbox&&mine){ mine.tasks=mine.tasks||{}; mine.tasks[id]=cur; renderParts(q.value); await saveMine(); return; } taskState[id]=cur; renderParts(q.value); try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); } }
 function stagePct(id){
   const ss=sandbox&&mine?((mine.stagestate||{})[id]):stageState[id];
   if(ss&&ss.pct!=null&&ss.pct!=='') return {pct:Math.max(0,Math.min(100,+ss.pct)),manual:true};
@@ -370,9 +382,12 @@ $('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipbo
 /* ---- checklist ---- */
 function tasksHTML(id){
   const list=taskList(id); const done=list.filter(t=>t.done).length;
-  const rows=list.map(t=>`<li><label><input type="checkbox" data-task="${id}" data-i="${t.i}" ${t.done?'checked':''} ${(isOwner||sandbox)?'':'disabled'}> <span class="${t.done?'tdone':''}">${esc(t.t)}</span></label></li>`).join('');
+  const can=isOwner||sandbox;
+  const rows=list.map(t=>{const m=t.m; const meta=[m.hours?`${m.hours} h`:'',m.date?m.date:'',m.photos&&m.photos.length?`${m.photos.length} photo${m.photos.length>1?'s':''}`:''].filter(Boolean).join(' · ');
+    return `<li><label><input type="checkbox" data-task="${id}" data-i="${t.i}" ${t.done?'checked':''} ${can?'':'disabled'}> <span class="${t.done?'tdone':''}">${esc(t.t)}</span></label>${meta?`<span class="tmeta">${esc(meta)}</span>`:''}${m.gotcha?`<div class="gotcha">⚠ ${esc(m.gotcha)}</div>`:''}${can?`<button class="nbtn tlog" data-tlog="${id}" data-i="${t.i}" title="Log hours, a gotcha, a photo">log</button>`:''}</li>`;}).join('');
   const add=isOwner?`<form class="taskadd" data-taskadd="${id}"><input placeholder="Add a step…" aria-label="Add a step" id="ta-${id}"><button class="btn ghost" type="submit">Add</button></form>`:'';
-  return `<h3>Checklist · ${done}/${list.length}</h3><ul class="tasks">${rows}</ul>${add}`;
+  const hrs=stageHoursLogged(id); const st=D.stages.find(x=>x.id===id); const est=st?hoursMid(st):0;
+  return `<h3>Checklist · ${done}/${list.length}${hrs?` · ${hrs} h logged${est?` of ~${est} est.`:''}`:''}</h3><ul class="tasks">${rows}</ul>${add}`;
 }
 function renderNews(){
   const el=$('#news'); if(!el) return;
@@ -456,6 +471,96 @@ function renderSandboxBar(){
   el.hidden=false;
   el.innerHTML=`<b>Your sandbox.</b> Picks, percentages and checklist ticks you make here are saved to your own account and only you see them; Nate's build doesn't change. <button class="btn ghost" id="sb-start">Start from Nate's picks</button> <button class="btn ghost" id="sb-clear">Clear mine</button>`;
 }
+/* ---- Gantt: stages as bars from the calculator plan, editable by drag, with dependency arrows and gates ---- */
+let ganttEdits={};   // stageId -> {from:'YYYY-MM', to:'YYYY-MM'} overrides
+function ganttState(){ return (sandbox&&mine?mine.gantt:(stageState.__gantt&&stageState.__gantt.edits))||{}; }
+async function saveGantt(edits){
+  ganttEdits=edits;
+  if(sandbox&&mine){ mine.gantt=edits; await saveMine(); return; }
+  if(isOwner&&db){ stageState.__gantt={edits}; try{ await db.doc('stagestate/__gantt').set({edits,updated:new Date().toISOString()}); }catch(e){ toast('Could not save'); } }
+}
+function effectiveWindows(){
+  const p=plan(); const w={}; const ed=ganttState();
+  D.stages.forEach(s=>{ const base=p.windows[s.id]; const e=ed[s.id]||{}; w[s.id]={from:e.from?parseYM(e.from):base.from,to:e.to?parseYM(e.to):base.to,edited:!!(e.from||e.to)}; });
+  // push downstream stages so no stage starts before its predecessor ends
+  D.deps.forEach(dp=>{ const a=w[dp.from], b=w[dp.to]; if(a&&b&&b.from<a.to){ const len=monthIndex(b.to,b.from); b.from=new Date(a.to); b.to=new Date(a.to.getFullYear(),a.to.getMonth()+Math.max(1,len),1); } });
+  return w;
+}
+function gateStatus(g){
+  const steps=g.steps.map(([sid,text])=>{ const t=taskList(sid).find(x=>x.t===text); return {sid,text,done:!!(t&&t.done),found:!!t}; });
+  let decided=true; if(g.decision){ decided=allParts().some(p=>p.group===g.decision&&isChosen(p)); }
+  const ok=steps.every(s=>s.done)&&decided;
+  return {steps,decided,ok};
+}
+function renderGantt(){
+  const host=$('#gantt'); if(!host) return;
+  const w=effectiveWindows(); const origin=parseYM(calc.order);
+  const ids=D.stages.map(s=>s.id);
+  const last=ids.reduce((m,id)=>Math.max(m,monthIndex(w[id].to,origin)),0);
+  const months=Math.max(last+2,12); const rowH=34, left=200, top=30, right=16;
+  const boxW=Math.max(640,(host.clientWidth||900)-18); const colW=Math.max(14,Math.floor((boxW-left-right)/months));
+  const W=left+months*colW+right, H=top+ids.length*rowH+30;
+  const today=new Date(); const todayX=left+(monthIndex(today,origin)+today.getDate()/30)*colW;
+  const can=isOwner||sandbox;
+  let g=`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" class="gsvg" role="img" aria-label="Build schedule">`;
+  // month grid + labels
+  for(let m=0;m<months;m++){ const d=new Date(origin.getFullYear(),origin.getMonth()+m,1); const x=left+m*colW; const jan=d.getMonth()===0;
+    g+=`<line x1="${x}" y1="${top-6}" x2="${x}" y2="${H-26}" class="ggrid ${jan?'jan':''}"/>`;
+    if(m%(colW<22?6:3)===0) g+=`<text x="${x+2}" y="${top-12}" class="glab">${d.toLocaleDateString(undefined,{month:'short'})}${jan||m===0?' '+d.getFullYear():''}</text>`; }
+  // bars
+  ids.forEach((id,i)=>{ const s=D.stages.find(x=>x.id===id); const y=top+i*rowH; const a=monthIndex(w[id].from,origin), b=monthIndex(w[id].to,origin);
+    const x1=left+a*colW, x2=left+Math.max(a+1,b)*colW; const pct=stagePct(id).pct;
+    const gates=D.gates.filter(gt=>gt.stage===id); const blocked=gates.some(gt=>!gateStatus(gt).ok);
+    g+=`<text x="8" y="${y+21}" class="gname">${esc(s.num+'. '+s.title)}</text>`;
+    g+=`<g class="gbar ${w[id].edited?'edited':''}" data-stage="${id}">
+      <rect x="${x1}" y="${y+7}" width="${x2-x1}" height="20" rx="4" class="gfill"/>
+      <rect x="${x1}" y="${y+7}" width="${(x2-x1)*pct/100}" height="20" rx="4" class="gdone"/>
+      ${blocked?`<rect x="${x1-3}" y="${y+5}" width="6" height="24" rx="2" class="ggate" data-gate="${id}"><title>Gate: something must be finished before this stage starts</title></rect>`:''}
+      ${can?`<rect x="${x1-4}" y="${y+7}" width="8" height="20" class="ghandle" data-handle="from" data-stage="${id}"/><rect x="${x2-4}" y="${y+7}" width="8" height="20" class="ghandle" data-handle="to" data-stage="${id}"/>`:''}
+      <text x="${x1+6}" y="${y+21}" class="gtxt">${pct?pct+'%':''}</text>
+    </g>`;
+  });
+  // dependency arrows
+  D.deps.forEach(dp=>{ const i=ids.indexOf(dp.from), j=ids.indexOf(dp.to); if(i<0||j<0) return;
+    const x1=left+Math.max(monthIndex(w[dp.from].from,origin)+1,monthIndex(w[dp.from].to,origin))*colW, y1=top+i*rowH+17;
+    const x2=left+monthIndex(w[dp.to].from,origin)*colW, y2=top+j*rowH+17;
+    g+=`<path d="M${x1},${y1} L${x1+6},${y1} L${x1+6},${y2} L${x2-2},${y2}" class="garrow"/><polygon points="${x2-2},${y2-4} ${x2+4},${y2} ${x2-2},${y2+4}" class="garrowhead"/>`; });
+  // lead-time markers: chosen parts with lead time must be ordered by (stage start - lead)
+  allParts().filter(p=>isChosen(p)&&D.leadTimes[p.id]).forEach(p=>{ const i=ids.indexOf(p.stage); if(i<0) return; const lt=D.leadTimes[p.id]; const start=w[p.stage].from; const by=new Date(start); by.setDate(by.getDate()-lt.weeks*7);
+    const x=left+(monthIndex(by,origin)+by.getDate()/30)*colW, y=top+i*rowH; const st=statusOf(p); const late=today>by&&st==='planned';
+    g+=`<g class="glead ${late?'late':''}"><line x1="${x}" y1="${y+4}" x2="${x}" y2="${y+30}"/><text x="${x+3}" y="${y+6}" class="gleadtxt">order ${esc(p.name.split(' ').slice(0,3).join(' '))}</text><title>${esc(p.name)}: order by ${by.toLocaleDateString()} (${lt.weeks} wk lead). ${esc(lt.note)}</title></g>`; });
+  // today
+  if(todayX>left&&todayX<W-right) g+=`<line x1="${todayX}" y1="${top-6}" x2="${todayX}" y2="${H-26}" class="gtoday"/><text x="${todayX+3}" y="${H-14}" class="glab">today</text>`;
+  g+='</svg>';
+  const gatesHTML=D.gates.map(gt=>{ const st=gateStatus(gt); const s=D.stages.find(x=>x.id===gt.stage);
+    return `<li class="gate ${st.ok?'ok':''}"><b>${st.ok?'✓':'■'} ${esc(gt.label)}</b> <span class="row">before ${esc(s.title)}</span><div class="wwhy">${esc(gt.why)}</div><ul class="gsteps">${st.steps.map(x=>`<li class="${x.done?'tdone':''}">${x.done?'☑':'☐'} ${esc(x.text)} <span class="row">(${esc(x.sid)})</span></li>`).join('')}${gt.decision?`<li class="${st.decided?'tdone':''}">${st.decided?'☑':'☐'} Decision made: ${esc(GROUPS[gt.decision]?.label||gt.decision)}</li>`:''}</ul></li>`; }).join('');
+  host.innerHTML=`<div class="gwrap" tabindex="0">${g}</div>
+    <div class="gfoot">${can?'<span class="status">Drag a bar\'s edge to move a stage; stages that depend on it shift. </span>':''}<span class="chip">plan</span><span class="chip" style="color:var(--ok)">done</span><span class="chip" style="color:#b3261e">gate</span><span class="chip" style="color:var(--warn)">order-by</span>${can&&Object.keys(ganttState()).length?`<button class="btn ghost" id="greset">Reset to plan</button>`:''}</div>
+    <h3 style="margin-top:14px">Gates: stop here until these are done</h3><ul class="gates">${gatesHTML}</ul>`;
+  const rs=$('#greset'); if(rs) rs.onclick=()=>saveGantt({}).then(()=>renderGantt());
+  if(can) wireDrag(host.querySelector('svg'),w,origin,colW,left);
+}
+function wireDrag(svg,w,origin,colW,left){
+  let drag=null;
+  svg.querySelectorAll('.ghandle').forEach(h=>{
+    h.addEventListener('pointerdown',e=>{ e.preventDefault(); const scale=svg.getBoundingClientRect().width/svg.viewBox.baseVal.width; drag={id:h.dataset.stage,which:h.dataset.handle,startX:e.clientX,scale}; h.setPointerCapture(e.pointerId); h.classList.add('on'); });
+    h.addEventListener('pointerup',async e=>{ if(!drag) return; const d=drag; drag=null; h.classList.remove('on');
+      const dm=Math.round((e.clientX-d.startX)/(colW*d.scale)); if(!dm) return;
+      const cur=w[d.id]; let from=new Date(cur.from), to=new Date(cur.to);
+      if(d.which==='from'){ from=new Date(from.getFullYear(),from.getMonth()+dm,1); if(from>=to) from=new Date(to.getFullYear(),to.getMonth()-1,1); if(from<origin) from=new Date(origin); }
+      else { to=new Date(to.getFullYear(),to.getMonth()+dm,1); if(to<=from) to=new Date(from.getFullYear(),from.getMonth()+1,1); }
+      const ed=Object.assign({},ganttState()); ed[d.id]={from:ym(from),to:ym(to)};
+      await saveGantt(ed); renderGantt(); renderCalcFromGantt();
+    });
+  });
+}
+function renderCalcFromGantt(){
+  // the last stage's end becomes the effective target; tell the calculator verdict about it
+  const w=effectiveWindows(); const end=w.shakedown.to; const v=$('#c-verdict'); if(!v) return;
+  const tgt=parseYM(calc.target); if(end>tgt){ const months=monthIndex(end,tgt); v.innerHTML+=` <b style="color:var(--warn)">Your edited schedule ends ${fmtM(end)}, ${months} month${months>1?'s':''} past the target.</b>`; }
+  D.stages.forEach(s=>{ const el=document.getElementById('when-'+s.id); if(el){ const x=w[s.id]; el.textContent=`${fmtM(x.from)} – ${fmtM(x.to)}`+(x.edited?' (edited)':''); } });
+}
+
 /* ---- render all ---- */
 function renderParts(q){
   q=(q||'').trim().toLowerCase();
@@ -472,9 +577,10 @@ function renderParts(q){
   for(const id of ['builds','videos','vendors','options','community']) filterTable(id,q);
   const o=overallPct(); $('#overall-pct').textContent=o+'%'; $('#overall-bar').style.width=o+'%';
   const chosenN=allParts().filter(isChosen).length;
+  { const hl=totalHoursLogged(); $('#overall-hours').textContent=hl?`${hl} hours logged of ~${calc.hours.toLocaleString()} estimated (${Math.round(hl/calc.hours*100)}%).`:'No hours logged yet. Use "log" on any checklist step.'; }
   const ch=allParts().filter(isChosen); $('#overall-status').innerHTML=STATUSES.map(([v,l])=>`<span class="chip st-${v}">${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}</span>`).join('');
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
-  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds();
+  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt();
 }
 function filterTable(id,q){
   const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;
@@ -507,6 +613,27 @@ mq.addEventListener('change',syncRail); syncRail();
 const obs=new IntersectionObserver(es=>{es.forEach(en=>{ if(en.isIntersecting){ rail.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id)); }});},{rootMargin:'-20% 0px -70% 0px'});
 document.querySelectorAll('main section[id]').forEach(s=>obs.observe(s));
 
+/* ---- step log dialog ---- */
+function openTaskLog(id,i){
+  const t=taskList(id).find(x=>String(x.i)===String(i)); if(!t) return; const m=t.m;
+  $('#nd-title').textContent=t.t; $('#nd-model').textContent=(D.stages.find(x=>x.id===id)||{title:'Tools'}).title;
+  const photos=(m.photos||[]).map(ph=>`<figure><img src="/_blob/${esc(ph)}" alt="" loading="lazy">${assets?`<button class="nbtn" data-deltphoto="${esc(ph)}">×</button>`:''}</figure>`).join('');
+  $('#nd-body').innerHTML=`<div class="frm">
+    <label class="row">Hours this step took<input type="number" id="tl-hours" min="0" step="0.5" value="${esc(m.hours||'')}"></label>
+    <label class="row">Date done<input type="date" id="tl-date" value="${esc(m.date||'')}"></label>
+    <textarea class="wide" id="tl-gotcha" placeholder="Gotcha: what went wrong, what you'd do differently, the trick that worked">${esc(m.gotcha||'')}</textarea>
+    </div><div class="photos">${photos}</div>${assets?`<div class="uprow"><label class="btn ghost">Add photo<input type="file" accept="image/*" id="tl-photo" multiple hidden></label><span class="status" id="tl-up"></span></div>`:''}`;
+  $('#nd-acts').innerHTML=`<button class="btn ghost" id="nd-cancel">Close</button><button class="btn" id="nd-save">Save</button>`;
+  $('#nd-cancel').onclick=()=>dlg.close();
+  const write=async(patch)=>{ const cur=Object.assign({done:{},extra:[],meta:{}},tState(id)); cur.meta=Object.assign({},cur.meta||{}); cur.meta[i]=Object.assign({},cur.meta[i]||{},patch); await saveTask(id,cur); };
+  $('#nd-save').onclick=async()=>{ $('#nd-save').disabled=true; await write({hours:+$('#tl-hours').value||0,date:$('#tl-date').value,gotcha:$('#tl-gotcha').value.trim()}); dlg.close(); };
+  if(assets){
+    $('#tl-photo').onchange=async e=>{ const files=[...e.target.files]; if(!files.length) return; $('#tl-up').textContent='Uploading…'; const ids=[]; for(const f of files){ try{ const r=await assets.upload(f); ids.push(r.id);}catch(x){ $('#tl-up').textContent='Upload failed'; } } if(ids.length){ await write({photos:(m.photos||[]).concat(ids)}); openTaskLog(id,i);} };
+    $('#nd-body').querySelectorAll('[data-deltphoto]').forEach(b=>b.onclick=async()=>{ const pid=b.dataset.deltphoto; try{ await assets.delete(pid);}catch(x){} await write({photos:(m.photos||[]).filter(x=>x!==pid)}); openTaskLog(id,i); });
+  }
+  dlg.showModal();
+}
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-tlog]'); if(b){ openTaskLog(b.dataset.tlog,b.dataset.i); } });
 /* ---- note dialog ---- */
 const dlg=$('#notedlg');
 function openNote(id){
@@ -621,8 +748,7 @@ document.addEventListener('change',async e=>{
   const c=e.target.closest('[data-choose]'); if(c){ await choose(c.dataset.choose,c.checked); return; }
   const ss=e.target.closest('[data-status]'); if(ss){ const v=ss.value; const patch={status:v}; if(v==='installed') patch.pct=100; else if(v==='planned'&&pctOf(allParts().find(x=>x.id===ss.dataset.status))===100) patch.pct=0; await writeState(ss.dataset.status,patch); return; }
   const p=e.target.closest('[data-pct]'); if(p){ await writeState(p.dataset.pct,{pct:Math.max(0,Math.min(100,+p.value||0))}); return; }
-  const tk=e.target.closest('[data-task]'); if(tk&&sandbox){ const id=tk.dataset.task, i=tk.dataset.i; mine.tasks=mine.tasks||{}; const cur=Object.assign({done:{},extra:[]},mine.tasks[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); mine.tasks[id]=cur; renderParts(q.value); await saveMine(); return; }
-  const tk2=tk; if(tk2){ const id=tk.dataset.task, i=tk.dataset.i; const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); taskState[id]=cur; renderParts(q.value); try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); } return; }
+  const tk=e.target.closest('[data-task]'); if(tk){ const id=tk.dataset.task, i=tk.dataset.i; const cur=Object.assign({done:{},extra:[],meta:{}},tState(id)); cur.done=Object.assign({},cur.done,{[i]:tk.checked}); if(tk.checked&&!(cur.meta[i]&&cur.meta[i].date)){ cur.meta=Object.assign({},cur.meta); cur.meta[i]=Object.assign({},cur.meta[i]||{},{date:new Date().toISOString().slice(0,10)}); } await saveTask(id,cur); return; }
   const sp=e.target.closest('[data-stagepct]'); if(sp&&sandbox){ const id=sp.dataset.stagepct; const v=sp.value===''?null:Math.max(0,Math.min(100,+sp.value||0)); mine.stagestate=mine.stagestate||{}; mine.stagestate[id]={pct:v}; renderParts(q.value); await saveMine(); return; }
   if(sp){ const id=sp.dataset.stagepct; const v=sp.value===''?null:Math.max(0,Math.min(100,+sp.value||0)); stageState[id]={pct:v}; renderParts(q.value); try{ await db.doc('stagestate/'+id).set({pct:v,updated:new Date().toISOString()}); }catch(x){toast('Could not save');} }
 });
@@ -632,8 +758,7 @@ document.addEventListener('submit',async e=>{
   if(e.target.id==='rfform'){ e.preventDefault(); await submitReference(); return; }
   const f=e.target.closest('[data-taskadd]'); if(!f) return; e.preventDefault(); if(!isOwner||!db) return;
   const id=f.dataset.taskadd; const inp=document.getElementById('ta-'+id); const v=inp.value.trim(); if(!v) return;
-  const cur=Object.assign({done:{},extra:[]},taskState[id]||{}); cur.extra=(cur.extra||[]).concat([v]); taskState[id]=cur; inp.value=''; renderParts(q.value);
-  try{ await db.doc('tasks/'+id).set(cur); }catch(x){ toast('Could not save'); }
+  const cur=Object.assign({done:{},extra:[],meta:{}},tState(id)); cur.extra=(cur.extra||[]).concat([v]); inp.value=''; await saveTask(id,cur);
 });
 function readOnlyMsg(what){
   const t=D.forumThread; const where=t?`<a href="${esc(t)}" target="_blank" rel="noopener">reply in the forum thread</a>`:'reply in the forum thread where you found this link';
@@ -695,7 +820,7 @@ function context(){
   const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`];
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
   allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
-  D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id}: `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t).join('; '));});
+  D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id} (${stageHoursLogged(s.id)} h logged): `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t+(t.m.hours?` (${t.m.hours}h${t.m.date?' '+t.m.date:''})`:'')+(t.m.gotcha?` GOTCHA: ${t.m.gotcha}`:'')).join('; '));});
   { const rs=resolvedSet(); activeWarnings().forEach(w=>lines.push((rs.has(warnKey(w))?'RESOLVED CHECK: ':'OPEN WARNING: ')+w.msg+' '+(w.why||'')+' '+(w.fix||''))); }
   D.builds.forEach(b=>lines.push(`BUILD ${b.name} (${b.builder}; ${b.drivetrain}; ${b.status}): ${b.why} ${b.url}`));
   Object.entries(notes).forEach(([k,v])=>v.text&&lines.push(`STAGE NOTE ${k}: ${v.text}`));

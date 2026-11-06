@@ -1146,5 +1146,174 @@
 "p105",
 "p116",
 "p121"
+],
+"deps": [
+{
+"from": "delivery",
+"to": "chassis",
+"why": "Panels and hardware have to be inventoried before anything is drilled."
+},
+{
+"from": "chassis",
+"to": "front",
+"why": "Footbox and floor panels go in before the pedal box and suspension."
+},
+{
+"from": "chassis",
+"to": "rear",
+"why": "Rear panels and trunk floor before the IRS cradle."
+},
+{
+"from": "front",
+"to": "drivetrain",
+"why": "Pedal box and clutch hydraulics before the engine goes in."
+},
+{
+"from": "rear",
+"to": "drivetrain",
+"why": "Driveshaft and IRS before the trans is final."
+},
+{
+"from": "drivetrain",
+"to": "wiring",
+"why": "Harness routes around the engine and headers."
+},
+{
+"from": "wiring",
+"to": "hvac",
+"why": "A/C wiring and the firewall corner share space with the harness."
+},
+{
+"from": "hvac",
+"to": "gokart",
+"why": "Evaporator and condenser plumbing is far easier with no body."
+},
+{
+"from": "gokart",
+"to": "body",
+"why": "Drive it first; find the leaks and fit problems before the body hides them."
+},
+{
+"from": "body",
+"to": "title",
+"why": "WSP inspects a complete, drivable car."
+},
+{
+"from": "title",
+"to": "paint",
+"why": "Title in gelcoat so the deadline doesn't depend on the paint shop."
+},
+{
+"from": "paint",
+"to": "interior",
+"why": "Carpet and seats go in after paint; nothing gets scratched twice."
+},
+{
+"from": "interior",
+"to": "shakedown",
+"why": "Alignment and corner balance with the car at final weight."
+}
+],
+"gates": [
+{
+"stage": "body",
+"label": "Insulate and seal before the body goes on",
+"steps": [
+[
+"chassis",
+"Install footbox heat shields and firewall insulation"
+],
+[
+"chassis",
+"Seal the footbox-to-body gap with dense foam"
+],
+[
+"chassis",
+"Spray or lay sound deadening before carpet areas close"
 ]
+],
+"why": "Once the body is on, the footbox-to-body gap and the firewall corner are unreachable. Every heat-and-noise regret thread on the coupe traces back to skipping this."
+},
+{
+"stage": "body",
+"label": "A/C, heater and wipers plumbed body-off",
+"steps": [
+[
+"hvac",
+"Mount the evaporator in the passenger footbox"
+],
+[
+"hvac",
+"Run bulkhead fittings and hoses (90° for SBF)"
+],
+[
+"hvac",
+"Build the defrost path; have lines crimped and charged"
+]
+],
+"why": "FFR: wipers and A/C are 'much easier with the body off.'"
+},
+{
+"stage": "body",
+"label": "Windows decided",
+"steps": [],
+"decision": "side-windows",
+"why": "FormaCars roll-downs need door-skin work before door finishing; sliders don't. Decide before the doors are hung."
+},
+{
+"stage": "paint",
+"label": "Title first",
+"steps": [
+[
+"title",
+"Pass inspection; get the VIN assigned"
+]
+],
+"why": "The WSP certificate is valid 60 days; title before the car leaves for paint."
+},
+{
+"stage": "interior",
+"label": "Seat fit confirmed",
+"steps": [],
+"decision": "seats",
+"why": "Seat drop and pedal placement decide headroom for a 6'2\" driver; mount before carpet."
+},
+{
+"stage": "drivetrain",
+"label": "Clutch hydraulics in",
+"steps": [
+[
+"front",
+"Mount the pedal box; set pedal height and dead pedal"
+]
+],
+"why": "The master cylinder and line route before the engine blocks access."
+}
+],
+"leadTimes": {
+"p105": {
+"weeks": 10,
+"note": "60371 side windows ship late; often backordered"
+},
+"p069": {
+"weeks": 12,
+"note": "GAS-N has had months-long delays"
+},
+"p070": {
+"weeks": 12,
+"note": "GAS-N has had months-long delays"
+},
+"p032": {
+"weeks": 6,
+"note": "ePowerSteering shows 'notify me' at times"
+},
+"p003": {
+"weeks": 10,
+"note": "BluePrint engine packages run 8–12 weeks"
+},
+"p001": {
+"weeks": 26,
+"note": "FFR kit lead time ~6 months"
+}
+}
 }
