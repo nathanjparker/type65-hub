@@ -281,6 +281,10 @@ li.warn.done .nbtn{text-decoration:none}
 .cmptbl{table-layout:fixed;min-width:860px} .cmptbl td{vertical-align:top;font-size:13.5px;white-space:normal} .cmptbl th:nth-child(1){width:17%} .cmptbl th:nth-child(2){width:11%} .cmptbl th:nth-child(3){width:11%} .cmptbl th:nth-child(4){width:12%} .cmptbl th:nth-child(5){width:12%} .cmptbl th:nth-child(7){width:70px} .cmptbl td.pn{white-space:normal;word-break:break-word} .cmptbl tr.on td{background:var(--gold-soft)}
 .cmptbl .dots{font-size:10px;letter-spacing:1px;color:var(--gold)}
 .cmpwrap{overflow:auto;max-height:60vh}
+.card .links .fixlink{font-size:11.5px;padding:0 6px;margin-left:auto}
+.card .links .fixlink.has{color:var(--ok);border-color:var(--ok)}
+.lfield{display:grid;gap:4px;font-size:13.5px;color:var(--muted)} .lfield input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px} .lfield small{overflow-wrap:anywhere}
+.lrows{display:grid;gap:6px} .lrow{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px} .lrow input{padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:13.5px;min-width:0}
 dialog.wide{width:min(960px,94vw)}
 tr.top td{color:var(--muted)}
 /* card controls */
@@ -513,6 +517,11 @@ const STATUSES=[['planned','Planned'],['ordered','Ordered'],['received','Receive
 const statusOf=p=>st(p.id).status||'planned';
 const st=id=>{ if(sandbox&&mine) return (mine.state&&mine.state[id])||{}; const base=state[id]||{}; return isOwner?Object.assign({},base,priv[id]||{}):base; };
 const isChosen=p=>!!st(p.id).chosen;
+// a link fix saved with the build wins over the catalog's url (see openLinkFix)
+const linkOf=p=>{ const s=st(p.id); return s.url!=null&&s.url!==''?s.url:p.url; };
+const srcOf=p=>{ const s=st(p.id); return s.srcUrl!=null&&s.srcUrl!==''?s.srcUrl:p.srcUrl; };
+const linkFixed=p=>{ const s=st(p.id); return !!(s.url||s.srcUrl||(s.links&&s.links.length)); };
+const extraLinks=p=>(p.links||[]).map(l=>Object.assign({catalog:true},l)).concat(st(p.id).links||[]).filter(l=>l&&l.url);
 const pctOf=p=>Math.max(0,Math.min(100,+st(p.id).pct||0));
 function groupChosen(gid){ return allParts().some(p=>p.group===gid&&isChosen(p)); }
 function engineFamily(){ const e=allParts().find(p=>p.group==='engine'&&isChosen(p)); return e?e.family||'':''; }
@@ -562,10 +571,12 @@ function cardHTML(p){
   const fitLabel={yes:'Fits Gen 3',roadster:'Roadster part, verify',unknown:'Gen 3 fit unconfirmed'}[p.fit]||'';
   const kindLabel={FFR:'Factory Five',aftermarket:'Aftermarket',DIY:'DIY / idea'}[p.kind]||p.kind;
   const links=[];
-  if(p.url) links.push(`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.vendor||host(p.url)||'Product')}</a>`);
+  const pu=linkOf(p), su=srcOf(p);
+  if(pu) links.push(`<a href="${esc(pu)}" target="_blank" rel="noopener">${esc(p.vendor||host(pu)||'Product')}</a>`);
   else if(p.vendor) links.push(`<span class="row">${esc(p.vendor)}</span>`);
-  if(p.srcUrl) links.push(`<a href="${esc(p.srcUrl)}" target="_blank" rel="noopener">${esc(p.src||'Source')}</a>`);
+  if(su) links.push(`<a href="${esc(su)}" target="_blank" rel="noopener">${esc(p.src||'Source')}</a>`);
   else if(p.src) links.push(`<span class="row">${esc(p.src)}</span>`);
+  extraLinks(p).forEach(l=>links.push(`<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||host(l.url)||'Link')}</a>`));
   if(p.kind!=='DIY'||p.imgUrl){ const iq=encodeURIComponent((p.imgQuery||((p.vendor||'')+' '+p.name)).replace(/\s+/g,' ').trim()); links.push(`<a class="photo" href="${esc(p.imgUrl||('https://www.google.com/search?tbm=isch&q='+iq))}" target="_blank" rel="noopener">Photos</a>`); }
   const s=st(p.id), chosen=isChosen(p), pct=pctOf(p), hasNote=!!((s.note&&s.note.trim())||(s.photos&&s.photos.length)||s.receipt);
   let ctl='';
@@ -590,7 +601,7 @@ function cardHTML(p){
     ${p.popWhy?`<div class="row"><b>Who picks it:</b> ${esc(p.popWhy)}</div>`:''}
     ${p.users?`<div class="row"><b>Used by:</b> ${esc(p.users)}</div>`:''}
     ${p.notes?`<div class="notes">${esc(p.notes)}</div>`:''}
-    <div class="links">${links.join('')}</div>
+    <div class="links">${links.join('')}${isOwner?`<button class="nbtn fixlink ${linkFixed(p)?'has':''}" data-fixlink="${esc(p.id)}" title="Dead or wrong link? Paste the working page here">${linkFixed(p)?'✎ link fixed':'fix link'}</button>`:''}</div>
     ${ctl}
   </article>`;
 }
@@ -664,7 +675,7 @@ function openCompare(gid){
       <td>${p.pop?`<span class="dots">${'●'.repeat(p.pop)}${'○'.repeat(5-p.pop)}</span><br>`:''}<small class="row">${esc(p.popWhy||'')}</small></td>
       <td>${names.length?names.map(n=>`<button class="nbtn" data-builder="${esc(n)}" data-closecmp="1">${esc(n)}</button>`).join(' '):`<small class="row">${esc(p.users||'—')}</small>`}</td>
       <td><span class="chip f-${esc(p.fit)}">${esc(fitLabel[p.fit]||p.fit||'—')}</span>${pts.length?`<br><small class="row">${esc(pts.join(' · '))}</small>`:''}</td>
-      <td>${esc(p.notes||'')}<div class="links" style="margin-top:4px">${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.vendor||host(p.url))}</a>`:''}${p.srcUrl?` <a href="${esc(p.srcUrl)}" target="_blank" rel="noopener">${esc(p.src||'source')}</a>`:''}</div></td>
+      <td>${esc(p.notes||'')}<div class="links" style="margin-top:4px">${linkOf(p)?`<a href="${esc(linkOf(p))}" target="_blank" rel="noopener">${esc(p.vendor||host(linkOf(p)))}</a>`:''}${srcOf(p)?` <a href="${esc(srcOf(p))}" target="_blank" rel="noopener">${esc(p.src||'source')}</a>`:''}${extraLinks(p).map(l=>` <a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||host(l.url))}</a>`).join('')}</div></td>
       <td>${on?'<span class="chip chosenchip">Chosen</span>':can?`<button class="nbtn resolve" data-cmppick="${esc(p.id)}">${g.multi?'Add':'Pick'}</button>`:''}<br><button class="nbtn jump" data-jump="card:${esc(p.id)}" data-closecmp="1">card →</button></td></tr>`; }).join('');
   $('#nd-body').innerHTML=`<div class="cmpwrap tbl"><table class="cmptbl"><thead><tr><th>Option</th><th>Price</th><th>How many builds</th><th>Who runs it</th><th>Fit · plan points</th><th>What builders say</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`;
   $('#nd-acts').innerHTML=`<button class="btn ghost" id="nd-cancel">Close</button>`;
@@ -690,11 +701,11 @@ function renderReport(){
   const undecided=D.groups.filter(g=>!chosen.some(p=>p.group===g.id)).sort((a,b)=>['order','body','paint','any'].indexOf(a.decideBy)-['order','body','paint','any'].indexOf(b.decideBy));
   const openOrder=undecided.filter(g=>g.decideBy==='order');
   const byVendor={};
-  other.forEach(p=>{const v=p.vendor||host(p.url)||'Unspecified vendor'; (byVendor[v]=byVendor[v]||[]).push(p);});
+  other.forEach(p=>{const v=p.vendor||host(linkOf(p))||'Unspecified vendor'; (byVendor[v]=byVendor[v]||[]).push(p);});
   const eff=p=>{const s=st(p.id); return s.quote?+s.quote:(lowPrice(p.price)||0);};
   const sum=list=>list.reduce((a,p)=>a+eff(p),0);
   const quoted=chosen.filter(p=>st(p.id).quote).length, stale=chosen.filter(p=>quoteStale(st(p.id))).length;
-  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(host(p.url))}</a>`:''}</td><td class="pn">${st(p.id).quote?`<b>${money(st(p.id).quote)}</b> <small>${st(p.id).quoteKind==='paid'?'paid':'quoted'}${quoteStale(st(p.id))?' · stale':''}</small><br><small class="row">list ${esc(p.price||'')}</small>`:`${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}`}</td><td><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td></tr>`).join('');
+  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${linkOf(p)?`<a href="${esc(linkOf(p))}" target="_blank" rel="noopener">${esc(host(linkOf(p)))}</a>`:''}</td><td class="pn">${st(p.id).quote?`<b>${money(st(p.id).quote)}</b> <small>${st(p.id).quoteKind==='paid'?'paid':'quoted'}${quoteStale(st(p.id))?' · stale':''}</small><br><small class="row">list ${esc(p.price||'')}</small>`:`${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}`}</td><td><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td></tr>`).join('');
   const counts=STATUSES.map(([v,l])=>[l,chosen.filter(p=>statusOf(p)===v).length]);
   let html='',txt=[];
   const kitNote='Kit price itself is not in the FFR list below; the Complete Kit is $22,990 plus options.';
@@ -705,7 +716,7 @@ function renderReport(){
   if(skip.length){txt.push('  Leave unticked:'); skip.forEach(s=>txt.push(`  [${pnOf(s.p)}] ${s.p.name} -> buying ${s.pick.name} from ${s.pick.vendor||''}`));}
   Object.entries(byVendor).sort().forEach(([v,list])=>{
     html+=`<div class="panel" style="margin-bottom:14px"><h3>${esc(v)}</h3><div class="tbl"><table><thead><tr><th>Part no.</th><th>Order</th><th>Link</th><th>Price</th><th>Status</th></tr></thead><tbody>${rows(list)}</tbody></table></div><p class="status">Subtotal (low end): <b>${money(sum(list))}</b></p></div>`;
-    txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${p.url||''}`)); txt.push(`  Subtotal: ${money(sum(list))}`);
+    txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${linkOf(p)||''}`)); txt.push(`  Subtotal: ${money(sum(list))}`);
   });
   const total=sum(chosen)+22990;
   const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(warnKey(w)));
@@ -717,7 +728,7 @@ function renderReport(){
   // spreadsheet export: one flat table
   const cols=['Section','Vendor','Part no.','Part','Make / model','Qty','Unit price (low)','Price as listed','Your quote / paid','Status','Ordered','Received','Installed','Link','Source','Notes'];
   const flat=[];
-  const pushRows=(section,list)=>list.forEach(p=>{const stt=statusOf(p); flat.push([section,p.vendor||host(p.url)||'',pnOf(p)||'',p.name,p.model||'',1,eff(p)||'',p.price||'',st(p.id).quote?money(st(p.id).quote)+' '+(st(p.id).quoteKind||'quote'):'',STATUSES.find(x=>x[0]===stt)[1],['ordered','received','installed'].includes(stt)?'☑':'☐',['received','installed'].includes(stt)?'☑':'☐',stt==='installed'?'☑':'☐',p.url||'',p.srcUrl||'',(p.notes||'').replace(/\s+/g,' ')]);});
+  const pushRows=(section,list)=>list.forEach(p=>{const stt=statusOf(p); flat.push([section,p.vendor||host(linkOf(p))||'',pnOf(p)||'',p.name,p.model||'',1,eff(p)||'',p.price||'',st(p.id).quote?money(st(p.id).quote)+' '+(st(p.id).quoteKind||'quote'):'',STATUSES.find(x=>x[0]===stt)[1],['ordered','received','installed'].includes(stt)?'☑':'☐',['received','installed'].includes(stt)?'☑':'☐',stt==='installed'?'☑':'☐',linkOf(p)||'',srcOf(p)||'',(p.notes||'').replace(/\s+/g,' ')]);});
   flat.push(['Factory Five','Factory Five','','Gen 3 Complete Kit','Complete Kit',1,22990,'$22,990','','Planned','☐','☐','☐','https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/','','Base kit; options below']);
   pushRows('Factory Five options',ffr);
   Object.entries(byVendor).sort().forEach(([v,list])=>pushRows(v,list));
@@ -941,7 +952,32 @@ function openQuote(id){
   $('#nd-save').onclick=async()=>{ const a=+$('#qt-amt').value; if(!a){ toast('Enter an amount'); return; } await writeState(id,{quote:a,quoteKind:$('#qt-kind').value,quoteDate:$('#qt-date').value,quoteFrom:$('#qt-from').value.trim()}); dlg.close(); };
   dlg.showModal();
 }
-document.addEventListener('click',e=>{ const b=e.target.closest('[data-quote]'); if(b) openQuote(b.dataset.quote); });
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-quote]'); if(b) openQuote(b.dataset.quote); const f=e.target.closest('[data-fixlink]'); if(f) openLinkFix(f.dataset.fixlink); });
+/* ---- fix a link: a replacement url saved with the build, used everywhere the part is shown ---- */
+function openLinkFix(id){
+  const p=allParts().find(x=>x.id===id); if(!p) return; const s=st(id);
+  $('#nd-title').textContent='Links: '+p.name; $('#nd-model').textContent=p.model||'';
+  const mineLinks=(s.links||[]);
+  const extraRows=mineLinks.map((l,i)=>`<div class="lrow"><input data-ll="${i}" placeholder="Label (install video, forum review, PDF…)" value="${esc(l.label||'')}"><input data-lu="${i}" type="url" placeholder="https://…" value="${esc(l.url||'')}"><button class="nbtn" data-ldel="${i}" title="Remove">×</button></div>`).join('');
+  $('#nd-body').innerHTML=`<div class="lrows">
+    <label class="lfield"><span>Product page</span><input id="lf-url" type="url" placeholder="https://…" value="${esc(s.url||'')}"><small>Catalog has: ${p.url?`<a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.url)}</a>`:'nothing'}</small></label>
+    <label class="lfield"><span>Source (thread, video)</span><input id="lf-src" type="url" placeholder="https://…" value="${esc(s.srcUrl||'')}"><small>Catalog has: ${p.srcUrl?`<a href="${esc(p.srcUrl)}" target="_blank" rel="noopener">${esc(p.srcUrl)}</a>`:'nothing'}</small></label>
+    </div>
+    <h4 style="margin-top:12px;font-size:14px">More links</h4>
+    ${(p.links||[]).length?`<p class="status">In the catalog: ${(p.links||[]).map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||host(l.url))}</a>`).join(' · ')}</p>`:''}
+    <div id="lf-extra" class="lrows">${extraRows}</div><button class="nbtn" id="lf-add" style="margin-top:6px">+ add a link</button>
+    <p class="status">Paste the page that works; leave a box empty to keep the catalog link. Extra links are for anything else worth a click: an install video, a review thread, a spec sheet. Your fix shows on this card, the compare view and the order sheet${sandbox?' in your sandbox':isOwner&&!window.claude?' in this copy':' for everyone who opens this hub'}. ${window.claude?'':'To get it into the shared catalog for other builders, use Export my build and send the file, or post the link in the forum thread.'}</p>`;
+  $('#nd-acts').innerHTML=`<button class="btn ghost" id="lf-clear">Back to catalog link</button><button class="btn ghost" id="nd-cancel">Cancel</button><button class="btn" id="nd-save">Save</button>`;
+  $('#nd-cancel').onclick=()=>dlg.close();
+  $('#lf-add').onclick=()=>{ const i=$('#lf-extra').children.length; $('#lf-extra').insertAdjacentHTML('beforeend',`<div class="lrow"><input data-ll="${i}" placeholder="Label (install video, forum review, PDF…)"><input data-lu="${i}" type="url" placeholder="https://…"><button class="nbtn" data-ldel="${i}" title="Remove">×</button></div>`); $('#lf-extra').lastElementChild.querySelector('input').focus(); };
+  $('#lf-extra').onclick=e=>{ const d=e.target.closest('[data-ldel]'); if(d) d.closest('.lrow').remove(); };
+  $('#lf-clear').onclick=async()=>{ await writeState(id,{url:null,srcUrl:null,links:null,linkFixed:null}); dlg.close(); toast('Catalog links restored'); };
+  $('#nd-save').onclick=async()=>{ const u=$('#lf-url').value.trim(), sv=$('#lf-src').value.trim();
+    const links=[...$('#lf-extra').querySelectorAll('.lrow')].map(r=>({label:r.querySelector('[data-ll]').value.trim(),url:r.querySelector('[data-lu]').value.trim()})).filter(l=>l.url);
+    for(const v of [u,sv].concat(links.map(l=>l.url))){ if(v&&!/^https?:\/\//i.test(v)){ toast('Links need to start with http:// or https://'); return; } }
+    await writeState(id,{url:u||null,srcUrl:sv||null,links:links.length?links:null,linkFixed:(u||sv||links.length)?new Date().toISOString().slice(0,10):null}); dlg.close(); toast(links.length||u||sv?'Links saved':'Links cleared'); };
+  dlg.showModal();
+}
 /* ---- this week: what's due, from dates, statuses and gates ---- */
 function thisWeekItems(){
   const items=[]; const today=new Date(); const w=(typeof effectiveWindows==='function')?effectiveWindows():plan().windows;
@@ -1310,7 +1346,7 @@ function localDb(){
 function context(){
   const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`];
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
-  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${p.url||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${p.srcUrl||''}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done${st(p.id).quote?`, ${st(p.id).quoteKind||'quoted'} $${st(p.id).quote} ${st(p.id).quoteDate||''}`:''}`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
+  allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${linkOf(p)||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${srcOf(p)||''}${extraLinks(p).map(l=>` | ${l.label||'link'}: ${l.url}`).join('')}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done${st(p.id).quote?`, ${st(p.id).quoteKind||'quoted'} $${st(p.id).quote} ${st(p.id).quoteDate||''}`:''}`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
   D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id} (${stageHoursLogged(s.id)} h logged): `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t+(t.m.hours?` (${t.m.hours}h${t.m.date?' '+t.m.date:''})`:'')+(t.m.gotcha?` GOTCHA: ${t.m.gotcha}`:'')).join('; '));});
   { const rs=resolvedSet(); activeWarnings().forEach(w=>lines.push((rs.has(warnKey(w))?'RESOLVED CHECK: ':'OPEN WARNING: ')+w.msg+' '+(w.why||'')+' '+(w.fix||''))); }
   D.builds.forEach(b=>lines.push(`BUILD ${b.name} (${b.builder}; ${b.drivetrain}; ${b.status}): ${b.why} ${b.url}`));

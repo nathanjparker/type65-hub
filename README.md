@@ -41,6 +41,20 @@ Then republish `index.html` with `hub-data.json` as a supporting file.
 
 To change the catalog, edit `data/*.json`, run `python3 scripts/build.py`, and commit; GitHub Pages serves `docs/`.
 
+### Fixing a dead link, or adding more
+
+Vendors move pages. You don't need the repo to fix one:
+
+1. On the part's card, click **fix link** (bottom-right of the links row; it's there on your own copy and for the owner on the Claude version).
+2. Paste the working product page and/or source, add any extra links worth a click (an install video, a review thread, a PDF) with a short label, and Save. The card, the compare view, the order sheet and Ask the hub all use your links from then on. **Back to catalog link** undoes it.
+
+To get a fix into the shared catalog so every copy carries it, do one of:
+
+- Click **Export my build** at the top, then run `python3 scripts/apply-link-fixes.py my-type65-build.json` in this repo (add `--dry-run` to preview), then `python3 scripts/build.py` and commit. The script copies only the links; your picks and notes stay out of the catalog.
+- Or post the part and the new link in the forum thread linked from the page; the weekly pass reads it.
+
+Parts can also carry extra links in the catalog itself: an optional `links: [{"label": "...", "url": "..."}]` array on any part in `data/parts-*.json`.
+
 ### Access rules on the Claude copy
 
 - Everyone with the link reads the catalog, the owner's picks and progress, checklists, stage notes and what's new.
