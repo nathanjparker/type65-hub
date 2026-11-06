@@ -40,6 +40,7 @@ button{font-family:inherit;font-size:inherit;cursor:pointer}
 .search{flex:1 1 260px;display:flex;gap:8px;min-width:0}
 .search input{flex:1;min-width:0;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font-size:15px}
 .tocbtn{display:none;padding:8px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg)}
+.railclose{display:none}
 
 .shell{display:grid;grid-template-columns:260px minmax(0,1fr);gap:0}
 .rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 62px);align-self:start;max-height:calc(100vh - 62px);overflow:auto;
@@ -313,8 +314,11 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 @media (max-width:900px){
   .dec{grid-template-columns:1fr}
   .shell{grid-template-columns:1fr}
-  .rail{position:fixed;inset:0;top:env(safe-area-inset-top,0px);z-index:11;max-height:none;border-right:0;padding-top:16px}
+  .rail{position:fixed;inset:0;top:env(safe-area-inset-top,0px);align-self:stretch;height:calc(100vh - env(safe-area-inset-top,0px));height:calc(100dvh - env(safe-area-inset-top,0px));max-height:none;z-index:11;border-right:0;padding-top:8px;padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
   .rail[hidden]{display:none}
+  .railclose{display:flex;justify-content:flex-end;position:sticky;top:0;background:var(--surface);padding:4px 0 8px;z-index:1}
+  .railclose button{padding:8px 14px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);font-weight:600}
+  html.toc-open,html.toc-open body{overflow:hidden;height:100%;overscroll-behavior:none}
   .tocbtn{display:inline-block}
   .brand h1{font-size:20px}
   .brand small{display:none}
@@ -327,6 +331,7 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 </header>
 <div class="shell">
 <nav class="rail" id="rail" aria-label="Contents">
+  <div class="railclose"><button type="button" id="railclose" aria-label="Close contents">Close ✕</button></div>
   <h4>Overview</h4>
   <a href="#overview"><span class="n">★</span>Build at a glance</a>
   <a href="#sheet"><span class="n">✓</span>Your build</a>
@@ -1135,7 +1140,8 @@ renderParts('');
 
 /* ---- TOC / drawer / scroll spy ---- */
 const rail=$('#rail'), tocbtn=$('#tocbtn'), mq=matchMedia('(max-width:900px)');
-function syncRail(){ if(mq.matches){ rail.hidden=tocbtn.getAttribute('aria-expanded')!=='true'; } else rail.hidden=false; }
+function syncRail(){ const open=tocbtn.getAttribute('aria-expanded')==='true'; if(mq.matches){ rail.hidden=!open; document.documentElement.classList.toggle('toc-open',open); if(open) rail.scrollTop=0; } else { rail.hidden=false; document.documentElement.classList.remove('toc-open'); } }
+$('#railclose').addEventListener('click',()=>{ tocbtn.setAttribute('aria-expanded','false'); syncRail(); });
 tocbtn.addEventListener('click',()=>{const open=tocbtn.getAttribute('aria-expanded')==='true'; tocbtn.setAttribute('aria-expanded',String(!open)); syncRail();});
 rail.addEventListener('click',e=>{ if(e.target.closest('a')&&mq.matches){ tocbtn.setAttribute('aria-expanded','false'); syncRail(); }});
 mq.addEventListener('change',syncRail); syncRail();

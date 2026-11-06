@@ -5,6 +5,7 @@
 </header>
 <div class="shell">
 <nav class="rail" id="rail" aria-label="Contents">
+  <div class="railclose"><button type="button" id="railclose" aria-label="Close contents">Close ✕</button></div>
   <h4>Overview</h4>
   <a href="#overview"><span class="n">★</span>Build at a glance</a>
   <a href="#sheet"><span class="n">✓</span>Your build</a>
@@ -813,7 +814,8 @@ renderParts('');
 
 /* ---- TOC / drawer / scroll spy ---- */
 const rail=$('#rail'), tocbtn=$('#tocbtn'), mq=matchMedia('(max-width:900px)');
-function syncRail(){ if(mq.matches){ rail.hidden=tocbtn.getAttribute('aria-expanded')!=='true'; } else rail.hidden=false; }
+function syncRail(){ const open=tocbtn.getAttribute('aria-expanded')==='true'; if(mq.matches){ rail.hidden=!open; document.documentElement.classList.toggle('toc-open',open); if(open) rail.scrollTop=0; } else { rail.hidden=false; document.documentElement.classList.remove('toc-open'); } }
+$('#railclose').addEventListener('click',()=>{ tocbtn.setAttribute('aria-expanded','false'); syncRail(); });
 tocbtn.addEventListener('click',()=>{const open=tocbtn.getAttribute('aria-expanded')==='true'; tocbtn.setAttribute('aria-expanded',String(!open)); syncRail();});
 rail.addEventListener('click',e=>{ if(e.target.closest('a')&&mq.matches){ tocbtn.setAttribute('aria-expanded','false'); syncRail(); }});
 mq.addEventListener('change',syncRail); syncRail();
