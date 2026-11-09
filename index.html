@@ -1139,7 +1139,7 @@ function filterTable(id,q){
 
 /* ---- reference tables ---- */
 const link=(u,t)=>u?`<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`:esc(t);
-function renderBuilds(){ $('#builds-tbl tbody').innerHTML=D.builds.concat(addedBuilds).map(b=>`<tr><td>${b.star?'<span class="star">★</span> ':''}${link(b.url,b.name)}${b.submittedBy?` <span class="chip sug">via ${esc(b.submittedBy)}</span>`:''}</td><td>${esc(b.builder)}</td><td>${esc(b.drivetrain)}</td><td>${esc(b.status)}</td><td>${esc(b.why)}</td></tr>`).join(''); }
+function renderBuilds(){ $('#builds-tbl tbody').innerHTML=D.builds.concat(addedBuilds).map(b=>`<tr><td>${b.star?'<span class="star">★</span> ':''}${link(b.url,b.name)}${b.alt?` · ${link(b.alt,'thread')}`:''}${b.submittedBy?` <span class="chip sug">via ${esc(b.submittedBy)}</span>`:''}</td><td>${esc(b.builder)}</td><td>${esc(b.drivetrain)}</td><td>${esc(b.status)}</td><td>${esc(b.why)}</td></tr>`).join(''); }
 
 $('#videos-tbl tbody').innerHTML=D.videos.map(v=>`<tr><td>${v.star?'<span class="star">★</span> ':''}${link(v.url,v.name)}</td><td>${esc(v.car)}</td><td>${esc(v.eps)}</td><td>${esc(v.best)}</td></tr>`).join('');
 $('#vendors-tbl tbody').innerHTML=D.vendors.map(v=>`<tr><td>${link(v.url,v.name)}${v.parts?`<br><small>${link(v.parts,'coupe parts')}</small>`:''}</td><td>${esc(v.sells)}</td><td class="pn">${esc(v.phone)}</td><td>${esc(v.notes)}</td></tr>`).join('');

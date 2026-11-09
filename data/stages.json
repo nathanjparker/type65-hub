@@ -31,18 +31,25 @@
 {
 "label": "Solid Car Guys Ep 4: Build School instructors",
 "url": "https://www.youtube.com/watch?v=YK76Kn63Lus"
+},
+{
+"label": "Thinking of a coupe: what is different from a roadster (Sep 2026)",
+"url": "https://thefactoryfiveforum.com/thread/136622"
 }
 ],
 "challenges": [
 "Options that cannot be added later: IRS, power steering, A/C kit, hydraulic clutch, windows, wipers, powder coat, EFI in-tank fuel.",
 "Pin-drive wheels do not work with the IRS (Jeff Kleiner). Stick with bolt-on Halibrands.",
 "BluePrint's package says STOP AND CALL for Factory Five fitment: confirm the front drive carries both an A/C compressor and a PS pump.",
-"Two TKX/IRS driveshafts are listed (60175 at 10.50\" vs 16038 at 8.38\"). Call FFR with the BluePrint bellhousing/TKX length."
+"Two TKX/IRS driveshafts are listed (60175 at 10.50\" vs 16038 at 8.38\"). Call FFR with the BluePrint bellhousing/TKX length.",
+"Build order is not the manual order: 8secDuster and Papa say do the electrical, HVAC and brake lines before the engine goes in and before the outer footbox panels; once the body is on, those panels never come off. \"The manual is a loose guideline.\"",
+"Parts arrive late: Tiltrider1 ordered in January, got the kit in May, the harness five months later and spindles after three months on backorder. Start anyway; do not wait for a complete inventory (JimStone)."
 ],
 "ideas": [
 "Start a parts-and-cost spreadsheet like Yellville's on day one.",
 "Take the Mk5 Roadster Build School before the kit ships; FFR says Gen 3 coupe builders take that class.",
-"Post on the ffcars Northwest board for a Puget Sound coupe owner who will let you sit in a finished car. Seat fit and headroom cannot be judged from photos."
+"Post on the ffcars Northwest board for a Puget Sound coupe owner who will let you sit in a finished car. Seat fit and headroom cannot be judged from photos.",
+"edwardb: \"Don't build a Coupe without A/C IMO.\" The coupe is louder than a roadster, not daily-driver dry (leaks at the FFR windows and into the footboxes in heavy rain), and body fit is where the extra hours go."
 ],
 "tasks": [
 "Get a written FFR quote with every option line",
@@ -74,6 +81,10 @@
 {
 "label": "What you get: Complete Kit",
 "url": "https://www.factoryfive.com/type-65-coupe/what-you-get-complete-kit/"
+},
+{
+"label": "Order placed: shop setup advice from September 2026 buyers",
+"url": "https://thefactoryfiveforum.com/thread/136700"
 }
 ],
 "challenges": [
@@ -83,7 +94,8 @@
 ],
 "ideas": [
 "Build a body dolly first.",
-"Store aluminum panels flat and labeled; they dent and oxidize in storage."
+"Store aluminum panels flat and labeled; they dent and oxidize in storage.",
+"Coupe clearance is about 4\": a low-profile jack, a dolly on big casters and a set of cheap 17\" Mustang shop wheels (17\"+ clears Wilwoods) before the kit lands. Keep parts in the numbered FFR boxes with the packing lists."
 ],
 "tasks": [
 "Photograph every box before opening",
@@ -91,7 +103,8 @@
 "Email partsales@ about missing or wrong parts within days",
 "Lift the body off (4 people) onto the dolly",
 "Put the MSO and all receipts in the binder",
-"Label and store aluminum panels flat"
+"Label and store aluminum panels flat",
+"Mount the hatch side panels to the chassis before the body goes on (PNWTim learned late)"
 ]
 },
 {
@@ -122,12 +135,18 @@
 {
 "label": "Sealing the cabin (ffcars 617986)",
 "url": "https://www.ffcars.com/threads/sealing-the-cabin.617986/"
+},
+{
+"label": "Panel order, regulator mount, tap vs rivnut (new forum 136789)",
+"url": "https://thefactoryfiveforum.com/thread/136789"
 }
 ],
 "challenges": [
 "Silicone vs Sikaflex debate; panels oxidize if uncoated, so coat them before the pedal box and wiring go in.",
 "Most cockpit heat is engine-bay air pushed along the footbox-to-body gap, not conduction. Seal it with dense foam before the body goes on.",
-"Dropped floors for tall drivers must be decided before panels are riveted."
+"Dropped floors for tall drivers must be decided before panels are riveted.",
+"Leave the engine-bay and radiator-area aluminum off until the engine is in (except the footbox insides and fronts). Trans side panels go on after the floor and share rivets. Test-fit every panel before cutting or bending: one misplaced panel opens gaps three panels later (Papa).",
+"Tap the frame or use rivnuts on the top footbox panels so the HVAC and wiring behind them can be serviced; the passenger footbox panel is sealed in place and the outer panels cannot come off with the body on (8secDuster, FitzHappens)."
 ],
 "ideas": [
 "Satin clear over aluminum (jgray) for a finished look at low cost.",
@@ -167,12 +186,17 @@
 {
 "label": "Quick release + Russ Thompson turn signal",
 "url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-34975.html"
+},
+{
+"label": "Widen the pedal box? Pedal offset and Snakebite extensions",
+"url": "https://thefactoryfiveforum.com/thread/136658"
 }
 ],
 "challenges": [
 "Accelerator pedal vs steering-shaft interference (Bob Brandle made a spacer); throttle pedal wobble (jgray).",
 "Standard 500 lb front springs may be light if the finished car tops 2,900 lb.",
-"A cast Wilwood clutch pedal broke on a roadster with a cable clutch; hydraulic lowers the load."
+"A cast Wilwood clutch pedal broke on a roadster with a cable clutch; hydraulic lowers the load.",
+"The pedals sit left of the seat centerline in every coupe. edwardb and 8secDuster: a non-issue you adapt to; angle the seats, move the Wilwood pads, and leave the footbox alone until the headers are in. 8secDuster's real problem was clutch/brake pad spacing."
 ],
 "ideas": [
 "Dead-pedal kit and rigid stainless brake lines (edwardb).",
@@ -211,12 +235,17 @@
 {
 "label": "Grassroots Motorsports Gen 3 race build (IRS assembly)",
 "url": "https://grassrootsmotorsports.com/forum/build-projects-and-project-cars/factory-five-gen3-type65-coupe-race/125711/page1"
+},
+{
+"label": "IRS frame rub with 315s: spacer, camber or notch",
+"url": "https://thefactoryfiveforum.com/thread/136432"
 }
 ],
 "challenges": [
 "IRS bushing misalignment needs spacers; drill spindle and mount holes to 5/8\".",
 "Pinion flange adapter error that FFR replaced (P100DHG #138).",
-"Ask about 3.73 vs 3.55 for the TKX 0.81 overdrive."
+"Ask about 3.73 vs 3.55 for the TKX 0.81 overdrive.",
+"315s on the IRS rub the frame behind the passenger seat: 1\" spacer and -0.5° camber on a street car (edwardb, 11k miles); notch and re-weld the channel on a track car (Jphoenix)."
 ],
 "ideas": [
 "Electric parking brake (Levy Racing / Wilwood EPB) frees the tunnel.",
@@ -267,17 +296,32 @@
 {
 "label": "Gen 3 Coupe FAQ (small-block is better for footroom)",
 "url": "https://www.factoryfive.com/type-65-coupe/faqs/"
+},
+{
+"label": "TKX shifter position: Coyote flips to the rear, SBF wants mid-shift (Oct 2026)",
+"url": "https://thefactoryfiveforum.com/thread/136824"
+},
+{
+"label": "Portland dB limit thread: pipes, inserts, GAS-N vs FFR vs Boig",
+"url": "https://thefactoryfiveforum.com/thread/136656"
+},
+{
+"label": "Fuel line routing for a 347 EFI (sizes, filter, fittings)",
+"url": "https://thefactoryfiveforum.com/thread/136265"
 }
 ],
 "challenges": [
 "TKX shifter position; several builders flipped the shifter and moved the tunnel hole.",
 "Oil pan clearance (rear-sump), tall intakes hit the hood, degas/overflow tank location.",
-"The 4-into-2-into-sidepipe routing is a reported power robber; GAS-N's design has a longer, more gradual turn."
+"The 4-into-2-into-sidepipe routing is a reported power robber; GAS-N's design has a longer, more gradual turn.",
+"TKX shifter, Oct 2026: with a Coyote, edwardb flips the shifter 180° to the rear position and skips the mid-shift kit; gtrag94: \"for a SBF you DO want the midshift position\" (the small square plate forward of the normal mount). PNWTim: set the shifter before you raise the tailshaft and fit the crossmember; there is no room after.",
+"GAS-N headers and pipes are a roll of the dice in 2025–26 (tabs welded in the wrong place, months-long waits); JimStone's FFR stainless set was a perfect fit. Quiet FFR pipes with Car Chemistry inserts, or go Boig."
 ],
 "ideas": [
 "Ceramic headers and standoff heat shields; bare FFR pipes rust fast in Washington.",
 "Fan shroud (Breeze 70807) for low-speed and A/C idle cooling.",
-"Driveshaft safety loop on rivnuts."
+"Driveshaft safety loop on rivnuts.",
+"Jphoenix runs standard FFR roadster side pipes on a street Type 65 (302 + GAS-N headers) with a custom support bracket: under 102 dB at Portland and 103 dB at every PNW track."
 ],
 "tasks": [
 "Set engine and trans on the mounts",
@@ -316,12 +360,18 @@
 {
 "label": "Sniper EFI fuel pump vs FF in-tank",
 "url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-46367.html"
+},
+{
+"label": "LED bulbs for the driving lights (H3, no fan)",
+"url": "https://thefactoryfiveforum.com/thread/136465"
 }
 ],
 "challenges": [
 "BluePrint ECU/injector data mismatch (lewma); a wrong control pack cost Walton Racing months.",
 "The Sniper 1 internal regulator is a known failure point; Sniper 2 needs a separate regulator and 3/8\" lines.",
-"GPS gauge part number differs between the order form (60312) and catalog (60311)."
+"GPS gauge part number differs between the order form (60312) and catalog (60311).",
+"The kit's 5/16\" supply and 1/4\" return are small for EFI: Papa runs 3/8\" both ways with a Trick Flow filter at the tunnel; Holley asks for 3/8\". Check filter ports (NPT vs ORB) before buying adapters: two builders had Russell/Evil Energy fittings seat only two turns.",
+"Throttle cable: cut the swaged end off the kit cable and use a swivel connector at the pedal, or buy a Lokar (Papa). You drill the firewall hole yourself."
 ],
 "ideas": [
 "Keyless push-button start, all-LED lighting with electronic flashers, GPS speedometer, laser-etched switch panel (edwardb).",
@@ -364,16 +414,22 @@
 {
 "label": "P100DHG #138: 90° bulkhead fittings to clear a small-block",
 "url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-29393.html"
+},
+{
+"label": "Heat or no heat? A/C service gotchas from a BluePrint 347 + A/C build (Aug 2026)",
+"url": "https://thefactoryfiveforum.com/thread/136434"
 }
 ],
 "challenges": [
 "Small evaporator means adequate, not strong, cooling; the hatch glass heat-soaks the cabin.",
 "SBF needs 90° bulkhead fittings; decide footbox heat outlets early.",
-"FFR says have a shop crimp the #6/#8/#10 lines (Mastercool 71550)."
+"FFR says have a shop crimp the #6/#8/#10 lines (Mastercool 71550).",
+"rickster991 (BP 347 EFI + PS + A/C): the evaporator fittings backed off twice (Loctite them), the heater hoses leaked onto the passenger at high revs, and nothing on the heater side can be reached with the body on. If starting over he would skip the firewall fittings and put the hose connections where the evaporator can come out. Install heat and A/C before riveting the passenger footbox (Papa, Sea Hut)."
 ],
 "ideas": [
 "Y-connections feeding 2 defrost + 4 dash outlets (ffcars builder, 4+ seasons without fogging).",
-"Tint the hatch glass; heated seat pads (30-minute install)."
+"Tint the hatch glass; heated seat pads (30-minute install).",
+"Papa uses the FFR coolant overflow tank as the washer reservoir; Bob Brandle moves the overflow forward of the engine because under the cowl you cannot see or fill it."
 ],
 "tasks": [
 "Mount the evaporator in the passenger footbox",
@@ -462,16 +518,34 @@
 {
 "label": "Kevin's Garage: setting the body (Mk4, transfers)",
 "url": "https://www.youtube.com/results?search_query=Kevin's+Garage+Factory+Five+Mk4+setting+the+body"
+},
+{
+"label": "Body fitting – Type 65 Coupe: 120 replies, Sep–Nov 2026 (PNWTim)",
+"url": "https://thefactoryfiveforum.com/thread/136519"
+},
+{
+"label": "Spoiler mounted from below through a slot (TwinFins)",
+"url": "https://thefactoryfiveforum.com/thread/134552"
+},
+{
+"label": "Side glass: pay a glass shop (Kleiner, David Williamson)",
+"url": "https://thefactoryfiveforum.com/thread/136693"
 }
 ],
 "challenges": [
 "Plastic latch housings crack; add door poppers as a backup and metal handles.",
 "Hood hinge bracket clearance; hatch glass high at the corners (use a temporary D-seal to save the FFR strip).",
-"No Gen 3 builder has documented a fully weather-tight coupe. Plan on FormaCars windows or careful sealing."
+"No Gen 3 builder has documented a fully weather-tight coupe. Plan on FormaCars windows or careful sealing.",
+"Hood hinge brackets have had the wrong geometry since Gen 1: 3D-printed wedge (~1/2\" over 5-7/8\"), or cut and re-weld the bracket (Build School), or ask FFR for the revised hinges that 2025 kits (Lugnut Mark #686) came with. Measure: 83.5° and 98° were both seen.",
+"Sills: the fiberglass sill must sit flush on the frame tube; bodies are not symmetrical, so notch the body or grind the lower cross-tube ends, push in and down, clamp, and screw in three places. Sill glass varies from 1/4\" to a few mm at the rear; build up the thin spots (JimStone).",
+"Nose and hood: the nose is asymmetric and sits off-center 1/2–3/4\" on most cars and cannot be moved sideways; \"put the ruler away\" (Kleiner). Trim the back edge of the nose in small steps so the hinge brackets reach the cups, raise the front with the heim joint to get the hood parallel, leave the gas struts off until it fits. Notch the nose underside for the A/C condenser and radiator; a 1/2\" gap to the shroud seal is normal. edwardb spent two full weeks on body fit: hood → body → doors, repeat.",
+"Doors: both are too long for the opening; trim both ends (Indy Shu trimmed only the front and ended up with 3–4 washers under the striker). The driver door often will not sit flush: 1/8–1/4\" spacers between frame and skin. Kleiner relieves the radius on the upper hinge for more swing on every coupe; the 1/4\" in the manual means 1/4\". Doors are harder than the nose.",
+"Nose latches: swap the supplied 10-32 hardware for 1/4-20 (edwardb, PNWTim). Headlight bucket cutouts came badly undersized: open with a carbide burr. The body settles and fits better after a few days on the frame."
 ],
 "ideas": [
 "Nose pop-up mod with a BMW E30 hood latch (ffr48).",
-"Quick-release wheel for easier entry; roof NACA ducts if you skip A/C."
+"Quick-release wheel for easier entry; roof NACA ducts if you skip A/C.",
+"Side glass: Kleiner and David Williamson both paid an independent auto-glass shop to set the side windows (\"not expensive, worth it\"; Safelite declined). FFR's gasket-roll tool and instructions have errors."
 ],
 "tasks": [
 "Set the body on the chassis and check gaps",
@@ -479,7 +553,9 @@
 "Fit hood and hatch; set hatch glass height",
 "Install side windows and quarter windows",
 "Install wipers, lights, mirrors",
-"Install weatherstrip; hose test for leaks"
+"Install weatherstrip; hose test for leaks",
+"Measure hood hinge bracket angles; order revised hinges or print wedges",
+"Trim doors at both ends; fit driver-door spacers"
 ]
 },
 {
@@ -518,6 +594,10 @@
 {
 "label": "Latest experience with WA registration (use tax, 1965 model year)",
 "url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-38492.html"
+},
+{
+"label": "Jphoenix: WA licensed a 289 FIA with no bumpers; tax invoiced on kit + engine only",
+"url": "https://thefactoryfiveforum.com/thread/136923"
 }
 ],
 "challenges": [
@@ -528,7 +608,8 @@
 "ideas": [
 "Print RCW 46.37.518 and RCW 46.12.695 for the inspection folder.",
 "Register as a collector vehicle; ask for the 1965 model-year precedent.",
-"Order the extra side mirror (12079X/15834X) for the inspection."
+"Order the extra side mirror (12079X/15834X) for the inspection.",
+"Jphoenix licensed an FIA roadster in Washington with no bumpers: WSP accepted \"steel frame inside body\". His licensing office invoiced use tax on the kit and the engine/transmission only, not every receipt."
 ],
 "tasks": [
 "Get the WSP inspection request form from DOL",
@@ -626,11 +707,21 @@
 {
 "label": "Heated seats in 30 minutes",
 "url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-30759.html"
+},
+{
+"label": "Will I fit in a Type 65? 6'2\" buyer, Sep 2026 (sit-in offers)",
+"url": "https://thefactoryfiveforum.com/thread/136626"
+},
+{
+"label": "Headliner: everyone says bedliner",
+"url": "https://thefactoryfiveforum.com/thread/136572"
 }
 ],
 "challenges": [
 "The rear diagonal brace limits seat travel; the rear blind spot is real.",
-"edwardb's Corbeaus suit 5'10\"; one builder could not make a Corbeau fit the driver's side and went back to FFR seats."
+"edwardb's Corbeaus suit 5'10\"; one builder could not make a Corbeau fit the driver's side and went back to FFR seats.",
+"6'2\": PNWTim (5'8\") runs a Sparco R100 on sliders all the way back; JimStone (6'2\") says Braum Orue seats barely work and a narrower seat pushes back further; edwardb: a thin padded race seat against the back wall plus a removable wheel. The door opening between sill and roof is small (David Williamson). Sit in one before ordering seats.",
+"Headliner: leave the FFR fabric in the box and spray bedliner (Kleiner, edwardb, Chris #566, sharris2); the fabric sags in the sun. Rear view: a mirror camera is the fix, mounted low on the center dash (Jphoenix)."
 ],
 "ideas": [
 "Leather-wrapped dash over closed-cell foam; removable gauge panel on rivnuts; hidden tablet or Alpine head unit with backup camera; single low LED for night cabin light."
@@ -664,14 +755,20 @@
 {
 "label": "Coupe heat management",
 "url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-43010.html"
+},
+{
+"label": "Racing your Type 65: setups, failures, sound limits (2018–2025)",
+"url": "https://thefactoryfiveforum.com/thread/113407"
 }
 ],
 "challenges": [
 "No FFR-published spring rates or alignment specs for the Gen 3 coupe were found; start with the supplied springs.",
-"edwardb runs 3.5\" front / 4\" rear ride height vs the manual's 4.5\"."
+"edwardb runs 3.5\" front / 4\" rear ride height vs the manual's 4.5\".",
+"Track day sound: Portland International Raceway 102 dB, PNW conference 103 dB; Coyote coupes have been bounced. Jphoenix is under both on FFR side pipes; inserts are the fallback."
 ],
 "ideas": [
-"Join the Northwest summer cruise with it."
+"Join the Northwest summer cruise with it.",
+"Jphoenix's Coupe-R: 2,655 lb dry, 3,017 lb with driver and fuel, 43/57 front/rear; 7 gal in a 30-minute race; FFR wipers \"float at 125 mph\". The Ford rack and GM Type 2 pump died on track; street cars do not see that."
 ],
 "tasks": [
 "Professional alignment and corner balance",

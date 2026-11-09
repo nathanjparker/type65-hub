@@ -219,11 +219,115 @@
 {
 "star": false,
 "name": "Coupe-R build thread (new forum #127732)",
-"builder": "unknown; new-format forum",
+"builder": "Coupe-R owners (new forum)",
 "drivetrain": "Coupe-R",
 "status": "Reference for the Coupe-R look",
-"why": "Nate's reference for the Coupe-R styling; the new forum needs a browser, so read it there and paste what matters into Add your build or a resource.",
+"why": "Coupe-R styling reference. The new forum is now readable from the hub's weekly pass through its public API.",
 "url": "https://thefactoryfiveforum.com/thread/127732"
+},
+{
+"star": true,
+"name": "Afdent11: 30th Anniversary coupe, BluePrint 347 + Sniper 2 + TKX",
+"builder": "Afdent11",
+"drivetrain": "BluePrint 347 EFI (Holley Sniper 2), TKX; father/son build, Tennessee",
+"status": "In progress 2026: pedal box, fuel lines, panels",
+"why": "Same engine, same injection, same gearbox as this build and a few months ahead. His questions (fuel line sizes, throttle cable, panel order, regulator mount) are the ones Nate will hit next.",
+"url": "https://thefactoryfiveforum.com/build-logs/16434",
+"alt": "https://thefactoryfiveforum.com/thread/136789"
+},
+{
+"star": true,
+"name": "rickster991: BluePrint 347 EFI + PS + A/C (kit May 2025)",
+"builder": "rickster991",
+"drivetrain": "BluePrint 347 EFI, power steering, FFR A/C; Build School May 2025",
+"status": "Running; A/C service lessons posted Aug 2026",
+"why": "Closest drivetrain match with A/C installed. Loctite the evaporator fittings (his came loose twice), heater hoses leaked at high revs, added a bypass valve, and the heater hoses cannot be reached with the body on.",
+"url": "https://thefactoryfiveforum.com/thread/136434"
+},
+{
+"star": true,
+"name": "Chris' Coupe Build #566 (Deer Park, WA)",
+"builder": "460.465USMC",
+"drivetrain": "Coyote Gen 4X, T-56, IRS 3.55, Wilwoods, PS, HVAC, side windows; kit 4/22/2024",
+"status": "First start; seats and body next (Nov 2026)",
+"why": "A Washington Gen 3 coupe two years ahead of Nate: same titling office, same weather, same shop-finding problem (he cannot find a local body shop either). Also built a Mk4, legal 7/2023.",
+"url": "https://thefactoryfiveforum.com/build-logs/16286"
+},
+{
+"star": true,
+"name": "Tim's Type 65 Build #620 (Damascus, OR)",
+"builder": "PNWTim",
+"drivetrain": "Coupe #620, kit late 2024; GAS-N headers and pipes, RetroBright headlights, Wolfbox camera, Sparco R100",
+"status": "Body fitting Sep–Nov 2026; drivetrain in",
+"why": "The 120-reply body-fitting thread is the best current record of hood, sill, door and nose fit on a Gen 3. Offered a sit-in to a 6'2\" buyer; Portland area.",
+"url": "https://thefactoryfiveforum.com/build-logs/16328",
+"alt": "https://thefactoryfiveforum.com/thread/136519"
+},
+{
+"star": false,
+"name": "Project Deimos #576: LS3 427 / T56 / IRS",
+"builder": "JimStone",
+"drivetrain": "BluePrint LS3 427, T56, IRS; kit 5/2024, first start 2/2026, go-kart 6/2026",
+"status": "Body back on, Nov 2026",
+"why": "6'2\" builder: Braum Orue seats \"barely work\", removable wheel a must. Morimoto Sealed7 headlights. FFR stainless headers and pipes fit perfectly for him.",
+"url": "https://thefactoryfiveforum.com/build-logs/16297",
+"alt": "https://thefactoryfiveforum.com/thread/136626"
+},
+{
+"star": false,
+"name": "Coupe-R build in Seattle (race only)",
+"builder": "Jphoenix",
+"drivetrain": "Coupe-R delivered 8/10/2024; Ford Performance 363 + TKX 18084; QA1 DD401; Wilwood Aero-6; PSC rack; races ICSCC/SOVREN at Pacific Raceways and PIR",
+"status": "Racing since 2025; ~780 h to build at 30 h/week",
+"why": "The only documented Coupe-R hours (780 h by an aircraft mechanic who says he could do the next in 300). Frame notched for 335s, 103 dB OK on FFR side pipes, FFR wipers \"float at 125 mph\". Also licensed a 289 FIA in Washington with no bumpers.",
+"url": "https://thefactoryfiveforum.com/build-logs/16315",
+"alt": "https://thefactoryfiveforum.com/thread/113407"
+},
+{
+"star": false,
+"name": "Henry's Archangel build (Sweet Home, OR)",
+"builder": "flight_83",
+"drivetrain": "Daytona coupe, Kirkey seats side-mounted to the floor; heavy custom work",
+"status": "First start 2026",
+"why": "Prints the hood-hinge wedges for other builders free; offered a sit-in. Biggest time sinks for him: body fit and custom work.",
+"url": "https://thefactoryfiveforum.com/build-logs/17066"
+},
+{
+"star": false,
+"name": "8secDuster's Type 65 #635 – graduated",
+"builder": "8secDuster",
+"drivetrain": "Dart 363 SBF; Snakebite footbox extension; Michigan",
+"status": "Licensed / street legal 2025",
+"why": "A finished SBF coupe. \"The manual is a loose guideline\"; do electrical, HVAC and brake lines before the engine and outer footbox panels; tap or rivnut the top footbox panels for later service.",
+"url": "https://thefactoryfiveforum.com/build-logs/16351",
+"alt": "https://thefactoryfiveforum.com/thread/136789"
+},
+{
+"star": false,
+"name": "Lugnut Mark's Type 65 #686 (2025 kit)",
+"builder": "Lugnut Mark",
+"drivetrain": "Kit delivered Oct 2025",
+"status": "Body hung rough",
+"why": "The newest kit in the body-fit thread: his hood hinges arrived revised and needed no wedge, so FFR has fixed the geometry on current kits.",
+"url": "https://thefactoryfiveforum.com/build-logs/16402"
+},
+{
+"star": false,
+"name": "Tony's Coupe Build (Lakewood, CO)",
+"builder": "ToeKneeNose",
+"drivetrain": "Gen 3 coupe, kit Apr 2026",
+"status": "Suspension, Nov 2026",
+"why": "Replied to Nate's hub thread; a parallel first-time build to compare notes with.",
+"url": "https://thefactoryfiveforum.com/build-logs/16433"
+},
+{
+"star": false,
+"name": "Papa's retirement coupe (build log)",
+"builder": "Papa",
+"drivetrain": "BluePrint 347 with Inglese 8-stack and Terminator X; power windows and daily conveniences",
+"status": "Rolling chassis, 153 entries, most-read active log (Nov 2026)",
+"why": "Moderator who answers most Gen 3 questions on the new forum; his fuel plumbing, throttle cable and panel-order posts are the current reference for a 347 coupe.",
+"url": "https://thefactoryfiveforum.com/build-logs/16389"
 }
 ],
 "videos": [
@@ -505,16 +609,23 @@
 "community": [
 {
 "name": "The Factory Five Forum (and v1 archive)",
-"what": "Most Gen 3 coupe build threads and Q&A; the v1 archive is what the hub reads",
+"what": "Most Gen 3 coupe build threads and Q&A; 3,500 coupe threads and 113 coupe build logs on the new site",
 "url": "https://thefactoryfiveforum.com/",
 "alt": "https://v1.thefactoryfiveforum.com/",
-"how": "Live site needs JavaScript; thread numbers resolve on the v1 archive, which is faster on a phone."
+"how": "New-format thread and build-log links work in any browser. The hub's weekly pass reads the public API (api.thefactoryfiveforum.com), so replies in Nate's thread get filed automatically."
 },
 {
 "name": "ffcars.com FFR Type 65 Coupe subforum",
 "what": "The other big coupe board: 340+ pages, with the pinned Map of Coupe Owners (find Washington owners to visit) and Official Finished Coupes threads",
 "url": "https://www.ffcars.com/forums/ffr-type-65-coupe.42/",
 "how": "Blocks automated reading, so the hub only cites it second-hand. Read it yourself; paste anything worth keeping into Add your build or a resource."
+},
+{
+"name": "Northwest Gen 3 coupe owners on the new forum (sit-in offers)",
+"what": "460.465USMC = Chris, Deer Park WA (#566, Coyote/IRS); Jphoenix = Jim Phoenix, Seattle / Bonney Lake (Coupe-R racer, SOVREN/ICSCC); PNWTim, Damascus OR (#620); flight_83, Sweet Home OR; Lcordner, Seaside OR (6'2\", ordering); ken@kraisler, Portland (Coyote coupe); Dmac800 (runs The Ridge)",
+"url": "https://thefactoryfiveforum.com/thread/136626",
+"alt": "https://thefactoryfiveforum.com/thread/136656",
+"how": "PNWTim and flight_83 both offered a sit-in to a 6'2\" buyer in Sep 2026. Chris is the one to ask about WSP in eastern Washington and body shops; Jim about Pacific Raceways sound limits and WA titling with no bumpers."
 },
 {
 "name": "ffcars.com Northwest Region subforum",
@@ -773,9 +884,10 @@
 "Whether the BluePrint front drive carries both an A/C compressor and a PS pump on a 347.",
 "FormaCars window and HVAC prices and lead times.",
 "GPS gauge part number: 60312 on the order form vs 60311 in the catalog.",
-"No published total-hours log for any Gen 3 coupe; the 1,200 h estimate uses Gen 1/2 logs. Log hours per step here and this build becomes the first.",
+"Hours: the only Gen 3 log is Jphoenix's Coupe-R at ~780 h over 6 months (aircraft mechanic, race car, no A/C or windows; says the next would take 300). Tiltrider1 reckons he spent \"300–400 hours just searching for parts\". Log hours per step here and this street build becomes the first complete record.",
 "No FFR-published spring rates or alignment specs for the Gen 3 coupe.",
-"ffcars.com's Type 65 Coupe subforum (340+ pages, owners map) can't be read automatically; everything from it in the hub is second-hand until someone pastes threads in."
+"ffcars.com's Type 65 Coupe subforum (340+ pages, owners map) can't be read automatically; everything from it in the hub is second-hand until someone pastes threads in.",
+"Seat for a 6'2\" driver: PNWTim runs a Sparco R100 on sliders all the way back, JimStone says Braum Orue \"barely works\", edwardb says a thin padded race seat against the back wall. Nobody has measured headroom with a helmet in a street coupe. Sit in one (Northwest owners above) before ordering seats."
 ],
 "groups": [
 {
@@ -1130,7 +1242,7 @@
 "Gen 3 Type 65 Coupe-R Complete Kit"
 ],
 "msg": "The Coupe-R is a competition chassis: a cage you sit next to without a helmet, 750/500 lb springs, and a fixed race seat.",
-"why": "FFR sells it as an SCCA/NASA wheel-to-wheel chassis. Cage tubes beside an unhelmeted head are a known street hazard even padded; the spring rates are track rates; the high-back seat has no tracks.",
+"why": "FFR sells it as an SCCA/NASA wheel-to-wheel chassis. Cage tubes beside an unhelmeted head are a known street hazard even padded; the spring rates are track rates; the high-back seat has no tracks. SMF-Coupe (Coupe-R): the extra cage tubes made the doors \"a major pain\": he cut and re-welded the door frames and cut the inside of the doors around the tubing.",
 "fix": "A street Coupe-R is doable, but budget for it: SFI roll-bar padding on every tube near a head, softer springs (FFR's street rates are far below 750/500), the low-back seats on tracks instead of the fixed high-back, side windows, and an FFR tech check that the A/C kit clears the cage. Or order the street kit with the Coupe-R aero options and get the look without the list.",
 "src": "Type 65 Coupe-R page",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
@@ -1311,6 +1423,60 @@
 "src": "FFR order form",
 "srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/",
 "scope": "general"
+},
+{
+"id": "irs-315-rub",
+"when": [
+"2015 Mustang-based IRS",
+"FFR 18\" Halibrand replicas"
+],
+"msg": "315 rear tires on the 18\" Halibrands rub the frame behind the passenger seat on the IRS.",
+"why": "The coupe body is wider than the roadster but the IRS is the same, so the wheels sit inboard. edwardb needed a full 1\" Eibach spacer and camber eased to -0.5/-0.75°; Jphoenix and Rsnake notched the frame for 315/335s at race camber.",
+"fix": "Budget a 1\" spacer pair (p227) or order wheels with 5.46\" backspacing; keep rear camber near -0.5°. Moving the Koni to the other frame hole changes nothing at the same ride height.",
+"src": "New forum 136432",
+"srcUrl": "https://thefactoryfiveforum.com/thread/136432",
+"scope": "general"
+},
+{
+"id": "snakebite-coyote",
+"when": [
+"Snakebite driver footbox extension (pedal room)"
+],
+"msg": "The Snakebite driver footbox extension does not work with a Coyote (edwardb).",
+"why": "The Coyote's width takes the room the extension uses; it was designed around small-block builds.",
+"fix": "On a 347 you are fine. Coyote builders angle the seat and move the Wilwood pedal pads instead.",
+"src": "New forum 136658",
+"srcUrl": "https://thefactoryfiveforum.com/thread/136658",
+"scope": "general"
+},
+{
+"id": "gasn-roulette",
+"when": [
+"GAS-N Daytona Coupe side pipes"
+],
+"msg": "GAS-N pipes and headers: fit and delivery are \"a roll of the dice\" since 2025 (Jeff Kleiner).",
+"why": "PNWTim's side pipes arrived with the mounting tab welded a foot from where 460.465USMC's set has it; his first headers were poorly made; waits ran months after Georgie left. JimStone: the FFR stainless pipes and headers were a \"perfect fit, no fuss\".",
+"fix": "Order FFR's headers and pipes (PNWTim: \"quite nice now\") and quiet them with inserts (p230), or go Boig/Tubular Automotive. If you still want GAS-N, order early and test-fit on arrival; Horacio replaced PNWTim's.",
+"src": "New forum 136519, 136656",
+"srcUrl": "https://thefactoryfiveforum.com/thread/136656",
+"scope": "general"
+},
+{
+"id": "spoiler-quality",
+"when": [
+"Road race rear spoiler"
+],
+"msg": "The 60627 road-race spoiler arrives rough: ragged edge, thick uneven flange, rocks on the body with 0.100–0.125\" gaps.",
+"why": "PNWTim's and Jphoenix's were both like that. Jphoenix also notes FFR/John George aero testing found the spoiler adds drag when a wing is fitted; he would leave it off a street car.",
+"fix": "Jeff Kleiner: thin the flange to ~0.090\", cut it to 3/4\", heat-gun it to the body curve, 8-32 button heads at 4.75\" spacing. Or bond it from below through a slot like TwinFins (thread 134552) before paint.",
+"src": "New forum 136519",
+"srcUrl": "https://thefactoryfiveforum.com/thread/136519",
+"scope": "general",
+"use": [
+"street",
+"mixed",
+"track"
+]
 }
 ],
 "decideLabels": {
@@ -1920,6 +2086,33 @@
 ],
 "Jeff Kleiner": [
 "Jeff Kleiner"
+],
+"460.465USMC": [
+"460.465USMC",
+"Chris #566"
+],
+"Jphoenix": [
+"Jphoenix",
+"Jim Phoenix"
+],
+"JimStone": [
+"JimStone",
+"Deimos"
+],
+"flight_83": [
+"flight_83"
+],
+"Afdent11": [
+"Afdent11"
+],
+"rickster991": [
+"rickster991"
+],
+"8secDuster": [
+"8secDuster"
+],
+"Sea Hut": [
+"Sea Hut"
 ]
 }
 }
