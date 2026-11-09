@@ -49,12 +49,13 @@
 "users": "Ron L. (3.55)",
 "src": "FFR center section video",
 "srcUrl": "https://www.youtube.com/watch?v=AIZD1Cb2Ipo",
-"notes": "Easiest no-donor path. Ask about 3.73 for the TKX 0.81 overdrive.",
+"notes": "Easiest no-donor path. Ask about 3.73 for the TKX 0.81 overdrive. PNWTim's new Ford Racing 3.55 LSD shipped on its side and leaked; FFR replaced it and he ended up with a used 3.73 Torsen. If you delete the FFR center section, the spindles and hubs leave the kit with it: check the sub-kit list before deleting.",
 "fit": "yes",
 "group": "center-section",
 "id": "p051",
 "pop": 5,
-"popWhy": "The no-donor path almost everyone takes"
+"popWhy": "The no-donor path almost everyone takes",
+"checked": "2026-11-09"
 },
 {
 "stage": "rear",
@@ -147,12 +148,13 @@
 "users": "Westley B.",
 "src": "Wilwood application page",
 "srcUrl": "https://www.wilwood.com/brakekits/BrakeKitsProdRear?itemno=140-15138-R&year=2015&make=factory+five+racing&model=type+65+coupe&option=1994-2004+mustang+spindle+%2F+irs+rear+end",
-"notes": "Wilwood tech (805) 388-1188. Mostly looks for street use.",
+"notes": "Wilwood tech (805) 388-1188. Mostly looks for street use. JimStone bought Wilwood 12.88\" kits from Summit about $450 under FFR's price, then found that deleting FFR's rear brakes also deleted the parking-brake lines and brackets, which he bought separately. Rotor hat bolts: 155 in-lb (inch-pounds) with Loctite 271; jdavis500 snapped one at ft-lb.",
 "fit": "yes",
 "group": "rear-brakes",
 "id": "p056",
 "pop": 4,
-"popWhy": "Usually paired with the Wilwood fronts"
+"popWhy": "Usually paired with the Wilwood fronts",
+"checked": "2026-11-09"
 },
 {
 "stage": "rear",

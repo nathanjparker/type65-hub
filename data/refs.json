@@ -16,7 +16,8 @@
 "drivetrain": "Coyote, T-56, IRS; A/C, heat, PS, windows, keyless",
 "status": "Done Mar 2020, 5,264 mi",
 "why": "The reference Gen 3 build. A/C only adequate, cabin loud without mass-loaded vinyl.",
-"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26630-p-5.html"
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-26630-p-5.html",
+"alt": "https://thefactoryfiveforum.com/build-logs/15895"
 },
 {
 "star": true,
@@ -70,7 +71,8 @@
 "drivetrain": "Roush 427 SBF EFI, TKO600 mid-shift, IRS",
 "status": "Chaptered, through 2020",
 "why": "Best small-block-in-Gen-3 reference: 90° bulkhead A/C fittings, seat fit, pinion flange error FFR replaced.",
-"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-29393.html"
+"url": "https://v1.thefactoryfiveforum.com/archive/index.php/t-29393.html",
+"alt": "https://thefactoryfiveforum.com/build-logs/15911"
 },
 {
 "star": false,
@@ -124,7 +126,8 @@
 "drivetrain": "Coyote; A/C, door poppers",
 "status": "Dash/A/C stage 2025",
 "why": "First-start debugging and A/C charging.",
-"url": "https://v1.thefactoryfiveforum.com/showthread.php?p=593534"
+"url": "https://v1.thefactoryfiveforum.com/showthread.php?p=593534",
+"alt": "https://thefactoryfiveforum.com/build-logs/16247"
 },
 {
 "star": false,
@@ -328,6 +331,24 @@
 "status": "Rolling chassis, 153 entries, most-read active log (Nov 2026)",
 "why": "Moderator who answers most Gen 3 questions on the new forum; his fuel plumbing, throttle cable and panel-order posts are the current reference for a 347 coupe.",
 "url": "https://thefactoryfiveforum.com/build-logs/16389"
+},
+{
+"star": false,
+"name": "jdavis500 Gen 3 Coupe (Atlanta)",
+"builder": "jdavis500",
+"drivetrain": "Forte Gen 2 Coyote, TKO 600, IRS, Wilwood 12.88, PS, A/C; kit Oct 2017",
+"status": "Driving",
+"why": "Hubcentric spacers over non-hubcentric; Wilwood hat bolts are 155 in-lb not ft-lb; Forte premade fuel lines after the nylon ones buckled; IRS driveline sits 1–1.5\" right of center by design.",
+"url": "https://thefactoryfiveforum.com/build-logs/15896"
+},
+{
+"star": false,
+"name": "Namrups #393: Forte 460 EFI + TKX",
+"builder": "Namrups",
+"drivetrain": "Forte 460 EFI, TKX 2.87/.81, IRS, PS, A/C, side windows, Koni DA, red Wilwoods; kit Jun 2022, registered Jun 2023",
+"status": "Done, 385k views",
+"why": "The second most-read coupe log. Built a 22x20 garage before the kit came; ordered Russ Thompson signals, sills and pontoon panels eight months ahead for the waitlist.",
+"url": "https://thefactoryfiveforum.com/build-logs/16078"
 }
 ],
 "videos": [
@@ -612,7 +633,7 @@
 "what": "Most Gen 3 coupe build threads and Q&A; 3,500 coupe threads and 113 coupe build logs on the new site",
 "url": "https://thefactoryfiveforum.com/",
 "alt": "https://v1.thefactoryfiveforum.com/",
-"how": "New-format thread and build-log links work in any browser. The hub's weekly pass reads the public API (api.thefactoryfiveforum.com), so replies in Nate's thread get filed automatically."
+"how": "New-format thread and build-log links work in any browser. The hub's weekly pass reads the public API (api.thefactoryfiveforum.com), so replies in Nate's thread get filed automatically. Build logs from 2023 on have native entries readable one at a time (api/build-logs/{id}/entries/{entryId}); older logs keep every update as a comment and only the first 40 come back."
 },
 {
 "name": "ffcars.com FFR Type 65 Coupe subforum",
@@ -885,7 +906,7 @@
 "Whether the BluePrint front drive carries both an A/C compressor and a PS pump on a 347.",
 "FormaCars window and HVAC prices and lead times.",
 "GPS gauge part number: 60312 on the order form vs 60311 in the catalog.",
-"Hours: the only Gen 3 log is Jphoenix's Coupe-R at ~780 h over 6 months (aircraft mechanic, race car, no A/C or windows; says the next would take 300). Tiltrider1 reckons he spent \"300–400 hours just searching for parts\". Log hours per step here and this street build becomes the first complete record.",
+"Hours: no complete Gen 3 street-coupe log exists. Data points: Jphoenix Coupe-R ~780 h (race car, pro fabricator); P100DHG #138 \"over 1,000\" h, Feb 2019 kit to Jan 2021 first drive; MSumners Nov 2023 kit to May 2025 first start; JimStone Feb 2024 order to Feb 2026 first start and \"about 4 hours of research per hour of build\"; Papa's inventory alone took 7 h. Log hours per step here and this build becomes the first full record.",
 "No FFR-published spring rates or alignment specs for the Gen 3 coupe.",
 "Seat for a 6'2\" driver: PNWTim runs a Sparco R100 on sliders all the way back, JimStone says Braum Orue \"barely works\", edwardb says a thin padded race seat against the back wall. Nobody has measured headroom with a helmet in a street coupe. Sit in one (Northwest owners above) before ordering seats.",
 "ffcars.com can only be read from a browser, so replies to Nate's thread there (648329) are not picked up by the weekly pass. The Map of Coupe Owners pins live on a Google map, not in the posts; open it yourself to find Washington names."

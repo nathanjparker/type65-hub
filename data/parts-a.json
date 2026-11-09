@@ -236,9 +236,10 @@
 "users": "TFFF builder: $1,900 to LA via Stewart (2012)",
 "src": "Kit shipping rates thread",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/faqs/",
-"notes": "Washington is at the high end. Need a forklift or 4–6 people for the body.",
+"notes": "Washington is at the high end. Need a forklift or 4–6 people for the body. PNWTim (Damascus OR) priced self-pickup at ~6,300 miles round trip over December passes or a ~$1,500 enclosed-hauler quote and took Stewart; Chris #566 (Deer Park WA) got his kit about a week after Stewart picked it up in Wareham. JimStone did pick up himself with a 12x6 U-Haul utility trailer behind a 4,500-lb-tow SUV (28-hour round trip from Michigan).",
 "fit": "yes",
-"id": "p012"
+"id": "p012",
+"checked": "2026-11-09"
 },
 {
 "stage": "plan",
@@ -820,12 +821,13 @@
 "users": "Westley B., Donny N., Hank",
 "src": "FFR official front Wilwood video",
 "srcUrl": "https://www.youtube.com/results?search_query=Factory+Five+Mk4+front+Wilwood+brake+install",
-"notes": "Needs 17\" or 18\" wheels. Strong street upgrade.",
+"notes": "Needs 17\" or 18\" wheels. Strong street upgrade. Rotor hat bolts torque to 155 in-lb (inch-pounds, not ft-lb) with red Loctite; start all bolts, run them partway, then torque (edwardb).",
 "fit": "yes",
 "group": "front-brakes",
 "id": "p044",
 "pop": 5,
-"popWhy": "The default on street Gen 3s: Westley B., Donny N., Hank, Yellville, Walton"
+"popWhy": "The default on street Gen 3s: Westley B., Donny N., Hank, Yellville, Walton",
+"checked": "2026-11-09"
 },
 {
 "stage": "front",

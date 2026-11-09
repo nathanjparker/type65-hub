@@ -333,13 +333,13 @@
 "users": "edwardb #59 (TFFF 50824); older coupe builder (ffcars 545049)",
 "src": "TFFF 50824",
 "srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-50824.html",
-"notes": "Blades park at the bottom edge. Fiberglass bodies may need the UB2 bezel kit; arms and blades not included.",
+"notes": "Blades park at the bottom edge. Fiberglass bodies may need the UB2 bezel kit; arms and blades not included. edwardb and P100DHG both recommend the SPW WWK2 over the FFR Lucas-style kit; Papa sized wiper arms and blades from Grainger (20G314 and 811PF5) using edwardb's dimensions.",
 "fit": "yes",
 "group": "wipers",
 "id": "p122",
 "pop": 2,
 "popWhy": "edwardb and one older coupe",
-"checked": "2026-11-05"
+"checked": "2026-11-09"
 },
 {
 "stage": "body",
@@ -1341,10 +1341,10 @@
 "users": "Every builder",
 "src": "Walton Racing: rivets, clecos, rivnuts",
 "srcUrl": "https://www.youtube.com/watch?v=aWzLZjtn05k",
-"notes": "Mandatory: panels get fit, drilled, removed, sealed and refit. Buy a second 1/8\" and 3/16\" bag; 50 is not enough for a coupe.",
+"notes": "Mandatory: panels get fit, drilled, removed, sealed and refit. Buy a second 1/8\" and 3/16\" bag; 50 is not enough for a coupe. Chris #566 and PNWTim: 3/16\" clecos turn out more useful than 1/8\"; Aircraft Spruce sells them for about $1 each.",
 "fit": "yes",
 "id": "p174",
-"checked": "2026-11-05"
+"checked": "2026-11-09"
 },
 {
 "stage": "tools",
@@ -1394,10 +1394,10 @@
 "users": "edwardb (gauge panel, driveshaft loop, door opening)",
 "src": "edwardb #59",
 "srcUrl": "https://www.ffcars.com/threads/619602/",
-"notes": "3/8-16 mandrel sold separately.",
+"notes": "3/8-16 mandrel sold separately. PNWTim used the Astro 13\" rivnut kit (Summit APT-1450) and a McMaster 96349A407 wrench-driven tool; Marson HP-2 (Summit AFS-39000) for rivets.",
 "fit": "yes",
 "id": "p177",
-"checked": "2026-11-05"
+"checked": "2026-11-09"
 },
 {
 "stage": "tools",

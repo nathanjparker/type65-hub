@@ -35,6 +35,14 @@
 {
 "label": "Thinking of a coupe: what is different from a roadster (Sep 2026)",
 "url": "https://thefactoryfiveforum.com/thread/136622"
+},
+{
+"label": "Chris #566 build log, Deer Park WA (Coyote/IRS, two years ahead)",
+"url": "https://thefactoryfiveforum.com/build-logs/16286"
+},
+{
+"label": "Papa's build log: 2025 delivery, inventory, what FFR no longer ships",
+"url": "https://thefactoryfiveforum.com/build-logs/16389"
 }
 ],
 "challenges": [
@@ -43,7 +51,9 @@
 "BluePrint's package says STOP AND CALL for Factory Five fitment: confirm the front drive carries both an A/C compressor and a PS pump.",
 "Two TKX/IRS driveshafts are listed (60175 at 10.50\" vs 16038 at 8.38\"). Call FFR with the BluePrint bellhousing/TKX length.",
 "Build order is not the manual order: 8secDuster and Papa say do the electrical, HVAC and brake lines before the engine goes in and before the outer footbox panels; once the body is on, those panels never come off. \"The manual is a loose guideline.\"",
-"Parts arrive late: Tiltrider1 ordered in January, got the kit in May, the harness five months later and spindles after three months on backorder. Start anyway; do not wait for a complete inventory (JimStone)."
+"Parts arrive late: Tiltrider1 ordered in January, got the kit in May, the harness five months later and spindles after three months on backorder. Start anyway; do not wait for a complete inventory (JimStone).",
+"Deletes take more than you think: deleting the FFR center section also removes the spindles and hubs (PNWTim), and deleting the FFR rear brakes removes the parking-brake lines and brackets (JimStone). Ask FFR what leaves the kit with each delete before you save the money.",
+"FFR no longer ships a printed manual (Papa, 2025: listed at $49.99 but unavailable, none in any box); print the PDF chapters you need. The mirror kit comes in some kits and not others."
 ],
 "ideas": [
 "Start a parts-and-cost spreadsheet like Yellville's on day one.",
@@ -85,17 +95,23 @@
 {
 "label": "Order placed: shop setup advice from September 2026 buyers",
 "url": "https://thefactoryfiveforum.com/thread/136700"
+},
+{
+"label": "PNWTim's log: kit to Oregon, inventory, missing spindles",
+"url": "https://thefactoryfiveforum.com/build-logs/16328"
 }
 ],
 "challenges": [
 "Backordered quarter windows and side windows are common late ships; log backorders in writing within 30 days.",
 "The quarter-window areas of the body need the most bodywork (edwardb).",
-"The name on the MSO must match the titling applicant. WSP requires the original."
+"The name on the MSO must match the titling applicant. WSP requires the original.",
+"Expect backorders on delivery day: edwardb had ~24 items short in 2017, Papa had front LCAs and the fuel tank in 2025, PNWTim found the spindles and hubs missing at inventory and had IFS shock spacers missing from two bags. Inventory takes a full day (Papa: 7 h) and the 90-day window for missing parts starts at delivery."
 ],
 "ideas": [
 "Build a body dolly first.",
 "Store aluminum panels flat and labeled; they dent and oxidize in storage.",
-"Coupe clearance is about 4\": a low-profile jack, a dolly on big casters and a set of cheap 17\" Mustang shop wheels (17\"+ clears Wilwoods) before the kit lands. Keep parts in the numbered FFR boxes with the packing lists."
+"Coupe clearance is about 4\": a low-profile jack, a dolly on big casters and a set of cheap 17\" Mustang shop wheels (17\"+ clears Wilwoods) before the kit lands. Keep parts in the numbered FFR boxes with the packing lists.",
+"Hardware comes bagged by bolt size, not by assembly; Chris #566 re-bags it into labeled McMaster baggies per assembly before starting."
 ],
 "tasks": [
 "Photograph every box before opening",
@@ -139,6 +155,10 @@
 {
 "label": "Panel order, regulator mount, tap vs rivnut (new forum 136789)",
 "url": "https://thefactoryfiveforum.com/thread/136789"
+},
+{
+"label": "MSumners' log: test-fit the drivetrain before powder coat",
+"url": "https://thefactoryfiveforum.com/build-logs/16247"
 }
 ],
 "challenges": [
@@ -146,7 +166,8 @@
 "Most cockpit heat is engine-bay air pushed along the footbox-to-body gap, not conduction. Seal it with dense foam before the body goes on.",
 "Dropped floors for tall drivers must be decided before panels are riveted.",
 "Leave the engine-bay and radiator-area aluminum off until the engine is in (except the footbox insides and fronts). Trans side panels go on after the floor and share rivets. Test-fit every panel before cutting or bending: one misplaced panel opens gaps three panels later (Papa).",
-"Tap the frame or use rivnuts on the top footbox panels so the HVAC and wiring behind them can be serviced; the passenger footbox panel is sealed in place and the outer panels cannot come off with the body on (8secDuster, FitzHappens)."
+"Tap the frame or use rivnuts on the top footbox panels so the HVAC and wiring behind them can be serviced; the passenger footbox panel is sealed in place and the outer panels cannot come off with the body on (8secDuster, FitzHappens).",
+"If the frame is going to powder coat, test-fit the engine and transmission and drill the panels first: MSumners had to remove the tunnel cross brace for the trans tail and modify brackets, and PNWTim cut the steering-rack bracket relief, all before coating. Prismatic Stone Black survived a 6-hour gasoline soak (MSumners)."
 ],
 "ideas": [
 "Satin clear over aluminum (jgray) for a finished look at low cost.",
@@ -201,7 +222,8 @@
 "Standard 500 lb front springs may be light if the finished car tops 2,900 lb.",
 "A cast Wilwood clutch pedal broke on a roadster with a cable clutch; hydraulic lowers the load.",
 "The pedals sit left of the seat centerline in every coupe. edwardb and 8secDuster: a non-issue you adapt to; angle the seats, move the Wilwood pads, and leave the footbox alone until the headers are in. 8secDuster's real problem was clutch/brake pad spacing.",
-"A column-mounted turn-signal switch moves the wheel 2\"+ closer to the driver (Gordon Levy); a turn-signal timer on a toggle keeps the wheel where it is for a tall driver."
+"A column-mounted turn-signal switch moves the wheel 2\"+ closer to the driver (Gordon Levy); a turn-signal timer on a toggle keeps the wheel where it is for a tall driver.",
+"Wilwood rotor hat bolts torque to 155 inch-pounds with red Loctite; jdavis500 snapped one reading it as foot-pounds. The kit Mevotech upper ball joints did not fit for edwardb, Papa or PNWTim: order Howe 22320S with the kit."
 ],
 "ideas": [
 "Dead-pedal kit and rigid stainless brake lines (edwardb).",
@@ -248,13 +270,19 @@
 {
 "label": "Rear sway bar on a coupe with IRS (brackets, snap oversteer)",
 "url": "https://www.ffcars.com/threads/rear-sway-bar-coupe-with-irs.643777/"
+},
+{
+"label": "JimStone's log: Wilwoods from Summit, what the brake delete removes",
+"url": "https://thefactoryfiveforum.com/build-logs/16297"
 }
 ],
 "challenges": [
 "IRS bushing misalignment needs spacers; drill spindle and mount holes to 5/8\".",
 "Pinion flange adapter error that FFR replaced (P100DHG #138).",
 "Ask about 3.73 vs 3.55 for the TKX 0.81 overdrive.",
-"315s on the IRS rub the frame behind the passenger seat: 1\" spacer and -0.5° camber on a street car (edwardb, 11k miles); notch and re-weld the channel on a track car (Jphoenix)."
+"315s on the IRS rub the frame behind the passenger seat: 1\" spacer and -0.5° camber on a street car (edwardb, 11k miles); notch and re-weld the channel on a track car (Jphoenix).",
+"Measure the driveline angle with a digital gauge before the engine goes in: burchfieldb's IRS mount pointed down about 0.5° and needed custom bushings. Install the diff before the engine test-fit; the pinion angle can rotate (edwardb). The IRS driveline sits 1–1.5\" right of center by design.",
+"Rear hubs come with metric studs. Drive them out (PNWTim: 1\" black-pipe crib and the vise anvil) and press 1/2-20 studs; if spacers are planned, use the shorter Dorman 610-364 studs. Tight toe/UCA tabs spread with an 18\" adjustable wrench; the 95-lb diff goes in with an engine hoist (Chris #566)."
 ],
 "ideas": [
 "Electric parking brake (Levy Racing / Wilwood EPB) frees the tunnel.",
