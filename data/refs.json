@@ -215,6 +215,15 @@
 "status": "Done",
 "why": "Bare-aluminum look with period decals and hand-lettered switches; a no-paint livery idea.",
 "url": "https://www.factoryfive.com/whats-new/rob-m-s-type-65-coupe"
+},
+{
+"star": false,
+"name": "Coupe-R build thread (new forum #127732)",
+"builder": "unknown; new-format forum",
+"drivetrain": "Coupe-R",
+"status": "Reference for the Coupe-R look",
+"why": "Nate's reference for the Coupe-R styling; the new forum needs a browser, so read it there and paste what matters into Add your build or a resource.",
+"url": "https://thefactoryfiveforum.com/thread/127732"
 }
 ],
 "videos": [
@@ -770,6 +779,14 @@
 ],
 "groups": [
 {
+"id": "kit",
+"label": "Which kit",
+"stage": "plan",
+"multi": false,
+"decideBy": "order",
+"tradeoff": "The street Complete Kit is $22,990 and every Coupe-R body piece is an option on it. The Coupe-R ($24,990) buys a competition cage, 750/500 lb springs and a fixed race seat, which are the parts a street car does not want."
+},
+{
 "id": "engine",
 "label": "Engine & transmission",
 "stage": "plan",
@@ -946,6 +963,14 @@
 "tradeoff": "17\" ($1,600–1,900) clears Wilwoods and has the best tire selection. 15\" is period-correct but locks you to 11\" brakes. 18\" ($1,899) is for 14\" rotors or a modern stance, with thinner tire choices."
 },
 {
+"id": "aero",
+"label": "Coupe-R look",
+"stage": "body",
+"multi": true,
+"decideBy": "paint",
+"tradeoff": "Scoops, vents, spoiler and canards are all bonded or riveted into the body, so they go on before paint. The hood scoop and footbox vents give most of the look; the splitter and canards are the pieces that scrape and crack on the street."
+},
+{
 "id": "paint",
 "label": "Paint",
 "stage": "paint",
@@ -1098,6 +1123,44 @@
 "src": "BluePrint B347FKTKX",
 "srcUrl": "https://blueprintengines.com/products/blueprint-engines-builder-series-347ci-stroker-engine-and-tkx-manual-trans-package-small-block-ford-style-dressed-longblock-with-fuel-injection-aluminum-heads-roller-cam",
 "scope": "conflict"
+},
+{
+"id": "couper-street",
+"when": [
+"Gen 3 Type 65 Coupe-R Complete Kit"
+],
+"msg": "The Coupe-R is a competition chassis: a cage you sit next to without a helmet, 750/500 lb springs, and a fixed race seat.",
+"why": "FFR sells it as an SCCA/NASA wheel-to-wheel chassis. Cage tubes beside an unhelmeted head are a known street hazard even padded; the spring rates are track rates; the high-back seat has no tracks.",
+"fix": "If the look is what you want, order the street Complete Kit and add the Coupe-R aero options (hood scoop and vents, spoiler, ducts, canards). If you want the cage, plan SFI padding, softer springs and a tracked seat, and confirm A/C and side-window fit with FFR.",
+"src": "Type 65 Coupe-R page",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general"
+},
+{
+"id": "couper-ac",
+"when": [
+"Gen 3 Type 65 Coupe-R Complete Kit",
+"FFR A/C-heater-defroster for 302/351W"
+],
+"msg": "Confirm the A/C evaporator and ducts clear the Coupe-R cage before ordering both.",
+"why": "The street A/C kit was designed around the standard chassis; no documented Coupe-R build runs it.",
+"fix": "Email tech@factoryfive.com with both part numbers; ask for a Coupe-R build with A/C.",
+"src": "Type 65 Coupe-R page",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general"
+},
+{
+"id": "couper-windows",
+"when": [
+"Gen 3 Type 65 Coupe-R Complete Kit",
+"FFR Gen 3 side window components"
+],
+"msg": "Side windows on a Coupe-R: confirm the door-bar and cage clearance.",
+"why": "The Coupe-R is sold without side windows; the cage door bars sit where the window mechanism lives.",
+"fix": "Ask FFR before ordering; FormaCars has not documented a cage car either.",
+"src": "Type 65 Coupe-R page",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general"
 }
 ],
 "decideLabels": {
@@ -1142,6 +1205,7 @@
 ],
 "forumThread": "https://thefactoryfiveforum.com/thread/136923",
 "natePicks": [
+"p001",
 "p003",
 "p017",
 "p049",

@@ -2,7 +2,7 @@
 {
 "stage": "plan",
 "cat": "Kit",
-"name": "Gen 3 Complete Kit",
+"name": "Gen 3 Type 65 Coupe Complete Kit",
 "model": "Complete Kit (chassis 60000 uncoated)",
 "kind": "FFR",
 "vendor": "Factory Five",
@@ -14,7 +14,10 @@
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/what-you-get-complete-kit/",
 "notes": "Still need engine/trans/rear end, wheels and tires, paint, battery and fuel pump. Standard 3-link Deluxe rear and manual rack.",
 "fit": "yes",
-"id": "p001"
+"id": "p001",
+"group": "kit",
+"pop": 5,
+"popWhy": "Every documented Gen 3 street coupe"
 },
 {
 "stage": "plan",

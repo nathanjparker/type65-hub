@@ -11,7 +11,7 @@ I'm Nate, a first-time kit builder in Washington State putting together a Gen 3 
 What's in it:
 
 - **14 build stages** in manual order, each with what to read first, what goes wrong, ideas worth stealing and a checklist.
-- **195 parts and ideas**: FFR part numbers next to the aftermarket alternatives, list price, who runs it (with the thread or video it came from), Gen 3 fit, and dots for how many documented coupes chose it.
+- **201 parts and ideas**: FFR part numbers next to the aftermarket alternatives, list price, who runs it (with the thread or video it came from), Gen 3 fit, and dots for how many documented coupes chose it.
 - **Your build**: pick one option per decision, compare every option side by side, see which decisions lock at the kit order, and get warnings when two picks don't go together.
 - **Order sheet** generated from your picks (tick this on the FFR form, buy this elsewhere), with an Excel copy.
 - **Build calculator and schedule**: hours per week in, go-kart / title / done dates out, on an editable Gantt with gates and order-by dates for long-lead parts.
