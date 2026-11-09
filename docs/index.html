@@ -285,6 +285,11 @@ li.warn.done .nbtn{text-decoration:none}
 .card .links .fixlink{font-size:11.5px;padding:0 6px;margin-left:auto}
 .card .links .fixlink.has{color:var(--ok);border-color:var(--ok)}
 .lfield{display:grid;gap:4px;font-size:13.5px;color:var(--muted)} .lfield input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px} .lfield small{overflow-wrap:anywhere}
+.usebox{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:6px;padding:12px 14px;margin-bottom:12px}
+.uselab{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline} .uselab b{font-size:16px}
+.userow{margin:10px 0 4px;max-width:560px} .userow input[type=range]{width:100%;accent-color:var(--accent);margin:0}
+.useticks{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:4px} .usetick{border:0;background:none;font-size:13px;color:var(--muted);padding:2px 0;text-align:center} .usetick:first-child{text-align:left} .usetick:last-child{text-align:right} .usetick.on{color:var(--accent);font-weight:600}
+li.warn .wkind.use{background:var(--accent)}
 .olinks{display:grid;gap:2px;font-size:13.5px} .olinks .row{font-size:12.5px} .olinks .fixlink{justify-self:start;font-size:11.5px;padding:0 6px;margin-top:2px}
 .lrows{display:grid;gap:6px} .lrow{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px} .lrow input{padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:13.5px;min-width:0}
 dialog.wide{width:min(960px,94vw)}
@@ -532,9 +537,13 @@ const pctOf=p=>Math.max(0,Math.min(100,+st(p.id).pct||0));
 function groupChosen(gid){ return allParts().some(p=>p.group===gid&&isChosen(p)); }
 function engineFamily(){ const e=allParts().find(p=>p.group==='engine'&&isChosen(p)); return e?e.family||'':''; }
 function compatible(p){ const f=engineFamily(); return !p.family||!f||p.family.split(',').includes(f); }
+/* how the car will be used: street | mixed | track. Filters and adds warnings; saved with the build. */
+const USES=[['street','Street only','Daily-drivable, quiet, A/C, windows; never sees a track.'],['mixed','Street + track days','Street car first, a few open track days a year.'],['track','Dedicated track car','Wheel-to-wheel or time trials; comfort is optional.']];
+function currentUse(){ const u=sandbox&&mine?mine.use:(stageState.__use&&stageState.__use.use); return USES.some(x=>x[0]===u)?u:'street'; }
+async function setUse(u){ if(sandbox&&mine){ mine.use=u; renderParts(q.value); await saveMine(); return; } stageState.__use={use:u}; renderParts(q.value); if(isOwner&&db){ try{ await db.doc('stagestate/__use').set({use:u,updated:new Date().toISOString()}); }catch(e){ toast('Could not save'); } } }
 function activeWarnings(){
-  const chosen=allParts().filter(isChosen); const names=new Set(chosen.map(p=>p.name)); const out=[];
-  D.warnings.forEach(w=>{ if(w.when.every(n=>names.has(n))) out.push(Object.assign({},w,{parts:chosen.filter(p=>w.when.includes(p.name))})); });
+  const chosen=allParts().filter(isChosen); const names=new Set(chosen.map(p=>p.name)); const out=[]; const use=currentUse();
+  D.warnings.forEach(w=>{ if(w.use&&!w.use.includes(use)) return; if(w.when.every(n=>names.has(n))) out.push(Object.assign({},w,{parts:chosen.filter(p=>w.when.includes(p.name))})); });
   chosen.filter(p=>!compatible(p)).forEach(p=>out.push({id:'fam-'+p.id,msg:`${p.name} is for a ${D.families[p.family.split(',')[0]]||p.family} engine, but your engine is ${D.families[engineFamily()]||engineFamily()}.`,why:'Mounts, headers, A/C and steering kits are engine-specific.',fix:'Pick the version for your engine family; the matching options are listed on the spec sheet.',parts:[p],scope:'conflict'}));
   return out;
 }
@@ -652,8 +661,11 @@ $('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}
 
 /* ---- spec sheet ---- */
 function renderSheet(){
-  const w=activeWarnings(); const fam=engineFamily();
-  $('#sheet-warn').innerHTML=(fam?`<p class="status">Engine family: <b>${esc(D.families[fam]||fam)}</b>. Mounts, headers, A/C, steering and driveshaft options are filtered to match.</p>`:'<p class="status">Pick an engine first; mounts, headers, A/C, steering and driveshaft then filter to match it.</p>')+warnBoxHTML(w,'Check before ordering');
+  const w=activeWarnings(); const fam=engineFamily(); const use=currentUse(); const ui=USES.findIndex(x=>x[0]===use); const can=isOwner||sandbox;
+  const useW=w.filter(x=>x.use); const res=resolvedSet(); const openUse=useW.filter(x=>!res.has(warnKey(x)));
+  $('#sheet-warn').innerHTML=`<div class="usebox"><div class="uselab"><b>What is this car for?</b><span class="status">Moves the checks below: a street car gets warned about cages and spring rates, a track car about A/C, windows and insulation.</span></div>
+    <div class="userow"><input type="range" id="use-range" min="0" max="2" step="1" value="${ui}" ${can?'':'disabled'} aria-label="How the car will be used"><div class="useticks">${USES.map((x,i)=>`<button class="usetick ${i===ui?'on':''}" data-use="${x[0]}" ${can?'':'disabled'}>${esc(x[1])}</button>`).join('')}</div></div>
+    <p class="status"><b>${esc(USES[ui][1])}:</b> ${esc(USES[ui][2])} ${openUse.length?`<b style="color:var(--warn)">${openUse.length} of the checks below ${openUse.length>1?'are':'is'} specific to this use.</b>`:'No use-specific checks open for your current picks.'}</p></div>`+(fam?`<p class="status">Engine family: <b>${esc(D.families[fam]||fam)}</b>. Mounts, headers, A/C, steering and driveshaft options are filtered to match.</p>`:'<p class="status">Pick an engine first; mounts, headers, A/C, steering and driveshaft then filter to match it.</p>')+warnBoxHTML(w,'Check before ordering');
   $('#sheet-body').innerHTML=D.groups.map(g=>{
     const opts=allParts().filter(p=>p.group===g.id&&(compatible(p)||isChosen(p))).sort((a,b)=>(b.pop||0)-(a.pop||0));
     if(!opts.length) return '';
@@ -783,7 +795,7 @@ function warnHTML(w){
   const targets=[]; w.parts.forEach(p=>{ if(p.group&&!targets.some(t=>t.id===p.group)) targets.push({id:p.group,label:GROUPS[p.group]?.label||p.group}); });
   w.parts.forEach(p=>{ if(!p.group) targets.push({id:'card:'+p.id,label:p.name}); });
   const canResolve=isOwner||sandbox;
-  return `<li class="warn ${esc(w.scope||'')}"><div class="wtitle"><span class="wkind">${w.scope==='conflict'?'Conflict':'Check'}</span> ${esc(w.msg)}</div>
+  return `<li class="warn ${esc(w.scope||'')}"><div class="wtitle"><span class="wkind ${w.use?'use':''}">${w.scope==='conflict'?'Conflict':w.use?({street:'Street car',mixed:'Street + track',track:'Track car'})[currentUse()]:'Check'}</span> ${esc(w.msg)}</div>
     ${w.why?`<div class="wwhy"><b>Why:</b> ${esc(w.why)}</div>`:''}
     ${w.fix?`<div class="wwhy"><b>What to do:</b> ${esc(w.fix)}</div>`:''}
     <div class="jumps">${w.srcUrl?`<a class="nbtn jump" href="${esc(w.srcUrl)}" target="_blank" rel="noopener">Read the source: ${esc(w.src||host(w.srcUrl))} ↗</a>`:''}${targets.map(t=>`<button class="nbtn jump" data-jump="${esc(t.id)}">Take me to ${esc(t.label)} →</button>`).join('')}${canResolve&&w.scope!=='conflict'?`<button class="nbtn resolve" data-resolve="${esc(warnKey(w))}" title="Hides it until you change the picks involved">✓ Resolved, hide this</button>`:''}</div></li>`;
@@ -961,7 +973,8 @@ function openQuote(id){
   $('#nd-save').onclick=async()=>{ const a=+$('#qt-amt').value; if(!a){ toast('Enter an amount'); return; } await writeState(id,{quote:a,quoteKind:$('#qt-kind').value,quoteDate:$('#qt-date').value,quoteFrom:$('#qt-from').value.trim(),taxPaid:$('#qt-tax').value||null}); dlg.close(); };
   dlg.showModal();
 }
-document.addEventListener('click',e=>{ const b=e.target.closest('[data-quote]'); if(b) openQuote(b.dataset.quote); const f=e.target.closest('[data-fixlink]'); if(f) openLinkFix(f.dataset.fixlink); });
+document.addEventListener('input',e=>{ if(e.target.id==='use-range') setUse(USES[+e.target.value][0]); });
+document.addEventListener('click',e=>{ const u=e.target.closest('[data-use]'); if(u&&!u.disabled) setUse(u.dataset.use); const b=e.target.closest('[data-quote]'); if(b) openQuote(b.dataset.quote); const f=e.target.closest('[data-fixlink]'); if(f) openLinkFix(f.dataset.fixlink); });
 /* ---- fix a link: a replacement url saved with the build, used everywhere the part is shown ---- */
 function openLinkFix(id){
   const p=allParts().find(x=>x.id===id); if(!p) return; const s=st(id);

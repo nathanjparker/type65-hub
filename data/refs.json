@@ -1131,10 +1131,14 @@
 ],
 "msg": "The Coupe-R is a competition chassis: a cage you sit next to without a helmet, 750/500 lb springs, and a fixed race seat.",
 "why": "FFR sells it as an SCCA/NASA wheel-to-wheel chassis. Cage tubes beside an unhelmeted head are a known street hazard even padded; the spring rates are track rates; the high-back seat has no tracks.",
-"fix": "If the look is what you want, order the street Complete Kit and add the Coupe-R aero options (hood scoop and vents, spoiler, ducts, canards). If you want the cage, plan SFI padding, softer springs and a tracked seat, and confirm A/C and side-window fit with FFR.",
+"fix": "A street Coupe-R is doable, but budget for it: SFI roll-bar padding on every tube near a head, softer springs (FFR's street rates are far below 750/500), the low-back seats on tracks instead of the fixed high-back, side windows, and an FFR tech check that the A/C kit clears the cage. Or order the street kit with the Coupe-R aero options and get the look without the list.",
 "src": "Type 65 Coupe-R page",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
-"scope": "general"
+"scope": "general",
+"use": [
+"street",
+"mixed"
+]
 },
 {
 "id": "couper-ac",
@@ -1147,7 +1151,11 @@
 "fix": "Email tech@factoryfive.com with both part numbers; ask for a Coupe-R build with A/C.",
 "src": "Type 65 Coupe-R page",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
-"scope": "general"
+"scope": "general",
+"use": [
+"street",
+"mixed"
+]
 },
 {
 "id": "couper-windows",
@@ -1160,6 +1168,148 @@
 "fix": "Ask FFR before ordering; FormaCars has not documented a cage car either.",
 "src": "Type 65 Coupe-R page",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general",
+"use": [
+"street",
+"mixed"
+]
+},
+{
+"id": "track-nocage",
+"when": [
+"Gen 3 Type 65 Coupe Complete Kit"
+],
+"use": [
+"track"
+],
+"msg": "The street kit has no cage. Wheel-to-wheel racing needs the Coupe-R chassis; even open track days often require a roll bar.",
+"why": "The Coupe-R's SCCA/NASA-legal cage is welded into the chassis; it can't be added to the street chassis later without a fabricator.",
+"fix": "For a dedicated track car pick the Coupe-R kit. For time trials or HPDE, check the sanctioning body's roll-bar rule before ordering.",
+"src": "Type 65 Coupe-R page",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general"
+},
+{
+"id": "mixed-rollbar",
+"when": [
+"Gen 3 Type 65 Coupe Complete Kit"
+],
+"use": [
+"mixed"
+],
+"msg": "Track days in the street kit: check the roll-bar rule of the groups you'd run with.",
+"why": "Many HPDE organizers accept a closed coupe as-is; some require a bar or a cage for convertibles only. Rules vary by group.",
+"fix": "Ask the local track-day organizer before the kit order; if a bar is needed, a fabricator can add one to the street chassis but it costs more than ordering the Coupe-R.",
+"src": "Type 65 Coupe-R page",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general"
+},
+{
+"id": "track-ac",
+"when": [
+"FFR A/C-heater-defroster for 302/351W"
+],
+"use": [
+"track"
+],
+"msg": "A/C on a dedicated track car is weight, belt load and plumbing you don't need.",
+"why": "The compressor, condenser and evaporator add about 40 lb and a belt-driven load; track builds skip it and run a defroster-only heater or nothing.",
+"fix": "Skip the A/C kit, or pick the heater-only path. Keep a defroster if you'll ever drive it in the wet.",
+"src": "Type 65 Coupe-R page",
+"srcUrl": "https://www.factoryfive.com/type-65-coupe/coupe-r/",
+"scope": "general"
+},
+{
+"id": "track-windows",
+"when": [
+"FormaCars electric roll-down window kit"
+],
+"use": [
+"track"
+],
+"msg": "Powered roll-down windows are the wrong spend on a track car.",
+"why": "Weight and complexity in the doors, and most race rules want the windows down or out anyway.",
+"fix": "Run the FFR sliders or no side glass; put the money into brakes or seats.",
+"src": "FormaCars",
+"srcUrl": "https://www.formacars.com/",
+"scope": "general"
+},
+{
+"id": "track-insulation",
+"when": [
+"Mass-loaded vinyl + Damplifier Pro + Dynaliner"
+],
+"use": [
+"track"
+],
+"msg": "Mass-loaded vinyl is pure weight on a track car.",
+"why": "The quiet-cabin stack adds 40–60 lb; it exists to make a street car livable.",
+"fix": "Heat shielding only (Lizard Skin ceramic or header shields), skip the sound layers.",
+"src": "Quiet cabin thread",
+"srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-41720.html",
+"scope": "general"
+},
+{
+"id": "track-belts",
+"when": [
+"Schroth Rallye Cross 4-point"
+],
+"use": [
+"track",
+"mixed"
+],
+"msg": "A 4-point harness is not accepted for wheel-to-wheel and many track days; the kit's Simpson 5-point is.",
+"why": "Most sanctioning bodies require 5- or 6-point with an anti-submarine strap; 4-points are a street compromise.",
+"fix": "Keep the Simpson 5-point for track use, or run both: harness for the track, stock-style belts for the street.",
+"src": "FFR order form",
+"srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/",
+"scope": "general"
+},
+{
+"id": "track-quietpipes",
+"when": [
+"Boig Motorsport headers + quiet side pipes"
+],
+"use": [
+"track"
+],
+"msg": "Quiet pipes on a track car: only if the track has a sound limit.",
+"why": "Boig's pipes exist for cabin noise on the street; on track you wear a helmet and intercom. Many tracks do have a dB limit (Pacific Raceways enforces one), so check.",
+"fix": "Keep them if your home track measures sound; otherwise the FFR or GAS-N pipes save money.",
+"src": "Boig Motorsports",
+"srcUrl": "https://www.boigmotorsports.com/products/p/bms-001-quiet-pipes",
+"scope": "general"
+},
+{
+"id": "street-highback",
+"when": [
+"Competition high-back aluminum race seats"
+],
+"use": [
+"street",
+"mixed"
+],
+"msg": "The fixed high-back race seat has no tracks and tall wings that eat headroom under the roof.",
+"why": "It is bolted for one driver; sharing the car, or a 6'2\" driver under the coupe roof, is where builders go back to the low-backs.",
+"fix": "Low-back aluminum seats on tracks keep the look; Kirkeys are the thin-shell alternative.",
+"src": "FFR order form",
+"srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/",
+"scope": "general"
+},
+{
+"id": "street-splitter",
+"when": [
+"Coupe-R front aero bumper, canards & splitter"
+],
+"use": [
+"street",
+"mixed"
+],
+"msg": "Splitter and canards on a street car: driveways, speed bumps and parking blocks.",
+"why": "The splitter is the lowest point on the car; canards are the first thing to crack. Owners who keep them learn to park nose-out.",
+"fix": "Take the hood scoop, vents and spoiler for the Coupe-R look and leave the front aero off, or plan to live with scrapes.",
+"src": "FFR order form",
+"srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/",
 "scope": "general"
 }
 ],
