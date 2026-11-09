@@ -110,7 +110,7 @@
 "users": "Westley B.",
 "src": "Order form",
 "srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/",
-"notes": "Order with kit.",
+"notes": "Order with kit. edwardb: the rear bar needs brackets captured by the lower-control-arm front bolt and the toe-link bolt, so fit them at IRS assembly even if you leave the bar off. Both bars are the same 7/8\" solid NA/NB Miata rear bar; several Gen 3 owners (VENMUS) disconnected the rear one for snap oversteer and run front only.",
 "fit": "yes",
 "id": "p054"
 },
@@ -420,7 +420,7 @@
 "users": "Hank; lewma; R. Button",
 "src": "Gen3 Daytona side pipes (ffcars 645772)",
 "srcUrl": "https://www.ffcars.com/threads/gen3-type-65-coupe-daytona-side-pipes.645772/",
-"notes": "Touring version for a Washington street car. Built for the FFR Gen 3 Daytona Coupe; an aggressive flow-through core is special order.",
+"notes": "Touring version for a Washington street car. Built for the FFR Gen 3 Daytona Coupe; an aggressive flow-through core is special order. Laser Stan (ffcars 648155): three sets of GAS-N \"quiet\" pipes measured the same as stock FFR pipes, 119–120 dB at 4 ft; ask for the Touring / Ultra Touring version by name (Jerry Myers) or look elsewhere.",
 "fit": "yes",
 "group": "sidepipes",
 "id": "p070",
@@ -650,7 +650,7 @@
 "users": "Bob Brandle relocated his degas tank",
 "src": "Bob Brandle AZ build",
 "srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-28883.html",
-"notes": "Location is a known Gen 3 puzzle. Mounts to the driver-side F-panel on FFR cars.",
+"notes": "Location is a known Gen 3 puzzle. Mounts to the driver-side F-panel on FFR cars. Forte's stopped making the 347 degas tank years ago (jesmeltzer, Apr 2026); use the FFR tank or a generic Canton/Moroso expansion tank.",
 "fit": "yes",
 "id": "p082",
 "checked": "2026-11-05"

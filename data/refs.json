@@ -616,9 +616,10 @@
 },
 {
 "name": "ffcars.com FFR Type 65 Coupe subforum",
-"what": "The other big coupe board: 340+ pages, with the pinned Map of Coupe Owners (find Washington owners to visit) and Official Finished Coupes threads",
-"url": "https://www.ffcars.com/forums/ffr-type-65-coupe.42/",
-"how": "Blocks automated reading, so the hub only cites it second-hand. Read it yourself; paste anything worth keeping into Add your build or a resource."
+"what": "The other coupe board, now quiet (about 40 threads a year, many Gen 1/2 resale questions); pinned Map of Coupe Owners and Official Finished Coupes. Nate's hub thread is 648329.",
+"url": "https://www.ffcars.com/forums/ffr-type-65-coupe.21/",
+"how": "Readable in your browser only (blocks automated reading), so the weekly pass cannot see replies here: check the thread yourself. Useful 2026 threads: quieter pipes 648155, Koni rings 644109, IRS rear bar 643777, body mounting 644888, what would you do different 647694.",
+"alt": "https://www.ffcars.com/threads/i-read-25-gen-3-coupe-build-threads-so-you-don%E2%80%99t-have-to-%E2%80%94-here%E2%80%99s-the-parts-database.648329/"
 },
 {
 "name": "Northwest Gen 3 coupe owners on the new forum (sit-in offers)",
@@ -629,7 +630,7 @@
 },
 {
 "name": "ffcars.com Northwest Region subforum",
-"what": "WA/OR/ID FFR owners",
+"what": "WA/OR/ID FFR owners; very quiet since 2023 (a few posts a year). q4stix has a Daytona in the Seattle area; the Cascade Cobra Club may be inactive (Aug 2026 thread got no answer).",
 "url": "https://www.ffcars.com/forums/northwest-region.28/",
 "alt": "",
 "how": "Post an intro: new Gen 3 coupe builder, looking for local builders to visit and body/paint shops."
@@ -657,7 +658,7 @@
 },
 {
 "name": "Cascade Cobra Club",
-"what": "Portland-area coast trips",
+"what": "Portland-area coast trips; status unclear: an Aug 2026 \"does it exist anymore?\" thread got no answer",
 "url": "https://www.ffcars.com/threads/cascade-cobra-club-summer-coast-trip-2019.638156/",
 "alt": "https://www.ffcars.com/threads/portland-or-any-ffr-cobra-owners.16439/",
 "how": "Useful if the paint-shop search widens to Portland."
@@ -886,8 +887,8 @@
 "GPS gauge part number: 60312 on the order form vs 60311 in the catalog.",
 "Hours: the only Gen 3 log is Jphoenix's Coupe-R at ~780 h over 6 months (aircraft mechanic, race car, no A/C or windows; says the next would take 300). Tiltrider1 reckons he spent \"300–400 hours just searching for parts\". Log hours per step here and this street build becomes the first complete record.",
 "No FFR-published spring rates or alignment specs for the Gen 3 coupe.",
-"ffcars.com's Type 65 Coupe subforum (340+ pages, owners map) can't be read automatically; everything from it in the hub is second-hand until someone pastes threads in.",
-"Seat for a 6'2\" driver: PNWTim runs a Sparco R100 on sliders all the way back, JimStone says Braum Orue \"barely works\", edwardb says a thin padded race seat against the back wall. Nobody has measured headroom with a helmet in a street coupe. Sit in one (Northwest owners above) before ordering seats."
+"Seat for a 6'2\" driver: PNWTim runs a Sparco R100 on sliders all the way back, JimStone says Braum Orue \"barely works\", edwardb says a thin padded race seat against the back wall. Nobody has measured headroom with a helmet in a street coupe. Sit in one (Northwest owners above) before ordering seats.",
+"ffcars.com can only be read from a browser, so replies to Nate's thread there (648329) are not picked up by the weekly pass. The Map of Coupe Owners pins live on a Google map, not in the posts; open it yourself to find Washington names."
 ],
 "groups": [
 {
@@ -1455,7 +1456,7 @@
 "GAS-N Daytona Coupe side pipes"
 ],
 "msg": "GAS-N pipes and headers: fit and delivery are \"a roll of the dice\" since 2025 (Jeff Kleiner).",
-"why": "PNWTim's side pipes arrived with the mounting tab welded a foot from where 460.465USMC's set has it; his first headers were poorly made; waits ran months after Georgie left. JimStone: the FFR stainless pipes and headers were a \"perfect fit, no fuss\".",
+"why": "PNWTim's side pipes arrived with the mounting tab welded a foot from where 460.465USMC's set has it; his first headers were poorly made; waits ran months after Georgie left. JimStone: the FFR stainless pipes and headers were a \"perfect fit, no fuss\". On ffcars, Laser Stan measured three sets of GAS-N \"quiet\" pipes at 119–120 dB, same as the stock FFR pipes.",
 "fix": "Order FFR's headers and pipes (PNWTim: \"quite nice now\") and quiet them with inserts (p230), or go Boig/Tubular Automotive. If you still want GAS-N, order early and test-fit on arrival; Horacio replaced PNWTim's.",
 "src": "New forum 136519, 136656",
 "srcUrl": "https://thefactoryfiveforum.com/thread/136656",
@@ -1477,6 +1478,30 @@
 "mixed",
 "track"
 ]
+},
+{
+"id": "koni-rings",
+"when": [
+"KONI double-adjustable aluminum coil-overs F&R"
+],
+"msg": "The Koni DA top-eye snap rings will not seat; four builders fought them 2022–2026.",
+"why": "The ring catches on the radius of the aluminum top eye. Koni engineering says it is not needed with these spring seats.",
+"fix": "Leave the ring off, or fit a stainless spiral retaining ring (p239). Do not hammer it.",
+"src": "ffcars 644109",
+"srcUrl": "https://www.ffcars.com/threads/koni-double-adjustable-shock-spring-rings-wont-fit.644109/",
+"scope": "general"
+},
+{
+"id": "rear-bar-brackets",
+"when": [
+"2015 Mustang-based IRS"
+],
+"msg": "Decide the IRS rear sway bar before assembly: its brackets are captured by the LCA front bolt and the toe-link bolt.",
+"why": "edwardb has installed the FFR IRS bar twice; retrofitting means pulling those bolts with the car together. Several Gen 3 owners end up running front bar only because the rear bar adds snap oversteer.",
+"fix": "Fit the brackets at IRS assembly even if the bar stays in the box; start with front bar only and add the rear at shakedown if it understeers.",
+"src": "ffcars 643777",
+"srcUrl": "https://www.ffcars.com/threads/rear-sway-bar-coupe-with-irs.643777/",
+"scope": "general"
 }
 ],
 "decideLabels": {

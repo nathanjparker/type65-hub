@@ -190,13 +190,18 @@
 {
 "label": "Widen the pedal box? Pedal offset and Snakebite extensions",
 "url": "https://thefactoryfiveforum.com/thread/136658"
+},
+{
+"label": "Koni DA snap rings do not fit (leave off or spiral ring)",
+"url": "https://www.ffcars.com/threads/koni-double-adjustable-shock-spring-rings-wont-fit.644109/"
 }
 ],
 "challenges": [
 "Accelerator pedal vs steering-shaft interference (Bob Brandle made a spacer); throttle pedal wobble (jgray).",
 "Standard 500 lb front springs may be light if the finished car tops 2,900 lb.",
 "A cast Wilwood clutch pedal broke on a roadster with a cable clutch; hydraulic lowers the load.",
-"The pedals sit left of the seat centerline in every coupe. edwardb and 8secDuster: a non-issue you adapt to; angle the seats, move the Wilwood pads, and leave the footbox alone until the headers are in. 8secDuster's real problem was clutch/brake pad spacing."
+"The pedals sit left of the seat centerline in every coupe. edwardb and 8secDuster: a non-issue you adapt to; angle the seats, move the Wilwood pads, and leave the footbox alone until the headers are in. 8secDuster's real problem was clutch/brake pad spacing.",
+"A column-mounted turn-signal switch moves the wheel 2\"+ closer to the driver (Gordon Levy); a turn-signal timer on a toggle keeps the wheel where it is for a tall driver."
 ],
 "ideas": [
 "Dead-pedal kit and rigid stainless brake lines (edwardb).",
@@ -239,6 +244,10 @@
 {
 "label": "IRS frame rub with 315s: spacer, camber or notch",
 "url": "https://thefactoryfiveforum.com/thread/136432"
+},
+{
+"label": "Rear sway bar on a coupe with IRS (brackets, snap oversteer)",
+"url": "https://www.ffcars.com/threads/rear-sway-bar-coupe-with-irs.643777/"
 }
 ],
 "challenges": [
@@ -308,6 +317,14 @@
 {
 "label": "Fuel line routing for a 347 EFI (sizes, filter, fittings)",
 "url": "https://thefactoryfiveforum.com/thread/136265"
+},
+{
+"label": "Quieter pipes for a coupe: GAS-N measured, Burns, Boig (ffcars, Oct 2026)",
+"url": "https://www.ffcars.com/threads/quieter-pipes-for-coupe.648155/"
+},
+{
+"label": "Mid-shift on a TKX 600 with the BluePrint package (ffcars)",
+"url": "https://www.ffcars.com/threads/mid-shift-on-tkx-600.643855/"
 }
 ],
 "challenges": [
@@ -315,7 +332,8 @@
 "Oil pan clearance (rear-sump), tall intakes hit the hood, degas/overflow tank location.",
 "The 4-into-2-into-sidepipe routing is a reported power robber; GAS-N's design has a longer, more gradual turn.",
 "TKX shifter, Oct 2026: with a Coyote, edwardb flips the shifter 180° to the rear position and skips the mid-shift kit; gtrag94: \"for a SBF you DO want the midshift position\" (the small square plate forward of the normal mount). PNWTim: set the shifter before you raise the tailshaft and fit the crossmember; there is no room after.",
-"GAS-N headers and pipes are a roll of the dice in 2025–26 (tabs welded in the wrong place, months-long waits); JimStone's FFR stainless set was a perfect fit. Quiet FFR pipes with Car Chemistry inserts, or go Boig."
+"GAS-N headers and pipes are a roll of the dice in 2025–26 (tabs welded in the wrong place, months-long waits); JimStone's FFR stainless set was a perfect fit. Quiet FFR pipes with Car Chemistry inserts, or go Boig.",
+"BluePrint shipped mtdr's 427/TKX \"mid-shift package\" with the shifter in the normal rear position because Tremec had no mid-shift available; flipping the plate 180° gains 4–5\" and needs one piece of tunnel bracing removed (mdjr70). Ask BluePrint what position the TKX will actually arrive in."
 ],
 "ideas": [
 "Ceramic headers and standoff heat shields; bare FFR pipes rust fast in Washington.",
@@ -530,6 +548,10 @@
 {
 "label": "Side glass: pay a glass shop (Kleiner, David Williamson)",
 "url": "https://thefactoryfiveforum.com/thread/136693"
+},
+{
+"label": "Which hatch panels can be on when the body goes on (ffcars)",
+"url": "https://www.ffcars.com/threads/coupe-body-mounting.644888/"
 }
 ],
 "challenges": [
@@ -540,7 +562,8 @@
 "Sills: the fiberglass sill must sit flush on the frame tube; bodies are not symmetrical, so notch the body or grind the lower cross-tube ends, push in and down, clamp, and screw in three places. Sill glass varies from 1/4\" to a few mm at the rear; build up the thin spots (JimStone).",
 "Nose and hood: the nose is asymmetric and sits off-center 1/2–3/4\" on most cars and cannot be moved sideways; \"put the ruler away\" (Kleiner). Trim the back edge of the nose in small steps so the hinge brackets reach the cups, raise the front with the heim joint to get the hood parallel, leave the gas struts off until it fits. Notch the nose underside for the A/C condenser and radiator; a 1/2\" gap to the shroud seal is normal. edwardb spent two full weeks on body fit: hood → body → doors, repeat.",
 "Doors: both are too long for the opening; trim both ends (Indy Shu trimmed only the front and ended up with 3–4 washers under the striker). The driver door often will not sit flush: 1/8–1/4\" spacers between frame and skin. Kleiner relieves the radius on the upper hinge for more swing on every coupe; the 1/4\" in the manual means 1/4\". Doors are harder than the nose.",
-"Nose latches: swap the supplied 10-32 hardware for 1/4-20 (edwardb, PNWTim). Headlight bucket cutouts came badly undersized: open with a carbide burr. The body settles and fits better after a few days on the frame."
+"Nose latches: swap the supplied 10-32 hardware for 1/4-20 (edwardb, PNWTim). Headlight bucket cutouts came badly undersized: open with a carbide burr. The body settles and fits better after a few days on the frame.",
+"Hatch side panels can be on the chassis when the body is set, but the rear splash shield (#42) and the panels behind the seats (#11) go in only after the body is on for the last time (Jeff Kleiner, dougstelter)."
 ],
 "ideas": [
 "Nose pop-up mod with a BMW E30 hood latch (ffr48).",
