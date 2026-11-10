@@ -49,13 +49,14 @@
 "users": "Art Shand (BPE 347 FI, hydraulic TKX); Ron V. Gen 3 (347/TKO)",
 "src": "EFI for BluePrint engine",
 "srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-45121.html",
-"notes": "BPE: call 1-800-483-4263 for Factory Five orders. TKX ratios 2.87/1.89/1.28/1.00/0.81. Confirm the front drive carries A/C compressor and PS pump. Same price at JEGS and Summit.",
+"notes": "BPE: call 1-800-483-4263 for Factory Five orders. TKX ratios 2.87/1.89/1.28/1.00/0.81. Confirm the front drive carries A/C compressor and PS pump. Same price at JEGS and Summit. Factory Five's Nick Raffa (tech support & sales, Nov 10 2026): \"For the price difference and how compliant the car handles, I would do a 347,\" for a street car that sees the occasional track day.",
 "fit": "unknown",
 "group": "engine",
 "id": "p003",
 "pop": 3,
 "popWhy": "Growing: Power Surge #692, Ron V., Art Shand, Derek R. (Sniper small-block)",
-"family": "sbf"
+"family": "sbf",
+"checked": "2026-11-10"
 },
 {
 "stage": "plan",
@@ -236,10 +237,10 @@
 "users": "TFFF builder: $1,900 to LA via Stewart (2012)",
 "src": "Kit shipping rates thread",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/faqs/",
-"notes": "Washington is at the high end. Need a forklift or 4–6 people for the body. PNWTim (Damascus OR) priced self-pickup at ~6,300 miles round trip over December passes or a ~$1,500 enclosed-hauler quote and took Stewart; Chris #566 (Deer Park WA) got his kit about a week after Stewart picked it up in Wareham. JimStone did pick up himself with a 12x6 U-Haul utility trailer behind a 4,500-lb-tow SUV (28-hour round trip from Michigan).",
+"notes": "Washington is at the high end. Need a forklift or 4–6 people for the body. PNWTim (Damascus OR) priced self-pickup at ~6,300 miles round trip over December passes or a ~$1,500 enclosed-hauler quote and took Stewart; Chris #566 (Deer Park WA) got his kit about a week after Stewart picked it up in Wareham. JimStone did pick up himself with a 12x6 U-Haul utility trailer behind a 4,500-lb-tow SUV (28-hour round trip from Michigan). Factory Five's Nick Raffa (tech support & sales, Nov 10 2026) names Cunningham Freight (480-999-0060) as FFR's shipping partner for quotes; the FFR FAQ still lists Stewart Transport. Ask which is current when you order.",
 "fit": "yes",
 "id": "p012",
-"checked": "2026-11-09"
+"checked": "2026-11-10"
 },
 {
 "stage": "plan",
@@ -489,9 +490,10 @@
 "users": "All",
 "src": "What you get",
 "srcUrl": "https://www.factoryfive.com/type-65-coupe/what-you-get-complete-kit/",
-"notes": "Spring rate may be light if the build tops 2,900 lb.",
+"notes": "Spring rate may be light if the build tops 2,900 lb. Factory Five's Nick Raffa (tech support & sales, Nov 10 2026) says to \"definitely do the Touring shock set\" for a street build. The hub has no part number or price for a Touring set yet; ask FFR what it is when you configure the order.",
 "fit": "yes",
-"id": "p026"
+"id": "p026",
+"checked": "2026-11-10"
 },
 {
 "stage": "front",

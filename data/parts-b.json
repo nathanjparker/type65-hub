@@ -49,7 +49,7 @@
 "users": "Ron L. (3.55)",
 "src": "FFR center section video",
 "srcUrl": "https://www.youtube.com/watch?v=AIZD1Cb2Ipo",
-"notes": "Easiest no-donor path. Ask about 3.73 for the TKX 0.81 overdrive. PNWTim's new Ford Racing 3.55 LSD shipped on its side and leaked; FFR replaced it and he ended up with a used 3.73 Torsen. If you delete the FFR center section, the spindles and hubs leave the kit with it: check the sub-kit list before deleting. Factory Five tech (Nov 10, 2026): the differential and the spindles/hubs are stocked only as one assembly. Delete the center section and the spindles and hubs go with it; buy them from Ford or get them used with the diff.",
+"notes": "Easiest no-donor path. Ask about 3.73 for the TKX 0.81 overdrive. PNWTim's new Ford Racing 3.55 LSD shipped on its side and leaked; FFR replaced it and he ended up with a used 3.73 Torsen. If you delete the FFR center section, the spindles and hubs leave the kit with it: check the sub-kit list before deleting. Factory Five tech (Nov 10, 2026): the differential and the spindles/hubs are stocked only as one assembly. Delete the center section and the spindles and hubs go with it; buy them from Ford or get them used with the diff. Factory Five's Nick Raffa (tech support & sales, Nov 10 2026) recommends this standard 3.55 limited-slip for a street 347: better spread of speeds than 3.73 and calmer on the highway. See the gearing calculator in this stage.",
 "fit": "yes",
 "group": "center-section",
 "id": "p051",
@@ -70,13 +70,13 @@
 "users": "edwardb #59",
 "src": "edwardb ffcars build",
 "srcUrl": "https://www.ffcars.com/threads/619602/",
-"notes": "Better traction for street. Differential only, not a complete center section; 3.31/3.55/3.73/4.09 gears.",
+"notes": "Better traction for street. Differential only, not a complete center section; 3.31/3.55/3.73/4.09 gears. Factory Five's Nick Raffa (tech support & sales, Nov 10 2026) advises against a Torsen on the street: \"the car is so light a Torsen would act as a locker.\" Builders edwardb, P100DHG and JimStone run one and like it, so treat it as one informed opinion.",
 "fit": "yes",
 "group": "center-section",
 "id": "p052",
 "pop": 2,
 "popWhy": "edwardb; worth it for traction",
-"checked": "2026-11-05"
+"checked": "2026-11-10"
 },
 {
 "stage": "rear",

@@ -287,7 +287,8 @@
 ],
 "ideas": [
 "Electric parking brake (Levy Racing / Wilwood EPB) frees the tunnel.",
-"Torque-seal every fastener for the inspector."
+"Torque-seal every fastener for the inspector.",
+"Pick the axle ratio by cruise rpm, not top speed: 3.55 with a 0.68 fifth is about 2,200 rpm at 70 mph on a 26\" tire, 3.73 about 2,330. The gearing calculator above runs your own combination."
 ],
 "tasks": [
 "Assemble IRS cradle, knuckles and hubs",

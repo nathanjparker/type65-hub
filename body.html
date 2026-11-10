@@ -14,6 +14,7 @@
   <a href="#tools"><span class="n">T</span>Shop &amp; tools</a>
   <a href="#schedule"><span class="n">⟶</span>Schedule</a>
   <a href="#plans"><span class="n">☰</span>Plans</a>
+  <a href="#gearing"><span class="n" data-ico="gear"></span>Gearing</a>
   <a href="#builders"><span class="n">👤</span>Builders</a>
   <a href="#order"><span class="n">$</span>Build estimator</a>
   <a href="#suggest"><span class="n">+</span>Add a part</a>
@@ -174,10 +175,11 @@ const ICONS={
   options:'M4 6l1.5 1.5L8 5 M4 12l1.5 1.5L8 11 M4 18l1.5 1.5L8 17 M11 6h9 M11 12h9 M11 18h9',
   community:'M12 21s-6-5.5-6-10a6 6 0 1 1 12 0c0 4.5-6 10-6 10z M12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z', sources:'M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h10',
   ask:'M4 5h16v11H9l-5 4z M10 9a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2 M12 14h.01',
+  gear:'M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M12 3v3 M12 18v3 M3 12h3 M18 12h3 M5.6 5.6l2.2 2.2 M16.2 16.2l2.2 2.2 M5.6 18.4l2.2-2.2 M16.2 7.8l2.2-2.2',
   sun:'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M12 2v2 M12 20v2 M4.9 4.9l1.4 1.4 M17.7 17.7l1.4 1.4 M2 12h2 M20 12h2 M4.9 19.1l1.4-1.4 M17.7 6.3l1.4-1.4', moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'
 };
 const ico=(id,cls)=>ICONS[id]?`<svg class="ico${cls?' '+cls:''}" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="${ICONS[id]}"></path></svg>`:'';
-document.querySelectorAll('nav.rail > a[href^="#"]').forEach(a=>{ const id=a.getAttribute('href').slice(1); const n=a.querySelector('.n'); if(n&&ICONS[id]) n.innerHTML=ico(id); });
+document.querySelectorAll('nav.rail > a[href^="#"]').forEach(a=>{ const id=a.getAttribute('href').slice(1); const n=a.querySelector('.n'); if(n&&ICONS[n.dataset.ico||id]) n.innerHTML=ico(n.dataset.ico||id); });
 document.querySelectorAll('main section[id]').forEach(sec=>{ const r=sec.querySelector(':scope > .shead > .roundel'); if(r&&ICONS[sec.id]) r.innerHTML=ico(sec.id); });
 /* ---- light / dark: Race program '65 and Midnight blue ---- */
 (function(){ const KEY='type65hub.theme', root=document.documentElement, btn=$('#themebtn'); if(!btn) return;
@@ -396,6 +398,7 @@ function stageHTML(s){
   </section>`;
 }
 $('#stages').innerHTML=D.stages.map(stageHTML).join('');
+{ const rs=document.querySelector('#rear .sgrid'); if(rs) rs.insertAdjacentHTML('beforebegin','<div class="panel calc gear" id="gearing" style="margin:14px 0"></div>'); }
 renderCalc();
 $('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="spill sm"><b>${s.num}</b><span>${ico(s.id)}</span></span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
 
@@ -892,6 +895,60 @@ document.addEventListener('click',e=>{ const bt=e.target.closest('[data-builder]
 // spec sheet: agreement counts per decision
 function agreement(g){ const idx=builderIndex(); const mine=allParts().find(p=>p.group===g.id&&isChosen(p)); if(!mine) return ''; const withMe=[],other=[]; Object.entries(idx).forEach(([n,b])=>{ const inGroup=b.parts.filter(p=>p.group===g.id); if(!inGroup.length) return; (inGroup.includes(mine)?withMe:other).push(n); }); if(!withMe.length&&!other.length) return ''; return `<div class="agree">${withMe.length} builder${withMe.length===1?'':'s'} made your pick${other.length?`; ${other.length} went another way (${esc(other.slice(0,4).join(', '))}${other.length>4?'…':''})`:''}</div>`; }
 /* ---- render all ---- */
+/* ---- gearing calculator: rear ratio x TKX gear set x tire -> cruise rpm and speed in each gear ---- */
+const GEARSETS=[
+  {id:'tkx-287-068',label:'TKX 2.87 first, 0.68 fifth (TCET18084)',g:[2.87,1.89,1.28,1.00,0.68]},
+  {id:'tkx-287-081',label:'TKX 2.87 first, 0.81 fifth (TCET18083)',g:[2.87,1.89,1.28,1.00,0.81]},
+  {id:'tkx-327-072',label:'TKX 3.27 first, 0.72 fifth (close ratio, TCET17765)',g:[3.27,1.98,1.34,1.00,0.72]}
+];
+const REAR_RATIOS=[3.15,3.31,3.55,3.73];
+const TIRES=[['295/35R18',26.1],['315/30R18',25.4],['315/35R17',25.7],['295/50R15',26.6]];
+const GEARKEY='type65hub.gear'; var gearLocal=null;
+function gearDefault(){
+  const has=id=>{ const p=allParts().find(x=>x.id===id); return !!(p&&isChosen(p)); };
+  const tire=has('p211')?26.6:has('p212')?25.7:26.1;
+  const track=currentUse()==='track';
+  return {ratio:has('p243')||track?3.73:3.55,set:track?'tkx-327-072':'tkx-287-068',tire,redline:6000};
+}
+function gearState(){
+  let saved=null;
+  if(sandbox&&mine) saved=mine.gear; else if(isOwner) saved=stageState.__gear;
+  else { if(!gearLocal){ try{ gearLocal=JSON.parse(localStorage.getItem(GEARKEY)||'null'); }catch(e){ gearLocal=null; } } saved=gearLocal; }
+  return Object.assign(gearDefault(),saved||{});
+}
+async function saveGear(g){
+  const v={ratio:+g.ratio,set:g.set,tire:+g.tire,redline:+g.redline};
+  if(sandbox&&mine){ mine.gear=v; renderGear(); await saveMine(); return; }
+  if(isOwner&&db){ stageState.__gear=v; renderGear(); try{ await db.doc('stagestate/__gear').set(Object.assign({},v,{updated:new Date().toISOString()})); }catch(e){ toast('Could not save'); } return; }
+  gearLocal=v; try{ localStorage.setItem(GEARKEY,JSON.stringify(v)); }catch(e){} renderGear();
+}
+function renderGear(){
+  const el=$('#gearing'); if(!el) return; const g=gearState(); const set=GEARSETS.find(x=>x.id===g.set)||GEARSETS[0];
+  const dia=Math.min(32,Math.max(22,+g.tire||26.1)), red=Math.min(8000,Math.max(4000,+g.redline||6000)), fd=+g.ratio||3.55;
+  const mph=(rpm,gear,final)=>rpm*dia/(336.13*gear*final), rpm=(v,gear,final)=>v*336.13*gear*final/dia;
+  const top=set.g[set.g.length-1]; const r70=Math.round(rpm(70,top,fd)/10)*10; const other=fd===3.55?3.73:3.55; const o70=Math.round(rpm(70,top,other)/10)*10;
+  const use=currentUse();
+  const verdict=r70<=2400?'Relaxed on the highway.':r70<=2900?'Busy but livable on the highway.':'Buzzy on the highway; fine for a track car.';
+  el.innerHTML=`<h3>${ico('gear')} Gearing calculator</h3>
+    <p class="row" style="margin:0 0 8px">Rear ratio, TKX gear set and tire decide how the car cruises and pulls. Top speed is not the limit: fifth gear is geared for far more than the engine can push through the air.</p>
+    <div class="calcin">
+      <label>Rear axle ratio<select data-gear="ratio">${REAR_RATIOS.map(x=>`<option value="${x}"${x===fd?' selected':''}>${x.toFixed(2)}${x===3.55?' (FFR standard)':x===3.73?' (Torsen)':''}</option>`).join('')}</select></label>
+      <label>Transmission gear set<select data-gear="set">${GEARSETS.map(x=>`<option value="${x.id}"${x.id===set.id?' selected':''}>${esc(x.label)}</option>`).join('')}</select></label>
+      <label>Rear tire<select data-gear="tire">${TIRES.map(([n,d])=>`<option value="${d}"${d===dia?' selected':''}>${n} · ${d}" tall</option>`).join('')}${TIRES.some(t=>t[1]===dia)?'':`<option value="${dia}" selected>${dia}" tall</option>`}</select></label>
+      <label>Redline (rpm)<input type="number" data-gear="redline" min="4000" max="8000" step="100" value="${red}"></label>
+    </div>
+    <div class="strip">
+      <div><div class="k">70 mph in fifth</div><div class="v">${r70.toLocaleString()} rpm</div><div class="s">${verdict}</div></div>
+      <div><div class="k">60 / 80 mph in fifth</div><div class="v">${(Math.round(rpm(60,top,fd)/10)*10).toLocaleString()} / ${(Math.round(rpm(80,top,fd)/10)*10).toLocaleString()}</div><div class="s">rpm</div></div>
+      <div><div class="k">Same car with ${other.toFixed(2)}</div><div class="v">${o70.toLocaleString()} rpm</div><div class="s">at 70 mph · ${o70>r70?'+':''}${(o70-r70).toLocaleString()} rpm</div></div>
+      <div><div class="k">Fourth gear at redline</div><div class="v">${Math.round(mph(red,1,fd))} mph</div><div class="s">where most track straights end</div></div>
+    </div>
+    <div class="tblwrap" style="margin-top:10px"><table class="tbl geartbl"><thead><tr><th>Gear</th><th>Ratio</th><th>Speed at ${red.toLocaleString()} rpm</th><th>rpm after the upshift</th></tr></thead><tbody>
+      ${set.g.map((x,i)=>`<tr><td>${i+1}${i===set.g.length-1?' (overdrive)':''}</td><td>${x.toFixed(2)}</td><td>${Math.round(mph(red,x,fd))} mph${i===set.g.length-1?' <span class="row">(geared for; the engine runs out of power first)</span>':''}</td><td>${i<set.g.length-1?(Math.round(red*set.g[i+1]/x/10)*10).toLocaleString()+' rpm into '+(i+2):'—'}</td></tr>`).join('')}
+    </tbody></table></div>
+    <p class="row" style="margin:10px 0 0">${use==='track'?'Track car: 3.73 with the close-ratio set keeps the engine on the cam between corners.':use==='mixed'?'Street and track: 3.55 with the 0.68 fifth cruises quietly and still pulls hard through fourth.':'Street car: 3.55 with the 0.68 fifth is the quiet-cruise combination.'} Factory Five's Nick Raffa (Nov 2026) recommends the standard 3.55 limited-slip for a street 347: with the shorter 3.73, highway speeds "may be wringing it out a bit too much", and in a car this light he finds a Torsen acts like a locker. edwardb, P100DHG and JimStone run the 3.73 Torsen on the street and are happy with it. <b>Ask BluePrint which TKX gear set ships in the 347 package</b>; the fifth-gear ratio moves highway rpm four times as much as the axle ratio.</p>`;
+}
+document.addEventListener('change',e=>{ const k=e.target&&e.target.dataset&&e.target.dataset.gear; if(!k) return; const g=gearState(); g[k]=k==='set'?e.target.value:+e.target.value; saveGear(g); });
 /* ---- view: folded sections, the stage you're working on, done stages ---- */
 var VIEWKEY='type65hub.view', peek=new Set(), localView=null, hashPeeked=false;
 function readLocalView(){ if(localView) return localView; try{ localView=JSON.parse(localStorage.getItem(VIEWKEY)||'{}')||{}; }catch(e){ localView={}; } return localView; }
@@ -981,7 +1038,7 @@ document.addEventListener('click',async e=>{
   const so=e.target.closest('[data-stagereopen]'); if(so){ const id=so.dataset.stagereopen; const v=viewState(); await saveView({done:(v.done||[]).filter(x=>x!==id),folded:(v.folded||[]).filter(x=>x!==id)}); return; }
   if(e.target.closest('#foldall')){ const v=viewState(); peek.clear(); await saveView({folded:[...document.querySelectorAll('section.stage')].map(x=>x.id).filter(x=>x&&x!==v.working)}); return; }
   if(e.target.closest('#openall')){ peek.clear(); await saveView({folded:[]}); return; }
-  const ra=e.target.closest('a[href^="#"]'); if(ra){ const t=document.getElementById(decodeURIComponent(ra.getAttribute('href').slice(1))); if(t&&t.classList.contains('folded')){ peek.add(t.id); applyView(); } }
+  const ra=e.target.closest('a[href^="#"]'); if(ra){ const t=document.getElementById(decodeURIComponent(ra.getAttribute('href').slice(1))); const ts=t&&t.closest('section.stage'); if(ts&&ts.classList.contains('folded')){ peek.add(ts.id); applyView(); } }
 });
 document.addEventListener('change',async e=>{ if(e.target.id!=='now-stage') return; const id=e.target.value||null; const v=viewState(); await saveView({working:id,folded:(v.folded||[]).filter(x=>x!==id)}); });
 function renderParts(q){
@@ -1002,7 +1059,7 @@ function renderParts(q){
   { const hl=totalHoursLogged(); $('#overall-hours').textContent=hl?`${hl} hours logged of ~${calc.hours.toLocaleString()} estimated (${Math.round(hl/calc.hours*100)}%).`:'No hours logged yet. Use "log" on any checklist step.'; }
   const ch=allParts().filter(isChosen); $('#overall-status').innerHTML=STATUSES.map(([v,l])=>`<span class="chip st-${v}">${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}</span>`).join('');
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
-  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt(); renderThisWeek(); renderPlans(); renderBuilders(); applyView();
+  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt(); renderThisWeek(); renderPlans(); renderBuilders(); renderGear(); applyView();
 }
 function filterTable(id,q){
   const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;

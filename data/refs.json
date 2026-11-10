@@ -903,6 +903,8 @@
 ],
 "gaps": [
 "Whether the BluePrint front drive carries both an A/C compressor and a PS pump on a 347.",
+"Which TKX gear set ships in the BluePrint 347 package (0.68 or 0.81 fifth)? It moves highway rpm about four times as much as 3.55 vs 3.73. Ask BluePrint.",
+"What is FFR's \"Touring shock set\" (part number, price, how it differs from the standard Konis)? Nick Raffa recommends it for a street build; ask when configuring the order.",
 "FormaCars window and HVAC prices and lead times.",
 "Hours: no complete Gen 3 street-coupe log exists. Data points: Jphoenix Coupe-R ~780 h (race car, pro fabricator); P100DHG #138 \"over 1,000\" h, Feb 2019 kit to Jan 2021 first drive; MSumners Nov 2023 kit to May 2025 first start; JimStone Feb 2024 order to Feb 2026 first start and \"about 4 hours of research per hour of build\"; Papa's inventory alone took 7 h. Log hours per step here and this build becomes the first full record.",
 "No FFR-published spring rates or alignment specs for the Gen 3 coupe.",
@@ -956,7 +958,7 @@
 "stage": "rear",
 "multi": false,
 "decideBy": "order",
-"tradeoff": "The 2018 Mustang 3.55 unit from FFR is the no-donor path and what Ron L. runs. A Torsen ($775, diff only) adds traction for a street car but you still need the FFR carrier parts."
+"tradeoff": "The 2018 Mustang 3.55 limited-slip from FFR is the no-donor path, what Ron L. runs, and what Factory Five's Nick Raffa recommends for a street 347 (Nov 2026). A 3.73 Torsen adds traction and is what edwardb, P100DHG and JimStone run; Nick finds it locker-like in a car this light and a little short on the highway. The diff, spindles and hubs are one FFR assembly, so deleting it means sourcing all three. Use the gearing calculator in the rear-suspension stage to see cruise rpm for each."
 },
 {
 "id": "steering",
@@ -1520,6 +1522,21 @@
 "fix": "Factory Five will not sell the rear brackets alone (tech, Nov 2026): order the front-and-rear kit, fit the brackets at IRS assembly, and start with the front bar only.",
 "src": "ffcars 643777",
 "srcUrl": "https://www.ffcars.com/threads/rear-sway-bar-coupe-with-irs.643777/",
+"scope": "general"
+},
+{
+"id": "torsen-street",
+"when": [
+"Used 3.73 Torsen center section (salvage) instead of FFR's"
+],
+"use": [
+"street"
+],
+"msg": "Factory Five advises the standard 3.55 limited-slip over a 3.73 Torsen for a street 347.",
+"why": "Nick Raffa (FFR tech & sales, Nov 2026): the car is light enough that a Torsen acts like a locker, and the shorter gears are busier on the highway. Builders edwardb, P100DHG and JimStone run the 3.73 Torsen on the street and like it, so this is a judgment call.",
+"fix": "Check cruise rpm for both in the gearing calculator (rear-suspension stage). With the 0.68 fifth the gap is about 120 rpm at 70 mph; with the 0.81 fifth both are busy.",
+"src": "Factory Five email to Nate, Nov 10 2026",
+"srcUrl": "https://www.factoryfive.com/contact",
 "scope": "general"
 }
 ],
