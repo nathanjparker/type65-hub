@@ -339,6 +339,12 @@ li.warn .wkind.use{background:var(--accent)}
 .esttbl tfoot tr.grand td{font-size:15px}
 details.estnotes{margin-top:10px}
 details.estnotes summary{color:var(--warn);font-weight:600;font-size:14.5px}
+.tooltbl{min-width:0}
+.tooltbl td.tk,.tooltbl th:nth-child(n+3){text-align:center;width:92px}
+.tooltbl td.tk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+.tooltbl tr.vrow.static{cursor:default} .tooltbl tr.vrow.static:hover td{background:var(--surface-2)} .tooltbl tr.vrow.static .vtog{cursor:default} .tooltbl tr.vrow.static .vtog::before{content:none}
+.tooltbl tr.prow.have td.nm,.tooltbl tr.prow.have td.pr{color:var(--muted);text-decoration:line-through}
+#tools-detail{margin-top:14px}
 .elinks{display:flex;flex-wrap:nowrap;gap:10px;align-items:center;font-size:12.5px;white-space:nowrap}
 .elinks .fixlink{margin-left:0}
 @media (max-width:700px){
@@ -348,6 +354,8 @@ details.estnotes summary{color:var(--warn);font-weight:600;font-size:14.5px}
   .esttbl td,.esttbl tr.vrow td{border-bottom:0;flex:none;padding-inline:10px}
   .esttbl tr td:first-child,.esttbl tr.vrow td:first-child{flex:1 1 0;min-width:0;width:auto;max-width:none;white-space:normal}
   .esttbl td.nm small{display:none} .esttbl .vtog{flex-wrap:wrap;white-space:normal;gap:2px 8px}
+  .esttbl tr td.nm{overflow:visible;text-overflow:clip} .tooltbl td.pr{white-space:normal;width:86px;padding-inline:4px} .tooltbl td.pr small{display:none}
+  .tooltbl thead{display:flex} .tooltbl thead tr{flex:1;border-bottom:0} .tooltbl thead th{flex:none;padding-inline:6px;font-size:10.5px} .tooltbl thead th:first-child{flex:1} .tooltbl thead th.pr{display:none} .tooltbl td.tk,.tooltbl thead th:nth-child(n+3){width:58px;padding-inline:4px;text-align:center}
   .esttbl tr.vrow{background:var(--surface-2)} .esttbl tfoot tr:first-child{border-top:var(--rule-w) solid var(--rule)} .esttbl tfoot td,.esttbl tfoot tr+tr td{border-top:0}
 }
 #taxpanel details.others p{margin:6px 0 0}
@@ -360,6 +368,8 @@ tr.top td{color:var(--muted)}
 .card .ctl label{display:flex;align-items:center;gap:5px;cursor:pointer}
 .card .ctl .pbar{flex:1 1 60px}
 .card .ctl input[type=number]{width:58px;padding:2px 5px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px}
+.card.have{opacity:.72}
+.card.have .nm::after{content:" · have it";font-weight:400;font-size:13px;color:var(--ok)}
 .card.chosen{box-shadow:0 0 0 2px var(--ok) inset}
 .card .chosenchip{color:var(--ok);border-color:var(--ok)}
 .nbtn{border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:2px 7px;font-size:13px;position:relative;color:var(--muted)}

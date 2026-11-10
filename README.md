@@ -14,6 +14,7 @@ What's in it:
 - **201 parts and ideas**: FFR part numbers next to the aftermarket alternatives, list price, who runs it (with the thread or video it came from), Gen 3 fit, and dots for how many documented coupes chose it.
 - **Your build**: pick one option per decision, compare every option side by side, see which decisions lock at the kit order, and get warnings when two picks don't go together.
 - **Build estimator** generated from your picks: one compact table grouped by vendor (tick this on the FFR form, buy this elsewhere), a low-to-high total, a sales tax estimate by state, and an Excel copy.
+- **Tools & shop**: tick Have it or Need to buy on each tool and garage build-out item; what you need lands in the estimator as its own line.
 - **Build calculator and schedule**: hours per week in, go-kart / title / done dates out, on an editable Gantt with gates and order-by dates for long-lead parts.
 - **Fold and focus**: fold any section to a one-line summary (it stays folded), mark the stage you're working on and it moves to the top under a "You are here" strip with progress, hours, the next step and parts still to arrive; mark stages done as you go. Contents has Fold all / Open all.
 - **Two themes**: Race program '65 (light: program paper, press black, team blue, spot red) and Midnight blue (dark: blue-black shop, bare aluminum plate, team blue). The button next to search switches; it follows your device until you pick. Every section has its own line icon and every build stage a two-tone number-and-icon pill.
