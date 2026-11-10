@@ -1,24 +1,45 @@
 <title>Type 65 Coupe Build Hub</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: fixed left rail of numbered stages (racing-number roundels) + content column; sticky search bar. */
+/* Light = Race program '65 (paper, press black, team blue, spot red). Dark = Night garage (shop floor, bare aluminum, work-light amber). */
 :root{
-  --bg:#f3f5f8; --surface:#ffffff; --surface-2:#e9edf3; --fg:#141c2b; --muted:#56637a; --line:#d3d9e3;
-  --accent:#1f56a8; --accent-ink:#ffffff; --accent-soft:#e3ecf9; --gold:#b8860b; --gold-soft:#fbf1d6;
-  --ok:#1f7a4d; --warn:#b4650e; --unk:#6b7280;
-  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
-  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --bg:#efe9da; --surface:#f8f4e8; --surface-2:#e2dbc8; --fg:#1b1b1b; --muted:#55504a; --line:#bdb49d; --rule:#1b1b1b;
+  --accent:#1e4fa3; --accent-ink:#ffffff; --accent-soft:#dce4f3; --gold:#8a6408; --gold-soft:#f3e6bf;
+  --ok:#1f6b45; --warn:#a4530a; --unk:#6b665c; --hot:#c2271d;
+  --display:"Big Shoulders Display","Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:0px; --rule-w:2px; --h-case:uppercase; --h-weight:800; --h-track:.01em;
+  --rd-bg:#ffffff; --rd-fg:#1b1b1b; --rd-border:3px solid #1b1b1b; --rd-radius:50%;
+  --no-bg:#ffffff; --no-fg:#1b1b1b; --no-border:3px solid #1b1b1b; --no-radius:50%; --no-rivets:none;
+  --hazard:none; --hazard-h:0px; --eyebrow:#c2271d; --n-bg:#ffffff; --n-fg:#1b1b1b;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0f1521; --surface:#171f2e; --surface-2:#1f2a3c; --fg:#e8edf5; --muted:#9aa7bb; --line:#2c3850;
-  --accent:#6ea0e8; --accent-ink:#0f1521; --accent-soft:#1c2c47; --gold:#e0b04a; --gold-soft:#3a2f12;
-  --ok:#5bc48a; --warn:#e9a24a; --unk:#9aa3b2; color-scheme:dark } }
+  --bg:#15171a; --surface:#1e2126; --surface-2:#2a2f36; --fg:#e8eaed; --muted:#a3acb8; --line:#343a42; --rule:#343a42;
+  --accent:#f2b01e; --accent-ink:#15171a; --accent-soft:#3a2f12; --gold:#c9ced6; --gold-soft:#2a2f36;
+  --ok:#5fcb8e; --warn:#ff9b5e; --unk:#9aa3b2; --hot:#ff6b5e;
+  --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:6px; --rule-w:1px; --h-case:none; --h-weight:700; --h-track:-.01em;
+  --rd-bg:#f2b01e; --rd-fg:#15171a; --rd-border:0 solid transparent; --rd-radius:10px;
+  --no-bg:#c9ced6; --no-fg:#15171a; --no-border:0 solid transparent; --no-radius:5px;
+  --no-rivets:radial-gradient(circle at 5px 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at 5px calc(100% - 5px),#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#6b7480 2px,transparent 2.5px);
+  --hazard:repeating-linear-gradient(135deg,#f2b01e 0 14px,#15171a 14px 28px); --hazard-h:6px; --eyebrow:#f2b01e; --n-bg:#2a2f36; --n-fg:#e8eaed; color-scheme:dark } }
 :root[data-theme="dark"]{
-  --bg:#0f1521; --surface:#171f2e; --surface-2:#1f2a3c; --fg:#e8edf5; --muted:#9aa7bb; --line:#2c3850;
-  --accent:#6ea0e8; --accent-ink:#0f1521; --accent-soft:#1c2c47; --gold:#e0b04a; --gold-soft:#3a2f12;
-  --ok:#5bc48a; --warn:#e9a24a; --unk:#9aa3b2; color-scheme:dark }
+  --bg:#15171a; --surface:#1e2126; --surface-2:#2a2f36; --fg:#e8eaed; --muted:#a3acb8; --line:#343a42; --rule:#343a42;
+  --accent:#f2b01e; --accent-ink:#15171a; --accent-soft:#3a2f12; --gold:#c9ced6; --gold-soft:#2a2f36;
+  --ok:#5fcb8e; --warn:#ff9b5e; --unk:#9aa3b2; --hot:#ff6b5e;
+  --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:6px; --rule-w:1px; --h-case:none; --h-weight:700; --h-track:-.01em;
+  --rd-bg:#f2b01e; --rd-fg:#15171a; --rd-border:0 solid transparent; --rd-radius:10px;
+  --no-bg:#c9ced6; --no-fg:#15171a; --no-border:0 solid transparent; --no-radius:5px;
+  --no-rivets:radial-gradient(circle at 5px 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at 5px calc(100% - 5px),#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#6b7480 2px,transparent 2.5px);
+  --hazard:repeating-linear-gradient(135deg,#f2b01e 0 14px,#15171a 14px 28px); --hazard-h:6px; --eyebrow:#f2b01e; --n-bg:#2a2f36; --n-fg:#e8eaed; color-scheme:dark }
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
@@ -368,4 +389,44 @@ section.stage.stagedone .roundel{background:var(--ok)}
 .nowpick{min-width:0;max-width:100%}
 .nowpick select{min-width:0;flex:1 1 auto}
 @media (max-width:600px){.now .strip>div:last-child{grid-column:1/-1}}
+
+/* theme: race program / night garage */
+h1,h2{text-transform:var(--h-case);letter-spacing:var(--h-track)}
+.shead h2,.nowhead h2,.hero h2{font-weight:var(--h-weight)}
+.topbar{border-bottom:var(--rule-w) solid var(--rule)}
+:root:not([data-theme="dark"]) .topbar{border-bottom-width:4px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .topbar{border-bottom-width:1px} }
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:calc(-1 * var(--hazard-h) - 1px);height:var(--hazard-h);background:var(--hazard);pointer-events:none}
+.brand{align-items:center}
+.brand .no{width:44px;height:38px;display:grid;place-items:center;flex:none;font-size:23px;font-weight:800;letter-spacing:0;color:var(--no-fg);background-color:var(--no-bg);background-image:var(--no-rivets);border:var(--no-border);border-radius:var(--no-radius)}
+:root:not([data-theme="dark"]) .brand .no{width:42px;height:42px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .brand .no{width:50px;height:36px} }
+:root[data-theme="dark"] .brand .no{width:50px;height:36px}
+.brand h1{font-weight:var(--h-weight)}
+.themebtn{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;min-height:38px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font-size:14px}
+.ico{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.roundel{background:var(--rd-bg);color:var(--rd-fg);border:var(--rd-border);border-radius:var(--rd-radius)}
+.roundel.gold{background:var(--gold);color:var(--bg);border-color:transparent}
+section.stage.stagedone .roundel{background:var(--ok);color:var(--bg);border-color:transparent}
+.roundel .ico{width:30px;height:30px}
+section.stage.folded .roundel .ico{width:18px;height:18px}
+section.stage.folded .roundel{border-width:2px}
+.shead h2 .ico,.nowhead h2 .ico{width:.78em;height:.78em;vertical-align:-.06em;margin-right:.28em;color:var(--accent)}
+.rail .n{background:var(--n-bg);color:var(--n-fg);border-radius:var(--rd-radius);border:2px solid var(--rule)}
+.rail .n .ico{width:14px;height:14px}
+.rail a .sico{width:16px;height:16px;color:var(--accent);margin-left:-4px}
+.rail a.on .n{border-color:var(--accent);background:var(--rd-bg);color:var(--rd-fg)}
+.rail .pct .pbar{width:28px;min-width:28px}
+.rail h4,.box h3,.owner h3{font-family:var(--mono);font-weight:500;letter-spacing:.14em;color:var(--eyebrow)}
+.rail{border-right:var(--rule-w) solid var(--rule)}
+section.stage{border-top:var(--rule-w) solid var(--rule)}
+.panel,.card,.box,.tbl,.btn,.nbtn,.chip,.gwrap,.owner,.warnbox,dialog,.search input,.tocbtn,.strip,.usebox,.opt,.planways>div,.notes-view,.copyprompt,.railclose button{border-radius:var(--r)}
+.now{border:var(--rule-w) solid var(--rule);border-left:var(--rule-w) solid var(--rule)}
+.nowhead .eyebrow{color:var(--eyebrow)}
+.now .strip,.calc .strip{border-color:var(--rule);background:var(--rule)}
+.wkind{color:var(--accent-ink)}
+li.warn.conflict .wkind{color:#fff}
+.btn{border-color:var(--rule)}
+@media (max-width:900px){ .themebtn span{display:none} }
+.strip>div>div{padding:0}
 </style>

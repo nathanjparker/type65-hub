@@ -16,6 +16,7 @@ What's in it:
 - **Order sheet** generated from your picks (tick this on the FFR form, buy this elsewhere), with an Excel copy.
 - **Build calculator and schedule**: hours per week in, go-kart / title / done dates out, on an editable Gantt with gates and order-by dates for long-lead parts.
 - **Fold and focus**: fold any section to a one-line summary (it stays folded), mark the stage you're working on and it moves to the top under a "You are here" strip with progress, hours, the next step and parts still to arrive; mark stages done as you go. Contents has Fold all / Open all.
+- **Two themes**: Race program '65 (light: program paper, press black, team blue, spot red) and Night garage (dark: shop floor, bare aluminum, work-light amber). The button next to search switches; it follows your device until you pick. Every section and build stage has its own line icon.
 - **Plans that cross stages**: cabin comfort, driver fit at 6'2", and Washington rain. Pick what you want the car to be and it tells you the fewest and the cheapest changes that get you there.
 
 Nothing here is FFR-official and prices go stale; every figure is tagged with where it came from. Found something wrong or have a part that should be in it? Open an issue or post in the forum thread linked from the page.

@@ -1,24 +1,45 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style></head><body><title>Type 65 Coupe Build Hub</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: fixed left rail of numbered stages (racing-number roundels) + content column; sticky search bar. */
+/* Light = Race program '65 (paper, press black, team blue, spot red). Dark = Night garage (shop floor, bare aluminum, work-light amber). */
 :root{
-  --bg:#f3f5f8; --surface:#ffffff; --surface-2:#e9edf3; --fg:#141c2b; --muted:#56637a; --line:#d3d9e3;
-  --accent:#1f56a8; --accent-ink:#ffffff; --accent-soft:#e3ecf9; --gold:#b8860b; --gold-soft:#fbf1d6;
-  --ok:#1f7a4d; --warn:#b4650e; --unk:#6b7280;
-  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
-  --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --bg:#efe9da; --surface:#f8f4e8; --surface-2:#e2dbc8; --fg:#1b1b1b; --muted:#55504a; --line:#bdb49d; --rule:#1b1b1b;
+  --accent:#1e4fa3; --accent-ink:#ffffff; --accent-soft:#dce4f3; --gold:#8a6408; --gold-soft:#f3e6bf;
+  --ok:#1f6b45; --warn:#a4530a; --unk:#6b665c; --hot:#c2271d;
+  --display:"Big Shoulders Display","Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:0px; --rule-w:2px; --h-case:uppercase; --h-weight:800; --h-track:.01em;
+  --rd-bg:#ffffff; --rd-fg:#1b1b1b; --rd-border:3px solid #1b1b1b; --rd-radius:50%;
+  --no-bg:#ffffff; --no-fg:#1b1b1b; --no-border:3px solid #1b1b1b; --no-radius:50%; --no-rivets:none;
+  --hazard:none; --hazard-h:0px; --eyebrow:#c2271d; --n-bg:#ffffff; --n-fg:#1b1b1b;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0f1521; --surface:#171f2e; --surface-2:#1f2a3c; --fg:#e8edf5; --muted:#9aa7bb; --line:#2c3850;
-  --accent:#6ea0e8; --accent-ink:#0f1521; --accent-soft:#1c2c47; --gold:#e0b04a; --gold-soft:#3a2f12;
-  --ok:#5bc48a; --warn:#e9a24a; --unk:#9aa3b2; color-scheme:dark } }
+  --bg:#15171a; --surface:#1e2126; --surface-2:#2a2f36; --fg:#e8eaed; --muted:#a3acb8; --line:#343a42; --rule:#343a42;
+  --accent:#f2b01e; --accent-ink:#15171a; --accent-soft:#3a2f12; --gold:#c9ced6; --gold-soft:#2a2f36;
+  --ok:#5fcb8e; --warn:#ff9b5e; --unk:#9aa3b2; --hot:#ff6b5e;
+  --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:6px; --rule-w:1px; --h-case:none; --h-weight:700; --h-track:-.01em;
+  --rd-bg:#f2b01e; --rd-fg:#15171a; --rd-border:0 solid transparent; --rd-radius:10px;
+  --no-bg:#c9ced6; --no-fg:#15171a; --no-border:0 solid transparent; --no-radius:5px;
+  --no-rivets:radial-gradient(circle at 5px 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at 5px calc(100% - 5px),#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#6b7480 2px,transparent 2.5px);
+  --hazard:repeating-linear-gradient(135deg,#f2b01e 0 14px,#15171a 14px 28px); --hazard-h:6px; --eyebrow:#f2b01e; --n-bg:#2a2f36; --n-fg:#e8eaed; color-scheme:dark } }
 :root[data-theme="dark"]{
-  --bg:#0f1521; --surface:#171f2e; --surface-2:#1f2a3c; --fg:#e8edf5; --muted:#9aa7bb; --line:#2c3850;
-  --accent:#6ea0e8; --accent-ink:#0f1521; --accent-soft:#1c2c47; --gold:#e0b04a; --gold-soft:#3a2f12;
-  --ok:#5bc48a; --warn:#e9a24a; --unk:#9aa3b2; color-scheme:dark }
+  --bg:#15171a; --surface:#1e2126; --surface-2:#2a2f36; --fg:#e8eaed; --muted:#a3acb8; --line:#343a42; --rule:#343a42;
+  --accent:#f2b01e; --accent-ink:#15171a; --accent-soft:#3a2f12; --gold:#c9ced6; --gold-soft:#2a2f36;
+  --ok:#5fcb8e; --warn:#ff9b5e; --unk:#9aa3b2; --hot:#ff6b5e;
+  --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --r:6px; --rule-w:1px; --h-case:none; --h-weight:700; --h-track:-.01em;
+  --rd-bg:#f2b01e; --rd-fg:#15171a; --rd-border:0 solid transparent; --rd-radius:10px;
+  --no-bg:#c9ced6; --no-fg:#15171a; --no-border:0 solid transparent; --no-radius:5px;
+  --no-rivets:radial-gradient(circle at 5px 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at 5px calc(100% - 5px),#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#6b7480 2px,transparent 2.5px);
+  --hazard:repeating-linear-gradient(135deg,#f2b01e 0 14px,#15171a 14px 28px); --hazard-h:6px; --eyebrow:#f2b01e; --n-bg:#2a2f36; --n-fg:#e8eaed; color-scheme:dark }
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
@@ -368,11 +389,52 @@ section.stage.stagedone .roundel{background:var(--ok)}
 .nowpick{min-width:0;max-width:100%}
 .nowpick select{min-width:0;flex:1 1 auto}
 @media (max-width:600px){.now .strip>div:last-child{grid-column:1/-1}}
+
+/* theme: race program / night garage */
+h1,h2{text-transform:var(--h-case);letter-spacing:var(--h-track)}
+.shead h2,.nowhead h2,.hero h2{font-weight:var(--h-weight)}
+.topbar{border-bottom:var(--rule-w) solid var(--rule)}
+:root:not([data-theme="dark"]) .topbar{border-bottom-width:4px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .topbar{border-bottom-width:1px} }
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:calc(-1 * var(--hazard-h) - 1px);height:var(--hazard-h);background:var(--hazard);pointer-events:none}
+.brand{align-items:center}
+.brand .no{width:44px;height:38px;display:grid;place-items:center;flex:none;font-size:23px;font-weight:800;letter-spacing:0;color:var(--no-fg);background-color:var(--no-bg);background-image:var(--no-rivets);border:var(--no-border);border-radius:var(--no-radius)}
+:root:not([data-theme="dark"]) .brand .no{width:42px;height:42px}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .brand .no{width:50px;height:36px} }
+:root[data-theme="dark"] .brand .no{width:50px;height:36px}
+.brand h1{font-weight:var(--h-weight)}
+.themebtn{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;min-height:38px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--fg);font-size:14px}
+.ico{fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.roundel{background:var(--rd-bg);color:var(--rd-fg);border:var(--rd-border);border-radius:var(--rd-radius)}
+.roundel.gold{background:var(--gold);color:var(--bg);border-color:transparent}
+section.stage.stagedone .roundel{background:var(--ok);color:var(--bg);border-color:transparent}
+.roundel .ico{width:30px;height:30px}
+section.stage.folded .roundel .ico{width:18px;height:18px}
+section.stage.folded .roundel{border-width:2px}
+.shead h2 .ico,.nowhead h2 .ico{width:.78em;height:.78em;vertical-align:-.06em;margin-right:.28em;color:var(--accent)}
+.rail .n{background:var(--n-bg);color:var(--n-fg);border-radius:var(--rd-radius);border:2px solid var(--rule)}
+.rail .n .ico{width:14px;height:14px}
+.rail a .sico{width:16px;height:16px;color:var(--accent);margin-left:-4px}
+.rail a.on .n{border-color:var(--accent);background:var(--rd-bg);color:var(--rd-fg)}
+.rail .pct .pbar{width:28px;min-width:28px}
+.rail h4,.box h3,.owner h3{font-family:var(--mono);font-weight:500;letter-spacing:.14em;color:var(--eyebrow)}
+.rail{border-right:var(--rule-w) solid var(--rule)}
+section.stage{border-top:var(--rule-w) solid var(--rule)}
+.panel,.card,.box,.tbl,.btn,.nbtn,.chip,.gwrap,.owner,.warnbox,dialog,.search input,.tocbtn,.strip,.usebox,.opt,.planways>div,.notes-view,.copyprompt,.railclose button{border-radius:var(--r)}
+.now{border:var(--rule-w) solid var(--rule);border-left:var(--rule-w) solid var(--rule)}
+.nowhead .eyebrow{color:var(--eyebrow)}
+.now .strip,.calc .strip{border-color:var(--rule);background:var(--rule)}
+.wkind{color:var(--accent-ink)}
+li.warn.conflict .wkind{color:#fff}
+.btn{border-color:var(--rule)}
+@media (max-width:900px){ .themebtn span{display:none} }
+.strip>div>div{padding:0}
 </style>
 <header class="topbar">
   <button class="tocbtn" id="tocbtn" aria-controls="rail" aria-expanded="false">Contents</button>
   <div class="brand"><span class="no">65</span><h1>Type 65 Coupe Build Hub</h1><small>Gen 3 · 347 EFI · TKX · IRS · WA</small></div>
   <div class="search"><input id="q" type="search" placeholder="Search parts, part numbers, builders, vendors…" aria-label="Search the hub"><button class="btn ghost" id="clearq" hidden>Clear</button></div>
+  <button type="button" class="themebtn" id="themebtn" aria-label="Switch between light and dark"></button>
 </header>
 <div class="shell">
 <nav class="rail" id="rail" aria-label="Contents">
@@ -513,6 +575,40 @@ const GROUPS=Object.fromEntries(D.groups.map(g=>[g.id,g]));
 const hoursMid=s=>{const m=String(s.hours).match(/(\d+)[–-](\d+)/); return m?(+m[1]+ +m[2])/2:30;};
 let addedParts=[], notes={}, state={}, stageState={}, taskState={}, news=[], isOwner=false, db=null, sample=null, assets=null, suggestions=[], refs=[], addedBuilds=[], userId=null, canWriteOwn=null, priv={}, mine=null, sandbox=false;
 
+/* ---- icons: one line icon per section and per build stage ---- */
+const CLIP='M9 4h6v3H9z M7 5.5H6a1 1 0 0 0-1 1V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6.5a1 1 0 0 0-1-1h-1';
+const ICONS={
+  overview:'M4 16a8 8 0 1 1 16 0 M12 16l4-5 M12 16h.01 M6 19h12', sheet:CLIP+' M9 14l2 2 4-4',
+  schedule:'M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z M4 10h16 M8 4v4 M16 4v4 M8 14h2 M14 14h2 M8 17h2',
+  plans:'M6 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M18 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M8 17h7a3 3 0 0 0 0-6H9a2 2 0 0 1 0-4h7',
+  builders:'M4 15a8 8 0 0 1 16 0v2a2 2 0 0 1-2 2H9a5 5 0 0 1-5-4z M11 13h9', order:'M6 3h12v18l-3-2-3 2-3-2-3 2z M9 8h6 M9 12h6',
+  suggest:'M4 8l8-4 8 4v9l-8 4-8-4z M12 10v6 M9 13h6',
+  plan:CLIP+' M9 12h6 M9 16h4', delivery:'M4 8l8-4 8 4v9l-8 4-8-4z M4 8l8 4 8-4 M12 12v9', chassis:'M3 17h18 M5 17l3-9h8l3 9 M8 8l4 9 4-9',
+  front:'M8 4h8 M8 20h8 M8 7l8 2-8 2 8 2-8 2 8 2', rear:'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M2 12h6 M16 12h6 M12 4v4',
+  drivetrain:'M8 4h8v7H8z M8 7h8 M12 11v4 M12 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z', wiring:'M13 3L5 13h6l-1 8 8-10h-6z',
+  hvac:'M12 3v18 M4.2 7.5l15.6 9 M19.8 7.5l-15.6 9 M9.5 4.5L12 7l2.5-2.5 M9.5 19.5L12 17l2.5 2.5', gokart:'M8 15a4 4 0 1 1 0-8 4 4 0 0 1 0 8z M12 11h9 M18 11v3 M21 11v2',
+  body:'M2 16h2 M8 16h8 M20 16h2v-2.5c0-1-1-1.5-2-1.7l-3-.6-3.5-3c-.5-.4-1-.6-1.7-.6H8c-1 0-1.6.5-2 1L4.5 11.5 2.5 12c-.4.1-.5.4-.5.8V16 M6 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z M18 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+  title:'M3 7h18v10H3z M7 12h10 M6 9.5h.01 M18 9.5h.01', paint:'M4 8h10v4H4z M14 9h3v2h-3 M8 12l-1 8h4l-1-8 M19 7v.01 M21 10v.01 M19 13v.01',
+  interior:'M8 3h5a1 1 0 0 1 1 1l1 10H8z M6 14h11a2 2 0 0 1 2 2v1H6z M8 17v4 M17 17v4', shakedown:'M5 3v18 M5 4h14v9H5 M9.7 4v9 M14.3 4v9 M5 8.5h14',
+  tools:'M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.8-3.8a6 6 0 0 1-7.9 7.9l-6.9 6.9a2.1 2.1 0 0 1-3-3l6.9-6.9a6 6 0 0 1 7.9-7.9z',
+  builds:'M4 5h16v11H9l-5 4z M8 9h8 M8 12h5', videos:'M4 6h16v12H4z M10 9.5v5l4.5-2.5z', vendors:'M4 10v10h16V10 M3 10l2-6h14l2 6z M9 20v-6h6v6',
+  options:'M4 6l1.5 1.5L8 5 M4 12l1.5 1.5L8 11 M4 18l1.5 1.5L8 17 M11 6h9 M11 12h9 M11 18h9',
+  community:'M12 21s-6-5.5-6-10a6 6 0 1 1 12 0c0 4.5-6 10-6 10z M12 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z', sources:'M5 4h10a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z M5 17a3 3 0 0 1 3-3h10',
+  ask:'M4 5h16v11H9l-5 4z M10 9a2 2 0 1 1 2.8 1.8c-.5.3-.8.7-.8 1.2 M12 14h.01',
+  sun:'M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M12 2v2 M12 20v2 M4.9 4.9l1.4 1.4 M17.7 17.7l1.4 1.4 M2 12h2 M20 12h2 M4.9 19.1l1.4-1.4 M17.7 6.3l1.4-1.4', moon:'M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z'
+};
+const ico=(id,cls)=>ICONS[id]?`<svg class="ico${cls?' '+cls:''}" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="${ICONS[id]}"></path></svg>`:'';
+document.querySelectorAll('nav.rail > a[href^="#"]').forEach(a=>{ const id=a.getAttribute('href').slice(1); const n=a.querySelector('.n'); if(n&&ICONS[id]) n.innerHTML=ico(id); });
+document.querySelectorAll('main section[id]').forEach(sec=>{ const r=sec.querySelector(':scope > .shead > .roundel'); if(r&&ICONS[sec.id]) r.innerHTML=ico(sec.id); });
+/* ---- light / dark: Race program '65 and Night garage ---- */
+(function(){ const KEY='type65hub.theme', root=document.documentElement, btn=$('#themebtn'); if(!btn) return;
+  const sysDark=()=>window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const cur=()=>root.getAttribute('data-theme')||(sysDark()?'dark':'light');
+  const paint=()=>{ const d=cur()==='dark'; btn.innerHTML=ico(d?'sun':'moon')+`<span>${d?'Light':'Dark'}</span>`; btn.querySelector('.ico').setAttribute('width','18'); btn.querySelector('.ico').setAttribute('height','18'); btn.title=d?'Switch to the light theme (Race program)':'Switch to the dark theme (Night garage)'; };
+  try{ const saved=localStorage.getItem(KEY); if(saved==='light'||saved==='dark') root.setAttribute('data-theme',saved); }catch(e){}
+  paint();
+  btn.addEventListener('click',()=>{ const next=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',next); try{ localStorage.setItem(KEY,next); }catch(e){} paint(); if(typeof renderGantt==='function'&&$('#gantt')) renderGantt(); });
+})();
 /* ---- build calculator ---- */
 const ym=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 const parseYM=s=>{const [y,m]=s.split('-').map(Number); return new Date(y,m-1,1);};
@@ -681,7 +777,7 @@ function stagePctHTML(id){
 }
 function stageHTML(s){
   return `<section class="stage" id="${s.id}" data-stage="${s.id}">
-    <div class="shead"><div class="roundel">${s.num}</div><div class="t"><h2>${esc(s.title)}</h2>
+    <div class="shead"><div class="roundel">${s.num}</div><div class="t"><h2>${ico(s.id)}${esc(s.title)}</h2>
       <div class="meta"><span><b>When:</b> <span id="when-${s.id}">${esc(s.window)}</span></span><span><b>Your hours:</b> ${esc(s.hours)}</span></div>
       <div class="stagepct" id="pct-${s.id}"></div>
       <p class="summary">${esc(s.summary)}</p>
@@ -700,7 +796,7 @@ function stageHTML(s){
 }
 $('#stages').innerHTML=D.stages.map(stageHTML).join('');
 renderCalc();
-$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="n">${s.num}</span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
+$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="n">${s.num}</span>${ico(s.id,"sico")}<span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
 
 /* ---- spec sheet ---- */
 function renderSheet(){
@@ -1204,7 +1300,7 @@ function renderNow(v){
   const done=new Set(v.done||[]);
   const sel=can?`<label class="nowpick">Working on <select id="now-stage">${D.stages.map(x=>`<option value="${x.id}"${x.id===s.id?' selected':''}>${x.num}. ${esc(x.title)}${done.has(x.id)?' ✓':''}</option>`).join('')}<option value="">— not building yet —</option></select></label>`:'';
   el.hidden=false;
-  el.innerHTML=`<div class="nowhead"><div class="roundel">${s.num}</div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${esc(s.title)}</h2></div>
+  el.innerHTML=`<div class="nowhead"><div class="roundel">${s.num}</div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${ico(s.id)}${esc(s.title)}</h2></div>
     <div class="nowacts">${sel}${can?`<button class="btn" data-stagedone="${s.id}">Stage done, next →</button>`:`<button class="btn ghost" data-jump="${s.id}">Go to stage</button>`}</div></div>
     <div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div>
     <div class="strip">${tiles.map(([k,val,sub])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(val)}</div><div class="s">${esc(sub)}</div></div>`).join('')}</div>
