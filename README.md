@@ -1,6 +1,6 @@
 # Type 65 Coupe Build Hub
 
-Source for the Factory Five Gen 3 Type 65 Coupe build hub: a stage-by-stage parts and resources database with picks, progress, notes, an order sheet and builder suggestions.
+Source for the Factory Five Gen 3 Type 65 Coupe build hub: a stage-by-stage parts and resources database with picks, progress, notes, a build estimator and builder suggestions.
 
 The live page is a Claude artifact. This repo is the versioned copy of its data and page source.
 
@@ -13,7 +13,7 @@ What's in it:
 - **14 build stages** in manual order, each with what to read first, what goes wrong, ideas worth stealing and a checklist.
 - **201 parts and ideas**: FFR part numbers next to the aftermarket alternatives, list price, who runs it (with the thread or video it came from), Gen 3 fit, and dots for how many documented coupes chose it.
 - **Your build**: pick one option per decision, compare every option side by side, see which decisions lock at the kit order, and get warnings when two picks don't go together.
-- **Order sheet** generated from your picks (tick this on the FFR form, buy this elsewhere), with an Excel copy.
+- **Build estimator** generated from your picks: one compact table grouped by vendor (tick this on the FFR form, buy this elsewhere), a low-to-high total, a sales tax estimate by state, and an Excel copy.
 - **Build calculator and schedule**: hours per week in, go-kart / title / done dates out, on an editable Gantt with gates and order-by dates for long-lead parts.
 - **Fold and focus**: fold any section to a one-line summary (it stays folded), mark the stage you're working on and it moves to the top under a "You are here" strip with progress, hours, the next step and parts still to arrive; mark stages done as you go. Contents has Fold all / Open all.
 - **Two themes**: Race program '65 (light: program paper, press black, team blue, spot red) and Midnight blue (dark: blue-black shop, bare aluminum plate, team blue). The button next to search switches; it follows your device until you pick. Every section has its own line icon and every build stage a two-tone number-and-icon pill.
@@ -48,7 +48,7 @@ To change the catalog, edit `data/*.json`, run `python3 scripts/build.py`, and c
 Vendors move pages. You don't need the repo to fix one:
 
 1. On the part's card, click **fix link** (bottom-right of the links row; it's there on your own copy and for the owner on the Claude version).
-2. Paste the working product page and/or source, add any extra links worth a click (an install video, a review thread, a PDF) with a short label, and Save. The card, the compare view, the order sheet and Ask the hub all use your links from then on. **Back to catalog link** undoes it.
+2. Paste the working product page and/or source, add any extra links worth a click (an install video, a review thread, a PDF) with a short label, and Save. The card, the compare view, the build estimator and Ask the hub all use your links from then on. **Back to catalog link** undoes it.
 
 To get a fix into the shared catalog so every copy carries it, do one of:
 

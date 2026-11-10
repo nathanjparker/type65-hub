@@ -317,6 +317,40 @@ li.warn.done .nbtn{text-decoration:none}
 .userow{margin:10px 0 4px;max-width:560px} .userow input[type=range]{width:100%;accent-color:var(--accent);margin:0}
 .useticks{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:4px} .usetick{border:0;background:none;font-size:13px;color:var(--muted);padding:2px 0;text-align:center} .usetick:first-child{text-align:left} .usetick:last-child{text-align:right} .usetick.on{color:var(--accent);font-weight:600}
 li.warn .wkind.use{background:var(--accent)}
+.esttbl{font-size:13.5px;min-width:620px}
+.esttbl th,.esttbl td{padding:5px 10px;vertical-align:middle}
+.esttbl .pr{text-align:right;white-space:nowrap}
+.esttbl td.nm{max-width:0;width:44%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.esttbl td.nm small{margin-left:6px}
+.esttbl tr.vrow{cursor:pointer}
+.esttbl tr.vrow td{background:var(--surface-2);border-bottom:1px solid var(--line);padding-block:7px}
+.esttbl tr.vrow:hover td{background:var(--accent-soft)}
+.esttbl .vtog{all:unset;cursor:pointer;font-weight:600;font-size:14.5px;display:inline-flex;align-items:baseline;gap:8px;max-width:100%}
+.esttbl .vtog::before{content:"▸";font-size:11px;color:var(--muted);width:10px}
+.esttbl tr.vrow.on .vtog::before{content:"▾"}
+.esttbl .vtog small{font-weight:400;font-size:12.5px;color:var(--muted)}
+.esttbl .vtog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.esttbl tr.prow td:first-child{padding-left:28px}
+.esttbl tr.skiprow td{color:var(--muted);font-size:12.5px}
+.esttbl .chip{font-size:11px;padding:1px 6px}
+.esttbl .nbtn{padding:0 6px;font-size:12px;margin-left:4px}
+.esttbl tfoot td{border-top:var(--rule-w) solid var(--rule);border-bottom:0;font-weight:600}
+.esttbl tfoot tr+tr td{border-top:1px solid var(--line)}
+.esttbl tfoot tr.grand td{font-size:15px}
+details.estnotes{margin-top:10px}
+details.estnotes summary{color:var(--warn);font-weight:600;font-size:14.5px}
+.elinks{display:flex;flex-wrap:nowrap;gap:10px;align-items:center;font-size:12.5px;white-space:nowrap}
+.elinks .fixlink{margin-left:0}
+@media (max-width:700px){
+  .esttbl{min-width:0;width:100%} .esttbl thead,.esttbl .c-x,.esttbl .c-s,.esttbl tfoot td.row,.esttbl tr.vrow td.row{display:none}
+  .esttbl,.esttbl tbody,.esttbl tfoot{display:block}
+  .esttbl tr{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+  .esttbl td,.esttbl tr.vrow td{border-bottom:0;flex:none;padding-inline:10px}
+  .esttbl tr td:first-child,.esttbl tr.vrow td:first-child{flex:1 1 0;min-width:0;width:auto;max-width:none;white-space:normal}
+  .esttbl td.nm small{display:none} .esttbl .vtog{flex-wrap:wrap;white-space:normal;gap:2px 8px}
+  .esttbl tr.vrow{background:var(--surface-2)} .esttbl tfoot tr:first-child{border-top:var(--rule-w) solid var(--rule)} .esttbl tfoot td,.esttbl tfoot tr+tr td{border-top:0}
+}
+#taxpanel details.others p{margin:6px 0 0}
 .olinks{display:grid;gap:2px;font-size:13.5px} .olinks .row{font-size:12.5px} .olinks .fixlink{justify-self:start;font-size:11.5px;padding:0 6px;margin-top:2px}
 .lrows{display:grid;gap:6px} .lrow{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px} .lrow input{padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:13.5px;min-width:0}
 dialog.wide{width:min(960px,94vw)}

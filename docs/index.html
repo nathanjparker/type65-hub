@@ -317,6 +317,40 @@ li.warn.done .nbtn{text-decoration:none}
 .userow{margin:10px 0 4px;max-width:560px} .userow input[type=range]{width:100%;accent-color:var(--accent);margin:0}
 .useticks{display:grid;grid-template-columns:1fr 1fr 1fr;margin-top:4px} .usetick{border:0;background:none;font-size:13px;color:var(--muted);padding:2px 0;text-align:center} .usetick:first-child{text-align:left} .usetick:last-child{text-align:right} .usetick.on{color:var(--accent);font-weight:600}
 li.warn .wkind.use{background:var(--accent)}
+.esttbl{font-size:13.5px;min-width:620px}
+.esttbl th,.esttbl td{padding:5px 10px;vertical-align:middle}
+.esttbl .pr{text-align:right;white-space:nowrap}
+.esttbl td.nm{max-width:0;width:44%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.esttbl td.nm small{margin-left:6px}
+.esttbl tr.vrow{cursor:pointer}
+.esttbl tr.vrow td{background:var(--surface-2);border-bottom:1px solid var(--line);padding-block:7px}
+.esttbl tr.vrow:hover td{background:var(--accent-soft)}
+.esttbl .vtog{all:unset;cursor:pointer;font-weight:600;font-size:14.5px;display:inline-flex;align-items:baseline;gap:8px;max-width:100%}
+.esttbl .vtog::before{content:"▸";font-size:11px;color:var(--muted);width:10px}
+.esttbl tr.vrow.on .vtog::before{content:"▾"}
+.esttbl .vtog small{font-weight:400;font-size:12.5px;color:var(--muted)}
+.esttbl .vtog:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.esttbl tr.prow td:first-child{padding-left:28px}
+.esttbl tr.skiprow td{color:var(--muted);font-size:12.5px}
+.esttbl .chip{font-size:11px;padding:1px 6px}
+.esttbl .nbtn{padding:0 6px;font-size:12px;margin-left:4px}
+.esttbl tfoot td{border-top:var(--rule-w) solid var(--rule);border-bottom:0;font-weight:600}
+.esttbl tfoot tr+tr td{border-top:1px solid var(--line)}
+.esttbl tfoot tr.grand td{font-size:15px}
+details.estnotes{margin-top:10px}
+details.estnotes summary{color:var(--warn);font-weight:600;font-size:14.5px}
+.elinks{display:flex;flex-wrap:nowrap;gap:10px;align-items:center;font-size:12.5px;white-space:nowrap}
+.elinks .fixlink{margin-left:0}
+@media (max-width:700px){
+  .esttbl{min-width:0;width:100%} .esttbl thead,.esttbl .c-x,.esttbl .c-s,.esttbl tfoot td.row,.esttbl tr.vrow td.row{display:none}
+  .esttbl,.esttbl tbody,.esttbl tfoot{display:block}
+  .esttbl tr{display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line)}
+  .esttbl td,.esttbl tr.vrow td{border-bottom:0;flex:none;padding-inline:10px}
+  .esttbl tr td:first-child,.esttbl tr.vrow td:first-child{flex:1 1 0;min-width:0;width:auto;max-width:none;white-space:normal}
+  .esttbl td.nm small{display:none} .esttbl .vtog{flex-wrap:wrap;white-space:normal;gap:2px 8px}
+  .esttbl tr.vrow{background:var(--surface-2)} .esttbl tfoot tr:first-child{border-top:var(--rule-w) solid var(--rule)} .esttbl tfoot td,.esttbl tfoot tr+tr td{border-top:0}
+}
+#taxpanel details.others p{margin:6px 0 0}
 .olinks{display:grid;gap:2px;font-size:13.5px} .olinks .row{font-size:12.5px} .olinks .fixlink{justify-self:start;font-size:11.5px;padding:0 6px;margin-top:2px}
 .lrows{display:grid;gap:6px} .lrow{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px} .lrow input{padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:13.5px;min-width:0}
 dialog.wide{width:min(960px,94vw)}
@@ -481,7 +515,7 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
   <a href="#schedule"><span class="n">⟶</span>Schedule</a>
   <a href="#plans"><span class="n">☰</span>Plans</a>
   <a href="#builders"><span class="n">👤</span>Builders</a>
-  <a href="#order"><span class="n">$</span>Order sheet</a>
+  <a href="#order"><span class="n">$</span>Build estimator</a>
   <a href="#suggest"><span class="n">+</span>Add a part</a>
   <h4>Build stages</h4>
   <div id="toc-stages"></div>
@@ -532,9 +566,8 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
 
   <section class="stage" id="builders"><div class="shead"><div class="roundel">👤</div><div class="t"><h2>Builders</h2><div class="meta"><span>Every builder the hub cites, with the parts credited to them. Click a name to see their build as a spec.</span></div></div></div><div id="builders-body" style="margin-top:14px"></div></section>
 
-  <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Totals run from the low end to the high end of what's listed and are rough.</span></div></div></div>
-    <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><span class="status">Excel copy pastes into cells: one row per part with a clickable link, a status column and a subtotal per vendor.</span></div>
-    <div id="report" style="margin-top:12px"></div>
+  <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Build estimator</h2><div class="meta"><span>Every pick priced and grouped by where you buy it. Totals run from the low end to the high end of what's listed and are rough. Open a vendor to see its parts, what to tick on the Factory Five order form and what to leave unticked.</span></div></div></div>
+    <div id="report-top" style="margin-top:12px"></div>
     <div class="panel calc" id="taxpanel" style="margin-top:14px">
       <h3>Estimate with sales tax</h3>
       <div class="calcin">
@@ -543,8 +576,10 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
       </div>
       <div class="strip" id="tax-strip"></div>
       <p class="status" id="tax-split"></p>
-      <p class="status">One rate on everything is a fair estimate, because tax follows where the parts are delivered and the car is titled, not where they ship from. Big retailers charge your home rate at checkout; whatever arrives untaxed (often the kit and small vendors) is usually billed at the same rate as use tax when you title the car. Picking a state fills in its average state-plus-local rate; type your own city's rate over it. Rough numbers, not tax advice.</p>
+      <details class="others"><summary>How the tax is figured</summary><p class="status">One rate on everything is a fair estimate, because tax follows where the parts are delivered and the car is titled, not where they ship from. Big retailers charge your home rate at checkout; whatever arrives untaxed (often the kit and small vendors) is usually billed at the same rate as use tax when you title the car. Picking a state fills in its average state-plus-local rate; type your own city's rate over it. Rough numbers, not tax advice.</p></details>
     </div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><button class="btn ghost" id="est-all" type="button">Expand all</button><span class="status">The Excel copy has one row per part with links, status and low and high prices.</span></div>
+    <div id="report" style="margin-top:10px"></div>
   </section>
 
   <section class="stage suggest" id="suggest"><div class="shead"><div class="roundel gold">+</div><div class="t"><h2>Missing a part? Add it here</h2><div class="meta"><span>Running something on your coupe that isn't in the hub? Drop it in. Claude files it into the right stage right away, and the weekly research pass fills in the vendor, part number, price and who else runs it.</span></div></div></div>
@@ -911,7 +946,7 @@ document.addEventListener('click',async e=>{
   const pk=e.target.closest('[data-cmppick]'); if(pk){ const p=allParts().find(x=>x.id===pk.dataset.cmppick); if(!p) return; await choose(p.id,true); toast(`${p.name} is now your pick`); openCompare(p.group); return; }
   if(e.target.closest('[data-closecmp]')&&dlg.open){ dlg.close(); dlg.classList.remove('wide'); if(e.target.closest('[data-builder]')){ const b=document.getElementById('builders'); if(b) setTimeout(()=>b.scrollIntoView({behavior:'smooth',block:'start'}),50); } }
 });
-/* ---- order sheet ---- */
+/* ---- build estimator (was: order sheet) ---- */
 const lowPrice=s=>{const m=String(s||'').replace(/,/g,'').match(/\$\s*(\d+(?:\.\d+)?)/); return m?+m[1]:null;};
 const pnOf=p=>{const m=(p.model||'').match(/#?\b(\d{5})\b/); return m?m[1]:'';};
 const money=n=>'$'+Math.round(n).toLocaleString();
@@ -922,7 +957,13 @@ const priceRange=str=>{ const N='(\\d[\\d,]*(?:\\.\\d+)?)(k\\b)?', num=(x,k)=>+x
   all.slice(1).forEach(m=>{ const v=num(m[3]||m[1],m[4]||m[2]); if(v>hi&&v<=Math.max(lo,1)*3) hi=v; });
   return [lo,Math.max(lo,hi)]; };
 const rng=(a,b)=>Math.round(a)===Math.round(b)?money(a):`${money(a)} – ${money(b)}`;
-let reportText='', reportHTML='', reportTSV='';
+let reportText='', reportHTML='', reportTSV='', estKeys=[], estOpen=null, estNotesOpen=false;
+document.addEventListener('toggle',e=>{ if(e.target.id==='est-notes') estNotesOpen=e.target.open; },true);
+// which vendor groups are open in the estimator table; remembered per browser
+function estOpenSet(){ if(!estOpen){ let a=[]; try{ a=JSON.parse(localStorage.getItem('type65hub.estopen')||'[]')||[]; }catch(e){} estOpen=new Set(Array.isArray(a)?a:[]); } return estOpen; }
+function estSave(){ try{ localStorage.setItem('type65hub.estopen',JSON.stringify([...estOpenSet()])); }catch(e){} renderReport(); }
+document.addEventListener('click',e=>{ if(e.target.closest('#est-all')){ const o=estOpenSet(), all=estKeys.every(k=>o.has(k)); estKeys.forEach(k=>all?o.delete(k):o.add(k)); estSave(); return; }
+  const v=e.target.closest('tr.vrow'); if(v&&v.closest('#report')){ const o=estOpenSet(), k=v.dataset.vend; o.has(k)?o.delete(k):o.add(k); estSave(); } });
 function renderReport(){
   const chosen=allParts().filter(isChosen);
   const ffr=chosen.filter(p=>p.kind==='FFR'&&p.group!=='kit'), other=chosen.filter(p=>p.kind!=='FFR'&&p.group!=='kit');
@@ -937,19 +978,23 @@ function renderReport(){
   const effHi=p=>{const s=st(p.id); if(s.quote) return +s.quote; const r=priceRange(p.price); return r?r[1]:0;};
   const sum=list=>list.reduce((a,p)=>a+eff(p),0), sumHi=list=>list.reduce((a,p)=>a+effHi(p),0), sumR=list=>rng(sum(list),sumHi(list));
   const quoted=chosen.filter(p=>st(p.id).quote).length, stale=chosen.filter(p=>quoteStale(st(p.id))).length;
-  const linksCell=p=>{ const out=[]; if(linkOf(p)) out.push(`<a href="${esc(linkOf(p))}" target="_blank" rel="noopener">${esc(host(linkOf(p)))}</a>`); if(srcOf(p)) out.push(`<a href="${esc(srcOf(p))}" target="_blank" rel="noopener" class="row">${esc(p.src||host(srcOf(p)))}</a>`); extraLinks(p).forEach(l=>out.push(`<a href="${esc(l.url)}" target="_blank" rel="noopener" class="row">${esc(l.label||host(l.url))}</a>`)); if(isOwner) out.push(`<button class="nbtn fixlink ${linkFixed(p)?'has':''}" data-fixlink="${esc(p.id)}">${linkFixed(p)?'✎ fixed':'fix link'}</button>`); return `<div class="olinks">${out.join('')}</div>`; };
-  const rows=list=>list.map(p=>`<tr><td class="pn">${esc(pnOf(p)||'—')}</td><td>${esc(p.name)}<br><small class="row">${esc(p.model||'')}</small></td><td>${linksCell(p)}</td><td class="pn">${st(p.id).quote?`<b>${money(st(p.id).quote)}</b> <small>${st(p.id).quoteKind==='paid'?'paid':'quoted'}${quoteStale(st(p.id))?' · stale':''}</small><br><small class="row">list ${esc(p.price||'')}</small>`:`${esc(p.price||'')}${p.tag?` <small>[${esc(p.tag)}]</small>`:''}`}${st(p.id).taxPaid==='due'?'<br><small class="chip order">use tax due</small>':st(p.id).taxPaid==='paid'?'<br><small class="chip f-yes">WA tax paid</small>':''}</td><td><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td></tr>`).join('');
+  const canEdit=isOwner||sandbox;
+  const linksCell=p=>{ const out=[]; if(linkOf(p)) out.push(`<a href="${esc(linkOf(p))}" target="_blank" rel="noopener">${esc(host(linkOf(p)))}</a>`); if(srcOf(p)) out.push(`<a href="${esc(srcOf(p))}" target="_blank" rel="noopener" title="${esc(p.src||'Source')}">source</a>`); const x=extraLinks(p); if(x.length) out.push(`<a href="${esc(x[0].url)}" target="_blank" rel="noopener" title="${esc(x.map(l=>l.label||host(l.url)).join(', '))}">${x.length>1?`+${x.length} more`:esc(x[0].label||'more')}</a>`); if(isOwner) out.push(`<button class="nbtn fixlink ${linkFixed(p)?'has':''}" data-fixlink="${esc(p.id)}">${linkFixed(p)?'✎ fixed':'fix'}</button>`); return `<div class="elinks">${out.join('')}</div>`; };
+  const priceCell=p=>{ const s=st(p.id), lo=eff(p), hi=effHi(p); const tax=s.taxPaid==='due'?' <small class="chip order">use tax due</small>':s.taxPaid==='paid'?' <small class="chip f-yes">tax paid</small>':''; const btn=canEdit?` <button class="nbtn ${s.quote?'has':''}" data-quote="${esc(p.id)}" title="Enter the price you were quoted or paid">$</button>`:''; return (s.quote?`<b>${money(s.quote)}</b> <small>${s.quoteKind==='paid'?'paid':'quoted'}${quoteStale(s)?' · stale':''}</small>`:(lo||hi)?`<span title="Listed: ${esc(p.price||'')}">${rng(lo,hi)}</span>${p.tag==='est'?' <small>est</small>':''}`:`<span class="row">${esc(p.price||'no price')}</span>`)+tax+btn; };
+  const rows=(list,key)=>list.map(p=>`<tr class="prow" data-vg="${esc(key)}"><td class="nm" title="${esc(p.name+(p.model?' · '+p.model:''))}">${esc(p.name)} <small class="row">${esc(p.model||'')}</small></td><td class="pn c-x">${esc(pnOf(p)||'')}</td><td class="pn pr">${priceCell(p)}</td><td class="c-s"><span class="chip st-${statusOf(p)}">${esc(STATUSES.find(x=>x[0]===statusOf(p))[1])}</span></td><td class="c-x">${linksCell(p)}</td></tr>`).join('');
+  const open=estOpenSet(); let body='';
+  const group=(key,label,sub,list,range,extra)=>{ const on=open.has(key); const stc=STATUSES.map(([v,l])=>[l,list.filter(p=>statusOf(p)===v).length]).filter(x=>x[1]).map(([l,n])=>`${n} ${l.toLowerCase()}`).join(' · '); body+=`<tr class="vrow${on?' on':''}" data-vend="${esc(key)}"><td colspan="2"><button type="button" class="vtog" aria-expanded="${on}">${esc(label)} <small>${esc(sub)}</small></button></td><td class="pn pr"><b>${range==='$0'?'<span class="row">no price yet</span>':range}</b></td><td colspan="2" class="row">${esc(stc)}</td></tr>`; if(on) body+=(extra||'')+rows(list,key); };
   const counts=STATUSES.map(([v,l])=>[l,chosen.filter(p=>statusOf(p)===v).length]);
-  let html='',txt=[];
+  let top='',notes='',txt=[];
   const kitPick=allParts().find(p=>p.group==='kit'&&isChosen(p)); const kitPrice=kitPick&&kitPick.id==='p214'?24990:22990; const kitName=kitPick&&kitPick.id==='p214'?'Coupe-R Complete Kit':'Complete Kit';
   const kitNote=`Kit price itself is not in the FFR list below; the ${kitName} is ${money(kitPrice)} plus options.`;
-  if(openOrder.length){ html+=`<div class="panel warnbox" style="margin-bottom:14px"><h3>Order form not ready</h3><p>${openOrder.length} decision${openOrder.length>1?'s':''} that lock at the kit order still ${openOrder.length>1?'have':'has'} no pick: ${openOrder.map(g=>esc(g.label)).join(', ')}.</p></div>`; txt.push(`ORDER FORM NOT READY: undecided at order time: ${openOrder.map(g=>g.label).join(', ')}`); txt.push(''); }
-  html+=`<div class="panel" style="margin-bottom:14px"><h3>Factory Five order form</h3><p class="status">${kitNote}</p>${ffr.length?`<div class="tbl"><table><thead><tr><th>Part no.</th><th>Tick this</th><th>Link</th><th>Price</th><th>Status</th></tr></thead><tbody>${rows(ffr)}</tbody></table></div><p class="status">FFR options subtotal (low to high, where priced): <b>${sumR(ffr)}</b></p>`:'<p class="empty">No Factory Five items chosen yet.</p>'}
-    ${skip.length?`<h3 style="margin-top:14px;font-size:16px">Leave unticked (buying elsewhere)</h3><ul>${skip.map(s=>`<li><span class="pn">${esc(pnOf(s.p)||'')}</span> ${esc(s.p.name)} <span class="row">→ you chose ${esc(s.pick.name)} from ${esc(s.pick.vendor||host(s.pick.url)||'elsewhere')}</span></li>`).join('')}</ul>`:''}</div>`;
+  if(openOrder.length){ notes+=`<div class="panel warnbox" style="margin-bottom:14px"><h3>Order form not ready</h3><p>${openOrder.length} decision${openOrder.length>1?'s':''} that lock at the kit order still ${openOrder.length>1?'have':'has'} no pick: ${openOrder.map(g=>esc(g.label)).join(', ')}.</p></div>`; txt.push(`ORDER FORM NOT READY: undecided at order time: ${openOrder.map(g=>g.label).join(', ')}`); txt.push(''); }
+  { const kitRow=`<tr class="prow"><td class="nm">Gen 3 ${esc(kitName)} <small class="row">base kit; tick the options below on the order form</small></td><td class="pn c-x"></td><td class="pn pr">${money(kitPrice)}</td><td class="c-s"><span class="chip">Kit</span></td><td class="c-x"></td></tr>`; const skipRows=skip.map(s=>`<tr class="prow skiprow"><td class="nm" colspan="5">Leave unticked: <span class="pn">${esc(pnOf(s.p)||'')}</span> ${esc(s.p.name)} → you chose ${esc(s.pick.name)} from ${esc(s.pick.vendor||host(s.pick.url)||'elsewhere')}</td></tr>`).join('');
+    group('ffr','Factory Five',`kit + ${ffr.length} option${ffr.length===1?'':'s'} to tick${skip.length?`, ${skip.length} to leave unticked`:''}`,ffr,rng(sum(ffr)+kitPrice,sumHi(ffr)+kitPrice),kitRow); if(open.has('ffr')) body+=skipRows; }
   txt.push('FACTORY FIVE ORDER FORM'); txt.push(kitNote); ffr.forEach(p=>{ txt.push(`  [${pnOf(p)||'—'}] ${p.name} · ${p.model||''} · ${p.price||''}${linkOf(p)?' · '+linkOf(p):''}`); extraLinks(p).forEach(l=>txt.push(`      ${l.label||'link'}: ${l.url}`)); }); txt.push(`  Subtotal (low to high): ${sumR(ffr)}`);
   if(skip.length){txt.push('  Leave unticked:'); skip.forEach(s=>txt.push(`  [${pnOf(s.p)}] ${s.p.name} -> buying ${s.pick.name} from ${s.pick.vendor||''}`));}
   Object.entries(byVendor).sort().forEach(([v,list])=>{
-    html+=`<div class="panel" style="margin-bottom:14px"><h3>${esc(v)}</h3><div class="tbl"><table><thead><tr><th>Part no.</th><th>Order</th><th>Link</th><th>Price</th><th>Status</th></tr></thead><tbody>${rows(list)}</tbody></table></div><p class="status">Subtotal: <b>${sumR(list)}</b></p></div>`;
+    group('v:'+v,v,`${list.length} part${list.length===1?'':'s'}`,list,sumR(list));
     txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>{ txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${linkOf(p)||''}`); if(srcOf(p)) txt.push(`      source: ${srcOf(p)}`); extraLinks(p).forEach(l=>txt.push(`      ${l.label||'link'}: ${l.url}`)); }); txt.push(`  Subtotal: ${sumR(list)}`);
   });
   const nonKit=chosen.filter(p=>p.group!=='kit');
@@ -960,11 +1005,16 @@ function renderReport(){
   const tRate=taxRate(), taxAmt=taxSum.taxable[0]*tRate/100, taxAmtHi=taxSum.taxable[1]*tRate/100;
   const withTax=rng(total+taxAmt,totalHi+taxAmtHi);
   const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(warnKey(w)));
-  if(warns.length){ html+=`<div style="margin-bottom:14px">${warnBoxHTML(warns,'Check before ordering')}</div>`; if(openW.length){ txt.push(''); txt.push('CHECK BEFORE ORDERING'); openW.forEach(x=>txt.push('  - '+x.msg+(x.fix?' -> '+x.fix:''))); } }
-  html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${rng(total,totalHi)}</div><div class="status">${kitName} ${money(kitPrice)} + ${nonKit.length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at listed prices. The low number takes the bottom of every listed range (promo and base-version prices); the high number takes the top.${ranged.length?` The spread comes from ${ranged.slice(0,3).map(p=>`${esc(p.name)} (${rng(eff(p),effHi(p))})`).join(', ')}${ranged.length>3?` and ${ranged.length-3} more`:''}; a quote on any of them closes its gap.`:' Every priced pick has a single price right now, so the two ends match.'}${unpriced?` ${unpriced} pick${unpriced>1?'s have':' has'} no price yet and ${unpriced>1?'are':'is'} in neither number.`:''}${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} Not included: shipping, paint, consumables.</div>${(()=>{ const due=chosen.filter(p=>st(p.id).taxPaid==='due'); const unk=chosen.filter(p=>!st(p.id).taxPaid&&(st(p.id).quote||eff(p))); const base=due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0); return `<div class="status" style="margin-top:6px"><b>With sales tax: about ${withTax}</b> (${rng(taxAmt,taxAmtHi)} at ${tRate}%; set your rate below). <b>Use tax at titling:</b> ${due.length?`about ${money(base*tRate/100)} on ${money(base)} of parts marked "not charged"`:'nothing marked "not charged" yet'}${unk.length?`; ${unk.length} priced item${unk.length>1?'s':''} not yet marked either way`:''}. Set it per part under the quote button.</div>`; })()}</div>
+  if(warns.length){ notes+=`<div style="margin-bottom:14px">${warnBoxHTML(warns,'Check before ordering')}</div>`; if(openW.length){ txt.push(''); txt.push('CHECK BEFORE ORDERING'); openW.forEach(x=>txt.push('  - '+x.msg+(x.fix?' -> '+x.fix:''))); } }
+  top+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${rng(total,totalHi)}</div><div class="status">${kitName} ${money(kitPrice)} + ${nonKit.length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at listed prices. The low number takes the bottom of every listed range (promo and base-version prices); the high number takes the top.${ranged.length?` The spread comes from ${ranged.slice(0,3).map(p=>`${esc(p.name)} (${rng(eff(p),effHi(p))})`).join(', ')}${ranged.length>3?` and ${ranged.length-3} more`:''}; a quote on any of them closes its gap.`:' Every priced pick has a single price right now, so the two ends match.'}${unpriced?` ${unpriced} pick${unpriced>1?'s have':' has'} no price yet and ${unpriced>1?'are':'is'} in neither number.`:''}${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} Not included: shipping, paint, consumables.</div></div>
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${rng(total,totalHi)} (kit + chosen items, low to high of listed prices)`); txt.push(`Sales / use tax (est.): ${rng(taxAmt,taxAmtHi)} at ${tRate}%`); txt.push(`ESTIMATE WITH TAX: ${withTax}`); { const due=chosen.filter(p=>st(p.id).taxPaid==='due'); if(due.length) txt.push(`Use tax due at titling on ${money(due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0))} of parts not charged WA sales tax`); } if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
-  $('#report').innerHTML=html; reportText=txt.join('\n');
+  if(notes){ const bits=[]; if(openOrder.length) bits.push(`${openOrder.length} order-form decision${openOrder.length>1?'s':''} still open`); if(openW.length) bits.push(`${openW.length} thing${openW.length>1?'s':''} to check before ordering`); if(!bits.length) bits.push('Checks you have resolved');
+    top+=`<details class="others estnotes" id="est-notes"${estNotesOpen?' open':''}><summary>${bits.join(' · ')}</summary><div style="margin-top:10px">${notes}</div></details>`; }
+  $('#report-top').innerHTML=top;
+  $('#report').innerHTML=`<div class="tbl"><table class="esttbl"><thead><tr><th>Where / part</th><th class="c-x">Part no.</th><th class="pr">Price</th><th class="c-s">Status</th><th class="c-x">Links</th></tr></thead><tbody>${body}</tbody><tfoot><tr><td colspan="2">Kit and parts</td><td class="pn pr">${rng(total,totalHi)}</td><td colspan="2" class="row">low to high of listed prices</td></tr><tr><td colspan="2">Sales / use tax at ${tRate}%</td><td class="pn pr">${rng(taxAmt,taxAmtHi)}</td><td colspan="2"></td></tr><tr class="grand"><td colspan="2">Estimate with tax</td><td class="pn pr">${withTax}</td><td colspan="2" class="row">before shipping, paint and consumables</td></tr></tfoot></table></div>`;
+  estKeys=['ffr'].concat(Object.keys(byVendor).map(v=>'v:'+v)); { const a=$('#est-all'); if(a) a.textContent=estKeys.every(k=>open.has(k))?'Collapse all':'Expand all'; }
+  reportText=txt.join('\n');
   // spreadsheet export: one flat table
   const TAXLBL={paid:'Paid',due:'Use tax due',na:'Not taxable'};
   const cols=['Section','Vendor','Part no.','Part','Make / model','Qty','Unit price (low)','Unit price (high)','Price as listed','Your quote / paid','Status','Ordered','Received','Installed','Link','Source','More links','Link fixed','WA tax','Notes'];
@@ -985,7 +1035,7 @@ $('#copyxls').addEventListener('click',async()=>{
     toast('Copied. Paste into Excel or Google Sheets.');
   }catch(e){ try{ await navigator.clipboard.writeText(reportTSV); toast('Copied as tab-separated text'); }catch(x){ toast('Clipboard blocked here; use Copy as text'); } }
 });
-$('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Order sheet copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
+$('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Estimate copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
 
 /* ---- checklist ---- */
 function tasksHTML(id){
@@ -1188,7 +1238,7 @@ function quoteStale(s){ if(!s.quoteDate||s.quoteKind==='paid') return false; ret
 function openQuote(id){
   const p=allParts().find(x=>x.id===id); if(!p) return; const s=st(id);
   $('#nd-title').textContent=p.name; $('#nd-model').textContent=`Listed: ${p.price||'no listed price'}`;
-  $('#nd-body').innerHTML=`<div class="frm"><label class="row">Amount ($)<input type="number" id="qt-amt" min="0" step="1" value="${esc(s.quote||'')}"></label><label class="row">This is a<select id="qt-kind"><option value="quote" ${s.quoteKind!=='paid'?'selected':''}>Quote</option><option value="paid" ${s.quoteKind==='paid'?'selected':''}>Price paid</option></select></label><label class="row">Date<input type="date" id="qt-date" value="${esc(s.quoteDate||new Date().toISOString().slice(0,10))}"></label><label class="row">From<input id="qt-from" placeholder="FFR sales, BluePrint, Levy…" value="${esc(s.quoteFrom||'')}"></label><label class="row">WA sales tax<select id="qt-tax"><option value="" ${!s.taxPaid?'selected':''}>Not sure yet</option><option value="paid" ${s.taxPaid==='paid'?'selected':''}>Paid at purchase</option><option value="due" ${s.taxPaid==='due'?'selected':''}>Not charged (use tax due at titling)</option><option value="na" ${s.taxPaid==='na'?'selected':''}>Not taxable (labor, used from WA)</option></select></label></div><p class="status">The order sheet and running estimate use this instead of the listed price. Quotes older than 90 days get flagged. Washington charges use tax at titling on anything that didn't carry WA sales tax, so mark it while the receipt is in your hand.</p>`;
+  $('#nd-body').innerHTML=`<div class="frm"><label class="row">Amount ($)<input type="number" id="qt-amt" min="0" step="1" value="${esc(s.quote||'')}"></label><label class="row">This is a<select id="qt-kind"><option value="quote" ${s.quoteKind!=='paid'?'selected':''}>Quote</option><option value="paid" ${s.quoteKind==='paid'?'selected':''}>Price paid</option></select></label><label class="row">Date<input type="date" id="qt-date" value="${esc(s.quoteDate||new Date().toISOString().slice(0,10))}"></label><label class="row">From<input id="qt-from" placeholder="FFR sales, BluePrint, Levy…" value="${esc(s.quoteFrom||'')}"></label><label class="row">WA sales tax<select id="qt-tax"><option value="" ${!s.taxPaid?'selected':''}>Not sure yet</option><option value="paid" ${s.taxPaid==='paid'?'selected':''}>Paid at purchase</option><option value="due" ${s.taxPaid==='due'?'selected':''}>Not charged (use tax due at titling)</option><option value="na" ${s.taxPaid==='na'?'selected':''}>Not taxable (labor, used from WA)</option></select></label></div><p class="status">The build estimator uses this instead of the listed price. Quotes older than 90 days get flagged. Washington charges use tax at titling on anything that didn't carry WA sales tax, so mark it while the receipt is in your hand.</p>`;
   $('#nd-acts').innerHTML=`<button class="btn ghost" id="qt-clear">Clear</button><button class="btn ghost" id="nd-cancel">Cancel</button><button class="btn" id="nd-save">Save</button>`;
   $('#nd-cancel').onclick=()=>dlg.close();
   $('#qt-clear').onclick=async()=>{ await writeState(id,{quote:null,quoteKind:null,quoteDate:null,quoteFrom:null,taxPaid:null}); dlg.close(); };
@@ -1210,7 +1260,7 @@ function openLinkFix(id){
     <h4 style="margin-top:12px;font-size:14px">More links</h4>
     ${(p.links||[]).length?`<p class="status">In the catalog: ${(p.links||[]).map(l=>`<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label||host(l.url))}</a>`).join(' · ')}</p>`:''}
     <div id="lf-extra" class="lrows">${extraRows}</div><button class="nbtn" id="lf-add" style="margin-top:6px">+ add a link</button>
-    <p class="status">Paste the page that works; leave a box empty to keep the catalog link. Extra links are for anything else worth a click: an install video, a review thread, a spec sheet. Your fix shows on this card, the compare view and the order sheet${sandbox?' in your sandbox':isOwner&&!window.claude?' in this copy':' for everyone who opens this hub'}. ${window.claude?'':'To get it into the shared catalog for other builders, use Export my build and send the file, or post the link in the forum thread.'}</p>`;
+    <p class="status">Paste the page that works; leave a box empty to keep the catalog link. Extra links are for anything else worth a click: an install video, a review thread, a spec sheet. Your fix shows on this card, the compare view and the build estimator${sandbox?' in your sandbox':isOwner&&!window.claude?' in this copy':' for everyone who opens this hub'}. ${window.claude?'':'To get it into the shared catalog for other builders, use Export my build and send the file, or post the link in the forum thread.'}</p>`;
   $('#nd-acts').innerHTML=`<button class="btn ghost" id="lf-clear">Back to catalog link</button><button class="btn ghost" id="nd-cancel">Cancel</button><button class="btn" id="nd-save">Save</button>`;
   $('#nd-cancel').onclick=()=>dlg.close();
   $('#lf-add').onclick=()=>{ const i=$('#lf-extra').children.length; $('#lf-extra').insertAdjacentHTML('beforeend',`<div class="lrow"><input data-ll="${i}" placeholder="Label (install video, forum review, PDF…)"><input data-lu="${i}" type="url" placeholder="https://…"><button class="nbtn" data-ldel="${i}" title="Remove">×</button></div>`); $('#lf-extra').lastElementChild.querySelector('input').focus(); };
