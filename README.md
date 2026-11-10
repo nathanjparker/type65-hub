@@ -15,6 +15,7 @@ What's in it:
 - **Your build**: pick one option per decision, compare every option side by side, see which decisions lock at the kit order, and get warnings when two picks don't go together.
 - **Order sheet** generated from your picks (tick this on the FFR form, buy this elsewhere), with an Excel copy.
 - **Build calculator and schedule**: hours per week in, go-kart / title / done dates out, on an editable Gantt with gates and order-by dates for long-lead parts.
+- **Fold and focus**: fold any section to a one-line summary (it stays folded), mark the stage you're working on and it moves to the top under a "You are here" strip with progress, hours, the next step and parts still to arrive; mark stages done as you go. Contents has Fold all / Open all.
 - **Plans that cross stages**: cabin comfort, driver fit at 6'2", and Washington rain. Pick what you want the car to be and it tells you the fewest and the cheapest changes that get you there.
 
 Nothing here is FFR-official and prices go stale; every figure is tagged with where it came from. Found something wrong or have a part that should be in it? Open an issue or post in the forum thread linked from the page.

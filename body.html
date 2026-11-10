@@ -6,6 +6,7 @@
 <div class="shell">
 <nav class="rail" id="rail" aria-label="Contents">
   <div class="railclose"><button type="button" id="railclose" aria-label="Close contents">Close ✕</button></div>
+  <div class="railfold"><button type="button" class="nbtn" id="foldall">Fold all</button><button type="button" class="nbtn" id="openall">Open all</button></div>
   <h4>Overview</h4>
   <a href="#overview"><span class="n">★</span>Build at a glance</a>
   <a href="#sheet"><span class="n">✓</span>Your build</a>
@@ -27,6 +28,8 @@
   <a href="#ask"><span class="n">?</span>Ask the hub</a>
 </nav>
 <main>
+  <div class="panel now" id="now" hidden></div>
+  <div id="nowstage"></div>
   <section id="overview" class="hero">
     <h2>Gen 3 Type 65 Coupe, start to finish</h2>
     <p class="lede">Every part, option and idea Gen 3 coupe builders actually use, in the order the Factory Five manual builds the car. FFR part numbers next to the aftermarket alternatives, who runs each one, and the forum thread or video it came from. Built around a street coupe for Washington rain: BluePrint 347 EFI, Tremec TKX, 2015 IRS, power steering, A/C and heat, side windows, wipers.</p>
@@ -484,6 +487,7 @@ document.addEventListener('click',e=>{
   const id=j.dataset.jump; let el;
   if(id.startsWith('card:')) el=document.querySelector(`.card[data-id="${CSS.escape(id.slice(5))}"]`); else el=document.getElementById('dec-'+id)||document.getElementById(id);
   if(!el) return;
+  openForJump(el);
   el.scrollIntoView({behavior:'smooth',block:'center'});
   el.classList.add('flash'); setTimeout(()=>el.classList.remove('flash'),2400);
 });
@@ -780,6 +784,98 @@ document.addEventListener('click',e=>{ const bt=e.target.closest('[data-builder]
 // spec sheet: agreement counts per decision
 function agreement(g){ const idx=builderIndex(); const mine=allParts().find(p=>p.group===g.id&&isChosen(p)); if(!mine) return ''; const withMe=[],other=[]; Object.entries(idx).forEach(([n,b])=>{ const inGroup=b.parts.filter(p=>p.group===g.id); if(!inGroup.length) return; (inGroup.includes(mine)?withMe:other).push(n); }); if(!withMe.length&&!other.length) return ''; return `<div class="agree">${withMe.length} builder${withMe.length===1?'':'s'} made your pick${other.length?`; ${other.length} went another way (${esc(other.slice(0,4).join(', '))}${other.length>4?'…':''})`:''}</div>`; }
 /* ---- render all ---- */
+/* ---- view: folded sections, the stage you're working on, done stages ---- */
+var VIEWKEY='type65hub.view', peek=new Set(), localView=null, hashPeeked=false;
+function readLocalView(){ if(localView) return localView; try{ localView=JSON.parse(localStorage.getItem(VIEWKEY)||'{}')||{}; }catch(e){ localView={}; } return localView; }
+function viewState(){
+  if(sandbox&&mine) return mine.view||{};
+  const shared=stageState.__view||{};
+  if(isOwner) return shared;
+  return {folded:readLocalView().folded||[],working:shared.working||null,done:shared.done||[]};   // visitors: the owner's stage and done marks, their own folds
+}
+async function saveView(patch){
+  const cur=viewState(); const v={folded:(patch.folded||cur.folded||[]).slice(),working:('working' in patch)?patch.working:(cur.working||null),done:(patch.done||cur.done||[]).slice()};
+  if(sandbox&&mine){ mine.view=v; applyView(); await saveMine(); return; }
+  if(isOwner&&db){ stageState.__view=v; applyView(); try{ await db.doc('stagestate/__view').set(Object.assign({},v,{updated:new Date().toISOString()})); }catch(e){ toast('Could not save'); } return; }
+  localView=Object.assign(readLocalView(),{folded:v.folded}); try{ localStorage.setItem(VIEWKEY,JSON.stringify(localView)); }catch(e){}
+  applyView();
+}
+function foldSummary(id){
+  if(ALL_IDS.includes(id)){ const r=stagePct(id), tl=taskList(id), dn=tl.filter(t=>t.done).length, h=stageHoursLogged(id), n=allParts().filter(p=>p.stage===id&&isChosen(p)).length;
+    return [`${r.pct}%`,tl.length?`${dn} of ${tl.length} steps`:'',h?`${h} h logged`:'',`${n} part${n===1?'':'s'} chosen`].filter(Boolean).join(' · '); }
+  if(id==='sheet'){ const dec=D.groups.filter(g=>allParts().some(p=>p.group===g.id&&isChosen(p))).length; const rs=resolvedSet(); const ow=activeWarnings().filter(x=>!rs.has(warnKey(x))).length;
+    return `${dec} of ${D.groups.length} decisions made · ${ow?ow+' open check'+(ow>1?'s':''):'no open checks'}`; }
+  if(id==='order'){ const ch=allParts().filter(isChosen); return `${ch.length} parts chosen · `+STATUSES.slice(1).map(([v,l])=>`${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}`).join(' · '); }
+  if(id==='schedule') return `Kit order ${fmtM(parseYM(calc.order))} → done ${fmtM(parseYM(calc.target))}`;
+  if(id==='plans') return `${(D.plans||[]).length} plans`;
+  const sec=document.getElementById(id); const n=sec?sec.querySelectorAll('tbody tr').length:0; return n?`${n} entries`:'';
+}
+function placeWorking(id){
+  const slot=$('#nowstage'), stages=$('#stages'); if(!slot||!stages) return;
+  const want=(isOwner||sandbox)&&STAGE_IDS.includes(id)?id:null;
+  const cur=slot.firstElementChild;
+  if(cur&&cur.id!==want){ const idx=STAGE_IDS.indexOf(cur.id); const after=STAGE_IDS.slice(idx+1).map(x=>document.getElementById(x)).find(el=>el&&el.parentElement===stages); stages.insertBefore(cur,after||null); }
+  if(want){ const sec=document.getElementById(want); if(sec&&sec.parentElement!==slot) slot.appendChild(sec); }
+}
+function renderNow(v){
+  const el=$('#now'); if(!el) return; const s=D.stages.find(x=>x.id===v.working);
+  if(!s){ el.hidden=true; el.innerHTML=''; return; }
+  const can=isOwner||sandbox;
+  const r=stagePct(s.id), tl=taskList(s.id), dn=tl.filter(t=>t.done).length, next=tl.find(t=>!t.done), h=stageHoursLogged(s.id), hl=totalHoursLogged();
+  const w=((typeof effectiveWindows==='function')?effectiveWindows():plan().windows)[s.id]; const days=Math.round((w.to-new Date())/86400000);
+  const ch=allParts().filter(p=>p.stage===s.id&&isChosen(p)); const waiting=ch.filter(p=>statusOf(p)==='planned'||statusOf(p)==='ordered');
+  const rs=resolvedSet(); const ow=activeWarnings().filter(x=>!rs.has(warnKey(x)));
+  const tiles=[['Stage progress',r.pct+'%',tl.length?`${dn} of ${tl.length} steps done`:'no checklist yet'],
+    ['Hours on this stage',String(h),`of ${s.hours} planned · ${hl} of ~${calc.hours.toLocaleString()} overall`],
+    ['Stage window ends',fmtM(w.to),days>=0?`${days} days left`:`${-days} days past`],
+    ['Parts not here yet',String(waiting.length),`of ${ch.length} chosen for this stage`],
+    ['Open checks',String(ow.length),ow.length?'see Your build':'nothing flagged']];
+  const done=new Set(v.done||[]);
+  const sel=can?`<label class="nowpick">Working on <select id="now-stage">${D.stages.map(x=>`<option value="${x.id}"${x.id===s.id?' selected':''}>${x.num}. ${esc(x.title)}${done.has(x.id)?' ✓':''}</option>`).join('')}<option value="">— not building yet —</option></select></label>`:'';
+  el.hidden=false;
+  el.innerHTML=`<div class="nowhead"><div class="roundel">${s.num}</div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${esc(s.title)}</h2></div>
+    <div class="nowacts">${sel}${can?`<button class="btn" data-stagedone="${s.id}">Stage done, next →</button>`:`<button class="btn ghost" data-jump="${s.id}">Go to stage</button>`}</div></div>
+    <div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div>
+    <div class="strip">${tiles.map(([k,val,sub])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(val)}</div><div class="s">${esc(sub)}</div></div>`).join('')}</div>
+    ${next?`<p class="nownext"><b>Next step:</b> ${esc(next.t)} <button class="nbtn jump" data-jump="tasks-${s.id}">checklist →</button></p>`:(tl.length?'<p class="nownext"><b>Every step is ticked.</b> Mark the stage done when you are happy with it.</p>':'')}
+    ${waiting.length?`<p class="nownext"><b>Still to arrive:</b> ${waiting.slice(0,5).map(p=>`<button class="nbtn jump" data-jump="card:${esc(p.id)}">${esc(p.name)} · ${statusOf(p)}</button>`).join(' ')}${waiting.length>5?` <span class="row">+${waiting.length-5} more</span>`:''}</p>`:''}`;
+}
+function applyView(){
+  const v=viewState(); const folded=new Set(v.folded||[]), done=new Set(v.done||[]); const searching=!!($('#q')&&$('#q').value.trim()); const can=isOwner||sandbox;
+  if(!hashPeeked){ hashPeeked=true; const h=decodeURIComponent((location.hash||'').slice(1)); if(h) peek.add(h); }
+  placeWorking(v.working);
+  document.querySelectorAll('section.stage').forEach(sec=>{
+    const id=sec.id, head=sec.querySelector('.shead'); if(!id||!head) return;
+    let ctl=head.querySelector('.foldctl'); if(!ctl){ ctl=document.createElement('div'); ctl.className='foldctl'; head.appendChild(ctl); }
+    const isF=folded.has(id)&&!peek.has(id)&&!searching&&!(can&&v.working===id);
+    sec.classList.toggle('folded',isF); sec.classList.toggle('stagedone',done.has(id));
+    const isStage=STAGE_IDS.includes(id); let html='';
+    if(done.has(id)) html+='<span class="donemark">✓ Done</span>';
+    if(isF){ const sum=foldSummary(id); if(sum) html+=`<span class="foldsum">${esc(sum)}</span>`; }
+    else if(isStage&&can){ html+=v.working===id?'<span class="chip chosenchip">Working on this</span>':`<button class="nbtn" data-workon="${id}">Work on this</button>`;
+      html+=done.has(id)?`<button class="nbtn" data-stagereopen="${id}">Reopen</button>`:`<button class="nbtn" data-stagedone="${id}">Mark done</button>`; }
+    if(!(can&&v.working===id)) html+=`<button class="nbtn foldbtn" data-fold="${id}" aria-expanded="${!isF}">${isF?'Open ▸':'Fold ▾'}</button>`;
+    if(ctl.innerHTML!==html) ctl.innerHTML=html;
+  });
+  document.querySelectorAll('#toc-stages a[data-toc]').forEach(a=>{ a.classList.toggle('working',v.working===a.dataset.toc); a.classList.toggle('tocdone',done.has(a.dataset.toc)); });
+  renderNow(v);
+}
+function openForJump(el){ const sec=el&&el.closest&&el.closest('section.stage'); if(sec&&sec.classList.contains('folded')){ peek.add(sec.id); applyView(); } }
+document.addEventListener('click',async e=>{
+  const fb=e.target.closest('[data-fold]'); const fh=!fb&&!e.target.closest('button,a,input,select')&&e.target.closest('section.stage.folded .shead');
+  if(fb||fh){ const id=fb?fb.dataset.fold:fh.closest('section.stage').id; const v=viewState(); const f=new Set(v.folded||[]); const sec=document.getElementById(id);
+    if(sec.classList.contains('folded')){ f.delete(id); peek.delete(id); } else if(peek.has(id)&&f.has(id)){ peek.delete(id); applyView(); return; } else f.add(id);
+    await saveView({folded:[...f]}); return; }
+  const wo=e.target.closest('[data-workon]'); if(wo){ const id=wo.dataset.workon; const v=viewState(); await saveView({working:id,folded:(v.folded||[]).filter(x=>x!==id)}); $('#now').scrollIntoView({behavior:'smooth',block:'start'}); return; }
+  const sd=e.target.closest('[data-stagedone]'); if(sd){ const id=sd.dataset.stagedone; const v=viewState(); const d=new Set(v.done||[]); d.add(id); const f=new Set(v.folded||[]); f.add(id); peek.delete(id);
+    let working=v.working; if(working===id){ const nxt=D.stages.slice(STAGE_IDS.indexOf(id)+1).find(x=>!d.has(x.id)); working=nxt?nxt.id:null; if(nxt) f.delete(nxt.id); }
+    await saveView({done:[...d],folded:[...f],working}); toast(working&&working!==id&&v.working===id?'Stage done. On to '+D.stages.find(x=>x.id===working).title:'Stage marked done'); if(v.working===id) window.scrollTo({top:0,behavior:'smooth'}); return; }
+  const so=e.target.closest('[data-stagereopen]'); if(so){ const id=so.dataset.stagereopen; const v=viewState(); await saveView({done:(v.done||[]).filter(x=>x!==id),folded:(v.folded||[]).filter(x=>x!==id)}); return; }
+  if(e.target.closest('#foldall')){ const v=viewState(); peek.clear(); await saveView({folded:[...document.querySelectorAll('section.stage')].map(x=>x.id).filter(x=>x&&x!==v.working)}); return; }
+  if(e.target.closest('#openall')){ peek.clear(); await saveView({folded:[]}); return; }
+  const ra=e.target.closest('a[href^="#"]'); if(ra){ const t=document.getElementById(decodeURIComponent(ra.getAttribute('href').slice(1))); if(t&&t.classList.contains('folded')){ peek.add(t.id); applyView(); } }
+});
+document.addEventListener('change',async e=>{ if(e.target.id!=='now-stage') return; const id=e.target.value||null; const v=viewState(); await saveView({working:id,folded:(v.folded||[]).filter(x=>x!==id)}); });
 function renderParts(q){
   q=(q||'').trim().toLowerCase();
   let total=0, shown=0;
@@ -798,7 +894,7 @@ function renderParts(q){
   { const hl=totalHoursLogged(); $('#overall-hours').textContent=hl?`${hl} hours logged of ~${calc.hours.toLocaleString()} estimated (${Math.round(hl/calc.hours*100)}%).`:'No hours logged yet. Use "log" on any checklist step.'; }
   const ch=allParts().filter(isChosen); $('#overall-status').innerHTML=STATUSES.map(([v,l])=>`<span class="chip st-${v}">${ch.filter(p=>statusOf(p)===v).length} ${l.toLowerCase()}</span>`).join('');
   $('#count').textContent=q?`${shown} of ${total} parts match "${q}"`:`${total} parts and ideas across ${STAGE_IDS.length} stages · ${chosenN} chosen for this build.`;
-  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt(); renderThisWeek(); renderPlans(); renderBuilders();
+  pruneResolved(); renderSheet(); renderReport(); renderNews(); renderSources(); renderBuilds(); renderGantt(); renderCalcFromGantt(); renderThisWeek(); renderPlans(); renderBuilders(); applyView();
 }
 function filterTable(id,q){
   const sec=document.getElementById(id); const rows=sec.querySelectorAll('tbody tr'); let n=0;

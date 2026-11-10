@@ -328,4 +328,44 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
   .brand h1{font-size:20px}
   .brand small{display:none}
 }
+
+/* view: fold, working stage, now strip */
+.foldctl{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:100%}
+.foldctl .nbtn{padding:4px 10px;font-size:13px;white-space:nowrap;cursor:pointer}
+.foldsum{font-family:var(--mono);font-size:12.5px;color:var(--muted);min-width:0}
+.donemark{font-family:var(--mono);font-size:12.5px;color:var(--ok);font-weight:600;white-space:nowrap}
+section.stage.folded{margin-top:8px;padding-top:10px;border-top-width:1px}
+section.stage.folded>*:not(.shead){display:none!important}
+section.stage.folded .shead{align-items:center;gap:10px;cursor:pointer}
+section.stage.folded .roundel{width:32px;height:32px;font-size:17px}
+section.stage.folded .shead h2{font-size:20px}
+section.stage.folded .shead .t{flex:0 1 auto}
+section.stage.folded .shead .t>*:not(h2){display:none}
+section.stage.stagedone .roundel{background:var(--ok)}
+#nowstage>section.stage{margin-top:14px;border-top:0;padding-top:0;margin-bottom:30px}
+.now{border-left:4px solid var(--ok);display:grid;gap:12px;scroll-margin-top:90px}
+.now[hidden]{display:none}
+.nowhead{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.nowhead .t{flex:1 1 220px;min-width:0}
+.nowhead h2{font-size:clamp(24px,3vw,32px);font-weight:600}
+.nowhead .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.nowacts{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.nowpick{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center}
+.nowpick select{padding:6px 8px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;max-width:230px}
+.now .pbar{height:10px}
+.nownext{margin:0;font-size:14.5px}
+.nownext .nbtn{margin:2px 0;cursor:pointer}
+.railfold{display:flex;gap:8px;margin:4px 0 2px}
+.railfold .nbtn{flex:1;padding:5px 8px;cursor:pointer}
+.rail a.working{box-shadow:inset 3px 0 0 var(--ok);font-weight:600}
+.rail a.tocdone .n{border-color:var(--ok);color:var(--ok)}
+.now .strip>div{padding:10px 12px}
+.now .strip>div>div{padding:0}
+.now .strip .v{font-size:22px}
+#nowstage .shead .roundel,#nowstage .shead h2,#nowstage .foldctl{display:none}
+@media (max-width:600px){.now .strip{grid-template-columns:repeat(2,minmax(0,1fr))}.nowacts{width:100%}.nowpick select{max-width:100%}}
+.now>*{min-width:0}
+.nowpick{min-width:0;max-width:100%}
+.nowpick select{min-width:0;flex:1 1 auto}
+@media (max-width:600px){.now .strip>div:last-child{grid-column:1/-1}}
 </style>
