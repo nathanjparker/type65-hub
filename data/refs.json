@@ -747,13 +747,13 @@
 "pn": "60898 + 17150 + 16668",
 "opt": "2015 IRS + IRS shocks + 2018 3.55 center section",
 "verdict": "Yes",
-"why": "Hard to add later"
+"why": "Hard to add later. Deleting the center section also deletes spindles and hubs"
 },
 {
-"pn": "60175 / 16038",
-"opt": "TKX + IRS driveshaft (10.50\" vs 8.38\")",
-"verdict": "Call FFR",
-"why": "Depends on the BPE bellhousing"
+"pn": "60175",
+"opt": "TKX + IRS driveshaft, 10.50\"",
+"verdict": "Yes",
+"why": "FFR tech confirmed 60175 for the BluePrint 347/TKX (Nov 2026); 16038 is not yours"
 },
 {
 "pn": "16799",
@@ -765,7 +765,7 @@
 "pn": "60312",
 "opt": "GPS vintage gauges",
 "verdict": "Yes",
-"why": "Confirm 60312 vs 60311"
+"why": "Same part as 60311 (FFR tech, Nov 2026)"
 },
 {
 "pn": "15478 + 12077",
@@ -837,7 +837,7 @@
 "pn": "16116 / 16037",
 "opt": "Front / F&R sway bars",
 "verdict": "Yes",
-"why": ""
+"why": "Rear brackets are not sold alone: order front & rear (16037) if you may ever want the rear bar"
 },
 {
 "pn": "60372",
@@ -902,10 +902,8 @@
 "Dropped floors, if wanted, before riveting."
 ],
 "gaps": [
-"Which TKX/IRS driveshaft (60175 at 10.50\" vs 16038 at 8.38\") fits the BluePrint package. Call FFR.",
 "Whether the BluePrint front drive carries both an A/C compressor and a PS pump on a 347.",
 "FormaCars window and HVAC prices and lead times.",
-"GPS gauge part number: 60312 on the order form vs 60311 in the catalog.",
 "Hours: no complete Gen 3 street-coupe log exists. Data points: Jphoenix Coupe-R ~780 h (race car, pro fabricator); P100DHG #138 \"over 1,000\" h, Feb 2019 kit to Jan 2021 first drive; MSumners Nov 2023 kit to May 2025 first start; JimStone Feb 2024 order to Feb 2026 first start and \"about 4 hours of research per hour of build\"; Papa's inventory alone took 7 h. Log hours per step here and this build becomes the first full record.",
 "No FFR-published spring rates or alignment specs for the Gen 3 coupe.",
 "Seat for a 6'2\" driver: PNWTim runs a Sparco R100 on sliders all the way back, JimStone says Braum Orue \"barely works\", edwardb says a thin padded race seat against the back wall. Nobody has measured headroom with a helmet in a street coupe. Sit in one (Northwest owners above) before ordering seats.",
@@ -1519,7 +1517,7 @@
 ],
 "msg": "Decide the IRS rear sway bar before assembly: its brackets are captured by the LCA front bolt and the toe-link bolt.",
 "why": "edwardb has installed the FFR IRS bar twice; retrofitting means pulling those bolts with the car together. Several Gen 3 owners end up running front bar only because the rear bar adds snap oversteer.",
-"fix": "Fit the brackets at IRS assembly even if the bar stays in the box; start with front bar only and add the rear at shakedown if it understeers.",
+"fix": "Factory Five will not sell the rear brackets alone (tech, Nov 2026): order the front-and-rear kit, fit the brackets at IRS assembly, and start with the front bar only.",
 "src": "ffcars 643777",
 "srcUrl": "https://www.ffcars.com/threads/rear-sway-bar-coupe-with-irs.643777/",
 "scope": "general"

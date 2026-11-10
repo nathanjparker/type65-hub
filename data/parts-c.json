@@ -222,12 +222,13 @@
 "users": "Westley B., edwardb, most Gen 3",
 "src": "Side window question",
 "srcUrl": "https://v1.thefactoryfiveforum.com/archive/index.php/t-44127.html",
-"notes": "Gen 3 only; often backordered. Older owners added a rubber gasket or silicone bead at the frame to stop leaks. Bodies vary up to 1/2\".",
+"notes": "Gen 3 only; often backordered. Older owners added a rubber gasket or silicone bead at the frame to stop leaks. Bodies vary up to 1/2\". Factory Five tech (Nov 10, 2026): no fixed lead time. If the windows are in stock when the kit ships they come with it; otherwise they follow.",
 "fit": "yes",
 "group": "side-windows",
 "id": "p116",
 "pop": 5,
-"popWhy": "Almost every Gen 3"
+"popWhy": "Almost every Gen 3",
+"checked": "2026-11-10"
 },
 {
 "stage": "body",
@@ -313,12 +314,13 @@
 "users": "Westley B.; most",
 "src": "FFR Parts",
 "srcUrl": "https://www.factoryfiveparts.com/15830-vintage-wiper-kit-type-65-coupe/",
-"notes": "'Much easier with the body off.' Builders call them OK but marginal on the big coupe windshield. Papa: check the firewall extension before drilling motor holes.",
+"notes": "'Much easier with the body off.' Builders call them OK but marginal on the big coupe windshield. Papa: check the firewall extension before drilling motor holes. Factory Five tech (Nov 10, 2026): ships with the kit if in stock at ship time, otherwise follows separately.",
 "fit": "yes",
 "group": "wipers",
 "id": "p121",
 "pop": 4,
-"popWhy": "Most builds"
+"popWhy": "Most builds",
+"checked": "2026-11-10"
 },
 {
 "stage": "body",

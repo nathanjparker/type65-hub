@@ -508,11 +508,11 @@
 "users": "PNWTim #620 (RetroBright); JimStone #576 (Morimoto Sealed7 2.0)",
 "src": "Body fitting – Type 65 Coupe (new forum 136519)",
 "srcUrl": "https://thefactoryfiveforum.com/thread/136519",
-"notes": "The headlight-bucket cutouts FFR made in PNWTim's body were badly undersized: open them with a carbide burr before fitting the buckets. Period-correct look with LED output; wire to the Breeze or FFR harness like the stock lamps.",
+"notes": "The headlight-bucket cutouts FFR made in PNWTim's body were badly undersized: open them with a carbide burr before fitting the buckets. Period-correct look with LED output; wire to the Breeze or FFR harness like the stock lamps. Factory Five tech (Nov 10, 2026): the undersized headlight cutouts are intentional. Every body cutout is left small so you trim to a perfect fit; plan the burr work.",
 "pop": 2,
 "popWhy": "PNWTim, JimStone",
 "fit": "yes",
-"checked": "2026-11-09",
+"checked": "2026-11-10",
 "kind": "aftermarket"
 },
 {
@@ -529,11 +529,11 @@
 "users": "PNWTim #620; flight_83; Todd Baumann (FFR Build School); Lugnut Mark #686 got revised hinges",
 "src": "Body fitting – Type 65 Coupe (new forum 136519)",
 "srcUrl": "https://thefactoryfiveforum.com/thread/136519",
-"notes": "The hood hinge brackets have had the wrong geometry since Gen 1 (edwardb's old thread). Measure yours: PNWTim's sat at ~83.5°, Indy Shu's at ~98°; if they lie flat you need nothing. Ask FFR for the revised hinges before fabricating; a 2029 kit should have them.",
+"notes": "The hood hinge brackets have had the wrong geometry since Gen 1 (edwardb's old thread). Measure yours: PNWTim's sat at ~83.5°, Indy Shu's at ~98°; if they lie flat you need nothing. Ask FFR for the revised hinges before fabricating; a 2029 kit should have them. Factory Five tech (Nov 10, 2026): the nose hinges were revised and the new ones are standard on every coupe now, under the same part number as the old ones, so there is no number to check at delivery. Measure the bracket angle anyway before fitting.",
 "pop": 4,
 "popWhy": "Every builder in the body-fit thread dealt with it",
 "fit": "yes",
-"checked": "2026-11-09"
+"checked": "2026-11-10"
 },
 {
 "id": "p233",
@@ -750,12 +750,12 @@
 "users": "P100DHG #138 (LKQ, 27k mi, $385 + $20 check; paid FFR $450 for the remaining IRS parts); JimStone #576 (Georgia salvage, 17k mi); PNWTim #620 (used 2024 GT 3.73 after two new 3.55s leaked)",
 "src": "P100DHG build log #138",
 "srcUrl": "https://thefactoryfiveforum.com/build-logs/15911",
-"notes": "3.73 is the only ratio Ford sold as a Torsen for this housing and the Ford part (M-4001-88373T) is discontinued, so used is the normal route. A Torsen takes no friction modifier (Hoopers Rear End). Replace the half-shaft seals while it is out. Verify ratio and driveshaft length against the TKX before buying.",
+"notes": "3.73 is the only ratio Ford sold as a Torsen for this housing and the Ford part (M-4001-88373T) is discontinued, so used is the normal route. A Torsen takes no friction modifier (Hoopers Rear End). Replace the half-shaft seals while it is out. Verify ratio and driveshaft length against the TKX before buying. Factory Five tech (Nov 10, 2026) confirms the catch: FFR only stocks the diff with the spindles and hubs as one assembly, so a salvage diff means sourcing spindles and hubs too (new from Ford, or from the same donor). Price that in before deleting.",
 "group": "center-section",
 "pop": 3,
 "popWhy": "P100DHG, JimStone, PNWTim",
 "fit": "yes",
-"checked": "2026-11-09",
+"checked": "2026-11-10",
 "kind": "aftermarket"
 },
 {

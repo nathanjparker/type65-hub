@@ -52,14 +52,15 @@
 "Two TKX/IRS driveshafts are listed (60175 at 10.50\" vs 16038 at 8.38\"). Call FFR with the BluePrint bellhousing/TKX length.",
 "Build order is not the manual order: 8secDuster and Papa say do the electrical, HVAC and brake lines before the engine goes in and before the outer footbox panels; once the body is on, those panels never come off. \"The manual is a loose guideline.\"",
 "Parts arrive late: Tiltrider1 ordered in January, got the kit in May, the harness five months later and spindles after three months on backorder. Start anyway; do not wait for a complete inventory (JimStone).",
-"Deletes take more than you think: deleting the FFR center section also removes the spindles and hubs (PNWTim), and deleting the FFR rear brakes removes the parking-brake lines and brackets (JimStone). Ask FFR what leaves the kit with each delete before you save the money.",
+"Deletes take more than you think: FFR stocks the differential with the spindles and hubs as one assembly, so deleting the center section removes all three (confirmed by Factory Five tech, Nov 2026; buy spindles and hubs from Ford or with a used diff). Deleting the FFR rear brakes removes the parking-brake lines and brackets (JimStone).",
 "FFR no longer ships a printed manual (Papa, 2025: listed at $49.99 but unavailable, none in any box); print the PDF chapters you need. The mirror kit comes in some kits and not others."
 ],
 "ideas": [
 "Start a parts-and-cost spreadsheet like Yellville's on day one.",
 "Take the Mk5 Roadster Build School before the kit ships; FFR says Gen 3 coupe builders take that class.",
 "Post on the ffcars Northwest board for a Puget Sound coupe owner who will let you sit in a finished car. Seat fit and headroom cannot be judged from photos.",
-"edwardb: \"Don't build a Coupe without A/C IMO.\" The coupe is louder than a roadster, not daily-driver dry (leaks at the FFR windows and into the footboxes in heavy rain), and body fit is where the extra hours go."
+"edwardb: \"Don't build a Coupe without A/C IMO.\" The coupe is louder than a roadster, not daily-driver dry (leaks at the FFR windows and into the footboxes in heavy rain), and body fit is where the extra hours go.",
+"Answered by Factory Five tech, Nov 10 2026: driveshaft for the BluePrint 347/TKX + IRS is 60175 (shifter position does not matter); GPS gauges 60312 and 60311 are the same part; side windows and wipers ship with the kit only if in stock that day."
 ],
 "tasks": [
 "Get a written FFR quote with every option line",
@@ -586,12 +587,13 @@
 "Plastic latch housings crack; add door poppers as a backup and metal handles.",
 "Hood hinge bracket clearance; hatch glass high at the corners (use a temporary D-seal to save the FFR strip).",
 "No Gen 3 builder has documented a fully weather-tight coupe. Plan on FormaCars windows or careful sealing.",
-"Hood hinge brackets have had the wrong geometry since Gen 1: 3D-printed wedge (~1/2\" over 5-7/8\"), or cut and re-weld the bracket (Build School), or ask FFR for the revised hinges that 2025 kits (Lugnut Mark #686) came with. Measure: 83.5° and 98° were both seen.",
+"Hood hinges: the old brackets had the wrong geometry (wedge or re-weld on kits through 2024). Factory Five tech confirmed in Nov 2026 that the revised hinges are now standard on every coupe under the same part number, so a new kit should need no wedge; measure the bracket angle before fitting anyway (83.5° and 98° were both seen on older kits).",
 "Sills: the fiberglass sill must sit flush on the frame tube; bodies are not symmetrical, so notch the body or grind the lower cross-tube ends, push in and down, clamp, and screw in three places. Sill glass varies from 1/4\" to a few mm at the rear; build up the thin spots (JimStone).",
 "Nose and hood: the nose is asymmetric and sits off-center 1/2–3/4\" on most cars and cannot be moved sideways; \"put the ruler away\" (Kleiner). Trim the back edge of the nose in small steps so the hinge brackets reach the cups, raise the front with the heim joint to get the hood parallel, leave the gas struts off until it fits. Notch the nose underside for the A/C condenser and radiator; a 1/2\" gap to the shroud seal is normal. edwardb spent two full weeks on body fit: hood → body → doors, repeat.",
 "Doors: both are too long for the opening; trim both ends (Indy Shu trimmed only the front and ended up with 3–4 washers under the striker). The driver door often will not sit flush: 1/8–1/4\" spacers between frame and skin. Kleiner relieves the radius on the upper hinge for more swing on every coupe; the 1/4\" in the manual means 1/4\". Doors are harder than the nose.",
 "Nose latches: swap the supplied 10-32 hardware for 1/4-20 (edwardb, PNWTim). Headlight bucket cutouts came badly undersized: open with a carbide burr. The body settles and fits better after a few days on the frame.",
-"Hatch side panels can be on the chassis when the body is set, but the rear splash shield (#42) and the panels behind the seats (#11) go in only after the body is on for the last time (Jeff Kleiner, dougstelter)."
+"Hatch side panels can be on the chassis when the body is set, but the rear splash shield (#42) and the panels behind the seats (#11) go in only after the body is on for the last time (Jeff Kleiner, dougstelter).",
+"Every cutout in the body is undersized on purpose (Factory Five tech, Nov 2026): headlight buckets, lights and openings are left small so you trim to fit. Budget the carbide-burr time; it is not a defect to report."
 ],
 "ideas": [
 "Nose pop-up mod with a BMW E30 hood latch (ffr48).",

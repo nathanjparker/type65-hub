@@ -49,13 +49,13 @@
 "users": "Ron L. (3.55)",
 "src": "FFR center section video",
 "srcUrl": "https://www.youtube.com/watch?v=AIZD1Cb2Ipo",
-"notes": "Easiest no-donor path. Ask about 3.73 for the TKX 0.81 overdrive. PNWTim's new Ford Racing 3.55 LSD shipped on its side and leaked; FFR replaced it and he ended up with a used 3.73 Torsen. If you delete the FFR center section, the spindles and hubs leave the kit with it: check the sub-kit list before deleting.",
+"notes": "Easiest no-donor path. Ask about 3.73 for the TKX 0.81 overdrive. PNWTim's new Ford Racing 3.55 LSD shipped on its side and leaked; FFR replaced it and he ended up with a used 3.73 Torsen. If you delete the FFR center section, the spindles and hubs leave the kit with it: check the sub-kit list before deleting. Factory Five tech (Nov 10, 2026): the differential and the spindles/hubs are stocked only as one assembly. Delete the center section and the spindles and hubs go with it; buy them from Ford or get them used with the diff.",
 "fit": "yes",
 "group": "center-section",
 "id": "p051",
 "pop": 5,
 "popWhy": "The no-donor path almost everyone takes",
-"checked": "2026-11-09"
+"checked": "2026-11-10"
 },
 {
 "stage": "rear",
@@ -111,9 +111,10 @@
 "users": "Westley B.",
 "src": "Order form",
 "srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/",
-"notes": "Order with kit. edwardb: the rear bar needs brackets captured by the lower-control-arm front bolt and the toe-link bolt, so fit them at IRS assembly even if you leave the bar off. Both bars are the same 7/8\" solid NA/NB Miata rear bar; several Gen 3 owners (VENMUS) disconnected the rear one for snap oversteer and run front only.",
+"notes": "Order with kit. edwardb: the rear bar needs brackets captured by the lower-control-arm front bolt and the toe-link bolt, so fit them at IRS assembly even if you leave the bar off. Both bars are the same 7/8\" solid NA/NB Miata rear bar; several Gen 3 owners (VENMUS) disconnected the rear one for snap oversteer and run front only. Factory Five tech (Nov 10, 2026): the rear bar and its brackets are sold only as a complete assembly; they will not supply the rear brackets alone. To keep the option open, order the front-and-rear kit and fit the brackets at IRS assembly.",
 "fit": "yes",
-"id": "p054"
+"id": "p054",
+"checked": "2026-11-10"
 },
 {
 "stage": "rear",
@@ -187,11 +188,12 @@
 "users": "",
 "src": "Base kit order form",
 "srcUrl": "https://www.factoryfive.com/order-a-kit/type-65-coupe-base-kit/",
-"notes": "Two TKX/IRS shafts listed. Call FFR with the BluePrint bellhousing and TKX length.",
+"notes": "Two TKX/IRS shafts listed. Call FFR with the BluePrint bellhousing and TKX length. CONFIRMED by Factory Five tech (Nov 10, 2026): the BluePrint 347 + TKX with the 2015 IRS takes 60175 (10.50\"). Shifter position does not change driveshaft length; only engine, transmission and rear end do.",
 "fit": "yes",
 "id": "p058",
 "family": "sbf",
-"group": "driveshaft"
+"group": "driveshaft",
+"checked": "2026-11-10"
 },
 {
 "stage": "rear",
@@ -900,12 +902,13 @@
 "users": "edwardb, Hank, Westley B.",
 "src": "Westley B. graduation",
 "srcUrl": "https://www.factoryfive.com/whats-new/westley-b-graduates-his-type-65-coupe-build",
-"notes": "GPS speedo avoids the TKX speed-sensor hassle. edwardb: sender adapter mismatch (3/8\" vs 1/2\" NPT); built his own .063\" panel for sightlines. Confirm the part number.",
+"notes": "GPS speedo avoids the TKX speed-sensor hassle. edwardb: sender adapter mismatch (3/8\" vs 1/2\" NPT); built his own .063\" panel for sightlines. Confirm the part number. Factory Five tech (Nov 10, 2026): 60312 and 60311 are the same gauge set; the order form just carries a different number.",
 "fit": "yes",
 "group": "gauges",
 "id": "p095",
 "pop": 5,
-"popWhy": "edwardb, Hank, Westley B.; the coupe default"
+"popWhy": "edwardb, Hank, Westley B.; the coupe default",
+"checked": "2026-11-10"
 },
 {
 "stage": "wiring",
