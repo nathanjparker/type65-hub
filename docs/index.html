@@ -1135,7 +1135,7 @@ function buildSOV(){
   rows.push({phase:stageTitle('paint'),item:'Body prep and paint (shop)',vendor:'Body shop',pn:'',month:paintM,lo:8000,hi:20000,budget:'',fund:'Cash',paid:0,status:'Planned',note:'Not in the estimator. Coupe builders report $8k–$20k; get three quotes before the title stage',link:''});
   return {rows,kitMonth};
 }
-function exportSOV(){
+async function exportSOV(){
   const b=buildSOV(); if(!b){ toast('Nothing to export yet'); return; }
   const S='\'Schedule of Values\''; const H=['#','Phase','Line item','Vendor','Part no.','Planned purchase (month)','Low ($)','High ($)','Budget ($)','Funding source','Paid to date ($)','Balance to finish ($)','Status','Notes','Link'];
   const FUNDS=['Cash','0% card','Affirm (0%)','Company / other','Other'], STATS=STATUSES.map(x=>x[1]);
@@ -1185,7 +1185,11 @@ function exportSOV(){
     [{v:'Not in here',s:7},{v:'Insurance during the build, titling and inspection fees, and anything you have not picked yet in the hub.'}],
     [{v:'Source',s:7},{v:'Factory Five Gen 3 Type 65 Coupe build hub (nathanjparker.github.io/type65-hub). Prices carry their source on each part\'s card.'}]];
   const blob=SOVX.workbook([sov,{name:'Monthly Cash Flow',rows:cf,widths:[12,34,16,18,18,14,14],freeze:9},{name:'How to read this',rows:notes,widths:[18,110]}]);
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`type65-schedule-of-values-${today}.xlsx`; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },2000);
+  const fname=`type65-schedule-of-values-${today}.xlsx`;
+  // inside the Claude artifact the viewer hands files over through the downloads capability; on the standalone site a plain download link works
+  const dl=window.claude&&window.claude.use?await window.claude.use('downloads').catch(()=>null):null;
+  if(dl){ try{ await dl.save({filename:fname,data:blob}); toast('Schedule of values saved (.xlsx)'); }catch(e){ if(e&&e.code==='declined') toast('Download cancelled'); else toast('Could not save the file here'+(e&&e.message?': '+e.message:'')); } return; }
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fname; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },2000);
   toast('Schedule of values downloaded (.xlsx)');
 }
 $('#exportsov').addEventListener('click',exportSOV);
