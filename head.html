@@ -429,4 +429,17 @@ li.warn.conflict .wkind{color:#fff}
 .btn{border-color:var(--rule)}
 @media (max-width:900px){ .themebtn span{display:none} }
 .strip>div>div{padding:0}
+/* stage badge: icon in the roundel, number as a tag */
+.roundel.combo{position:relative}
+.roundel.combo .ico{width:32px;height:32px}
+.roundel .rnum{position:absolute;right:-9px;bottom:-7px;min-width:27px;height:27px;padding:0 6px;box-sizing:border-box;border-radius:14px;display:grid;place-items:center;background:var(--fg);color:var(--bg);border:2px solid var(--bg);font-family:var(--display);font-weight:800;font-size:17px;line-height:1;letter-spacing:0}
+section.stage.folded .roundel.combo .ico{width:19px;height:19px}
+section.stage.folded .roundel .rnum{min-width:18px;height:18px;padding:0 4px;font-size:11.5px;right:-8px;bottom:-6px;border-width:1.5px}
+section.stage.folded .shead{gap:16px}
+.rail .sn{font-family:var(--display);font-weight:800;font-size:17px;line-height:1;width:20px;text-align:right;flex:none;color:var(--fg)}
+.rail a[data-toc]{gap:8px}
+.rail a[data-toc] .n{width:30px;height:30px}
+.rail a[data-toc] .n .ico{width:18px;height:18px}
+.rail a.on .sn{color:var(--accent)}
+.rail a.tocdone .n{background:var(--ok);color:var(--bg);border-color:var(--ok)}
 </style>

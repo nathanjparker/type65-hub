@@ -429,6 +429,19 @@ li.warn.conflict .wkind{color:#fff}
 .btn{border-color:var(--rule)}
 @media (max-width:900px){ .themebtn span{display:none} }
 .strip>div>div{padding:0}
+/* stage badge: icon in the roundel, number as a tag */
+.roundel.combo{position:relative}
+.roundel.combo .ico{width:32px;height:32px}
+.roundel .rnum{position:absolute;right:-9px;bottom:-7px;min-width:27px;height:27px;padding:0 6px;box-sizing:border-box;border-radius:14px;display:grid;place-items:center;background:var(--fg);color:var(--bg);border:2px solid var(--bg);font-family:var(--display);font-weight:800;font-size:17px;line-height:1;letter-spacing:0}
+section.stage.folded .roundel.combo .ico{width:19px;height:19px}
+section.stage.folded .roundel .rnum{min-width:18px;height:18px;padding:0 4px;font-size:11.5px;right:-8px;bottom:-6px;border-width:1.5px}
+section.stage.folded .shead{gap:16px}
+.rail .sn{font-family:var(--display);font-weight:800;font-size:17px;line-height:1;width:20px;text-align:right;flex:none;color:var(--fg)}
+.rail a[data-toc]{gap:8px}
+.rail a[data-toc] .n{width:30px;height:30px}
+.rail a[data-toc] .n .ico{width:18px;height:18px}
+.rail a.on .sn{color:var(--accent)}
+.rail a.tocdone .n{background:var(--ok);color:var(--bg);border-color:var(--ok)}
 </style>
 <header class="topbar">
   <button class="tocbtn" id="tocbtn" aria-controls="rail" aria-expanded="false">Contents</button>
@@ -777,7 +790,7 @@ function stagePctHTML(id){
 }
 function stageHTML(s){
   return `<section class="stage" id="${s.id}" data-stage="${s.id}">
-    <div class="shead"><div class="roundel">${s.num}</div><div class="t"><h2>${ico(s.id)}${esc(s.title)}</h2>
+    <div class="shead"><div class="roundel combo" role="img" aria-label="Stage ${s.num}">${ico(s.id)}<b class="rnum">${s.num}</b></div><div class="t"><h2>${esc(s.title)}</h2>
       <div class="meta"><span><b>When:</b> <span id="when-${s.id}">${esc(s.window)}</span></span><span><b>Your hours:</b> ${esc(s.hours)}</span></div>
       <div class="stagepct" id="pct-${s.id}"></div>
       <p class="summary">${esc(s.summary)}</p>
@@ -796,7 +809,7 @@ function stageHTML(s){
 }
 $('#stages').innerHTML=D.stages.map(stageHTML).join('');
 renderCalc();
-$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="n">${s.num}</span>${ico(s.id,"sico")}<span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
+$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="sn">${s.num}</span><span class="n">${ico(s.id)}</span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
 
 /* ---- spec sheet ---- */
 function renderSheet(){
@@ -1300,7 +1313,7 @@ function renderNow(v){
   const done=new Set(v.done||[]);
   const sel=can?`<label class="nowpick">Working on <select id="now-stage">${D.stages.map(x=>`<option value="${x.id}"${x.id===s.id?' selected':''}>${x.num}. ${esc(x.title)}${done.has(x.id)?' ✓':''}</option>`).join('')}<option value="">— not building yet —</option></select></label>`:'';
   el.hidden=false;
-  el.innerHTML=`<div class="nowhead"><div class="roundel">${s.num}</div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${ico(s.id)}${esc(s.title)}</h2></div>
+  el.innerHTML=`<div class="nowhead"><div class="roundel combo" role="img" aria-label="Stage ${s.num}">${ico(s.id)}<b class="rnum">${s.num}</b></div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${esc(s.title)}</h2></div>
     <div class="nowacts">${sel}${can?`<button class="btn" data-stagedone="${s.id}">Stage done, next →</button>`:`<button class="btn ghost" data-jump="${s.id}">Go to stage</button>`}</div></div>
     <div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div>
     <div class="strip">${tiles.map(([k,val,sub])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(val)}</div><div class="s">${esc(sub)}</div></div>`).join('')}</div>
