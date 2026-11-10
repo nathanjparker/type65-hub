@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
 /* Layout: fixed left rail of numbered stages (racing-number roundels) + content column; sticky search bar. */
-/* Light = Race program '65 (paper, press black, team blue, spot red). Dark = Night garage (shop floor, bare aluminum, work-light amber). */
+/* Light = Race program '65 (paper, press black, team blue, spot red). Dark = Midnight blue (blue-black shop, bare aluminum plate, team blue). */
 :root{
   --bg:#efe9da; --surface:#f8f4e8; --surface-2:#e2dbc8; --fg:#1b1b1b; --muted:#55504a; --line:#bdb49d; --rule:#1b1b1b;
   --accent:#1e4fa3; --accent-ink:#ffffff; --accent-soft:#dce4f3; --gold:#8a6408; --gold-soft:#f3e6bf;
@@ -15,31 +15,36 @@
   --rd-bg:#ffffff; --rd-fg:#1b1b1b; --rd-border:3px solid #1b1b1b; --rd-radius:50%;
   --no-bg:#ffffff; --no-fg:#1b1b1b; --no-border:3px solid #1b1b1b; --no-radius:50%; --no-rivets:none;
   --hazard:none; --hazard-h:0px; --eyebrow:#c2271d; --n-bg:#ffffff; --n-fg:#1b1b1b;
+  --btn-bg:#1e4fa3; --btn-ink:#ffffff; --pill-n-bg:#b3231a; --pill-n-fg:#ffffff; --pill-i-bg:#1e4fa3; --pill-i-fg:#ffffff; --pill-r:0px;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#15171a; --surface:#1e2126; --surface-2:#2a2f36; --fg:#e8eaed; --muted:#a3acb8; --line:#343a42; --rule:#343a42;
-  --accent:#f2b01e; --accent-ink:#15171a; --accent-soft:#3a2f12; --gold:#c9ced6; --gold-soft:#2a2f36;
-  --ok:#5fcb8e; --warn:#ff9b5e; --unk:#9aa3b2; --hot:#ff6b5e;
+  --bg:#11151c; --surface:#1a202b; --surface-2:#242c3a; --fg:#e6eaf2; --muted:#a2adbf; --line:#303a4a; --rule:#303a4a;
+  --accent:#8db4ff; --accent-ink:#11151c; --accent-soft:#1c2a44; --gold:#c9ced6; --gold-soft:#242c3a;
+  --ok:#62c992; --warn:#ff8a7a; --unk:#9aa3b2; --hot:#ff8a7a;
+  --btn-bg:#2f62c9; --btn-ink:#ffffff;
   --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
   --body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   --r:6px; --rule-w:1px; --h-case:none; --h-weight:700; --h-track:-.01em;
-  --rd-bg:#f2b01e; --rd-fg:#15171a; --rd-border:0 solid transparent; --rd-radius:10px;
-  --no-bg:#c9ced6; --no-fg:#15171a; --no-border:0 solid transparent; --no-radius:5px;
+  --rd-bg:#2f62c9; --rd-fg:#ffffff; --rd-border:0 solid transparent; --rd-radius:10px;
+  --no-bg:#c9ced6; --no-fg:#11151c; --no-border:0 solid transparent; --no-radius:5px;
   --no-rivets:radial-gradient(circle at 5px 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at 5px calc(100% - 5px),#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#6b7480 2px,transparent 2.5px);
-  --hazard:repeating-linear-gradient(135deg,#f2b01e 0 14px,#15171a 14px 28px); --hazard-h:6px; --eyebrow:#f2b01e; --n-bg:#2a2f36; --n-fg:#e8eaed; color-scheme:dark } }
+  --hazard:none; --hazard-h:0px; --eyebrow:#8db4ff; --n-bg:#242c3a; --n-fg:#e6eaf2;
+  --pill-n-bg:#e6eaf2; --pill-n-fg:#11151c; --pill-i-bg:#2f62c9; --pill-i-fg:#ffffff; --pill-r:6px; color-scheme:dark } }
 :root[data-theme="dark"]{
-  --bg:#15171a; --surface:#1e2126; --surface-2:#2a2f36; --fg:#e8eaed; --muted:#a3acb8; --line:#343a42; --rule:#343a42;
-  --accent:#f2b01e; --accent-ink:#15171a; --accent-soft:#3a2f12; --gold:#c9ced6; --gold-soft:#2a2f36;
-  --ok:#5fcb8e; --warn:#ff9b5e; --unk:#9aa3b2; --hot:#ff6b5e;
+  --bg:#11151c; --surface:#1a202b; --surface-2:#242c3a; --fg:#e6eaf2; --muted:#a2adbf; --line:#303a4a; --rule:#303a4a;
+  --accent:#8db4ff; --accent-ink:#11151c; --accent-soft:#1c2a44; --gold:#c9ced6; --gold-soft:#242c3a;
+  --ok:#62c992; --warn:#ff8a7a; --unk:#9aa3b2; --hot:#ff8a7a;
+  --btn-bg:#2f62c9; --btn-ink:#ffffff;
   --display:"Space Grotesk","Segoe UI",system-ui,sans-serif;
   --body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   --r:6px; --rule-w:1px; --h-case:none; --h-weight:700; --h-track:-.01em;
-  --rd-bg:#f2b01e; --rd-fg:#15171a; --rd-border:0 solid transparent; --rd-radius:10px;
-  --no-bg:#c9ced6; --no-fg:#15171a; --no-border:0 solid transparent; --no-radius:5px;
+  --rd-bg:#2f62c9; --rd-fg:#ffffff; --rd-border:0 solid transparent; --rd-radius:10px;
+  --no-bg:#c9ced6; --no-fg:#11151c; --no-border:0 solid transparent; --no-radius:5px;
   --no-rivets:radial-gradient(circle at 5px 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) 5px,#6b7480 2px,transparent 2.5px),radial-gradient(circle at 5px calc(100% - 5px),#6b7480 2px,transparent 2.5px),radial-gradient(circle at calc(100% - 5px) calc(100% - 5px),#6b7480 2px,transparent 2.5px);
-  --hazard:repeating-linear-gradient(135deg,#f2b01e 0 14px,#15171a 14px 28px); --hazard-h:6px; --eyebrow:#f2b01e; --n-bg:#2a2f36; --n-fg:#e8eaed; color-scheme:dark }
+  --hazard:none; --hazard-h:0px; --eyebrow:#8db4ff; --n-bg:#242c3a; --n-fg:#e6eaf2;
+  --pill-n-bg:#e6eaf2; --pill-n-fg:#11151c; --pill-i-bg:#2f62c9; --pill-i-fg:#ffffff; --pill-r:6px; color-scheme:dark }
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;margin:0}
@@ -443,6 +448,22 @@ section.stage.folded .shead{gap:16px}
 .rail a[data-toc] .n .ico{width:18px;height:18px}
 .rail a.on .sn{color:var(--accent)}
 .rail a.tocdone .n{background:var(--ok);color:var(--bg);border-color:var(--ok)}
+/* stage pill: number block welded to icon block */
+.spill{display:inline-flex;height:52px;flex:none;border-radius:var(--pill-r);overflow:hidden;font-family:var(--display);line-height:1}
+.spill b{min-width:46px;padding:0 10px;box-sizing:border-box;display:grid;place-items:center;background:var(--pill-n-bg);color:var(--pill-n-fg);font-weight:800;font-size:31px;letter-spacing:0}
+.spill span{width:52px;display:grid;place-items:center;background:var(--pill-i-bg);color:var(--pill-i-fg)}
+.spill .ico{width:30px;height:30px;stroke-width:2}
+.spill.sm{height:26px}
+.spill.sm b{min-width:23px;padding:0 4px;font-size:16px}
+.spill.sm span{width:26px}
+.spill.sm .ico{width:16px;height:16px}
+section.stage.folded .spill{height:30px}
+section.stage.folded .spill b{min-width:27px;padding:0 6px;font-size:19px}
+section.stage.folded .spill span{width:30px}
+section.stage.folded .spill .ico{width:18px;height:18px}
+section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);color:var(--bg)}
+.btn:not(.ghost){background:var(--btn-bg);color:var(--btn-ink)}
+#nowstage .shead .spill{display:none}
 </style>
 <header class="topbar">
   <button class="tocbtn" id="tocbtn" aria-controls="rail" aria-expanded="false">Contents</button>
@@ -624,11 +645,11 @@ const ICONS={
 const ico=(id,cls)=>ICONS[id]?`<svg class="ico${cls?' '+cls:''}" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="${ICONS[id]}"></path></svg>`:'';
 document.querySelectorAll('nav.rail > a[href^="#"]').forEach(a=>{ const id=a.getAttribute('href').slice(1); const n=a.querySelector('.n'); if(n&&ICONS[id]) n.innerHTML=ico(id); });
 document.querySelectorAll('main section[id]').forEach(sec=>{ const r=sec.querySelector(':scope > .shead > .roundel'); if(r&&ICONS[sec.id]) r.innerHTML=ico(sec.id); });
-/* ---- light / dark: Race program '65 and Night garage ---- */
+/* ---- light / dark: Race program '65 and Midnight blue ---- */
 (function(){ const KEY='type65hub.theme', root=document.documentElement, btn=$('#themebtn'); if(!btn) return;
   const sysDark=()=>window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
   const cur=()=>root.getAttribute('data-theme')||(sysDark()?'dark':'light');
-  const paint=()=>{ const d=cur()==='dark'; btn.innerHTML=ico(d?'sun':'moon')+`<span>${d?'Light':'Dark'}</span>`; btn.querySelector('.ico').setAttribute('width','18'); btn.querySelector('.ico').setAttribute('height','18'); btn.title=d?'Switch to the light theme (Race program)':'Switch to the dark theme (Night garage)'; };
+  const paint=()=>{ const d=cur()==='dark'; btn.innerHTML=ico(d?'sun':'moon')+`<span>${d?'Light':'Dark'}</span>`; btn.querySelector('.ico').setAttribute('width','18'); btn.querySelector('.ico').setAttribute('height','18'); btn.title=d?'Switch to the light theme (Race program)':'Switch to the dark theme (Midnight blue)'; };
   try{ const saved=localStorage.getItem(KEY); if(saved==='light'||saved==='dark') root.setAttribute('data-theme',saved); }catch(e){}
   paint();
   btn.addEventListener('click',()=>{ const next=cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',next); try{ localStorage.setItem(KEY,next); }catch(e){} paint(); if(typeof renderGantt==='function'&&$('#gantt')) renderGantt(); });
@@ -823,7 +844,7 @@ function stagePctHTML(id){
 }
 function stageHTML(s){
   return `<section class="stage" id="${s.id}" data-stage="${s.id}">
-    <div class="shead"><div class="roundel combo" role="img" aria-label="Stage ${s.num}">${ico(s.id)}<b class="rnum">${s.num}</b></div><div class="t"><h2>${esc(s.title)}</h2>
+    <div class="shead"><div class="spill" role="img" aria-label="Stage ${s.num}"><b>${s.num}</b><span>${ico(s.id)}</span></div><div class="t"><h2>${esc(s.title)}</h2>
       <div class="meta"><span><b>When:</b> <span id="when-${s.id}">${esc(s.window)}</span></span><span><b>Your hours:</b> ${esc(s.hours)}</span></div>
       <div class="stagepct" id="pct-${s.id}"></div>
       <p class="summary">${esc(s.summary)}</p>
@@ -842,7 +863,7 @@ function stageHTML(s){
 }
 $('#stages').innerHTML=D.stages.map(stageHTML).join('');
 renderCalc();
-$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="sn">${s.num}</span><span class="n">${ico(s.id)}</span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
+$('#toc-stages').innerHTML=D.stages.map(s=>`<a href="#${s.id}" data-toc="${s.id}"><span class="spill sm"><b>${s.num}</b><span>${ico(s.id)}</span></span><span style="min-width:0;flex:1">${esc(s.title)}</span><span class="pct" id="tocpct-${s.id}"></span></a>`).join('');
 
 /* ---- spec sheet ---- */
 function renderSheet(){
@@ -1350,7 +1371,7 @@ function renderNow(v){
   const done=new Set(v.done||[]);
   const sel=can?`<label class="nowpick">Working on <select id="now-stage">${D.stages.map(x=>`<option value="${x.id}"${x.id===s.id?' selected':''}>${x.num}. ${esc(x.title)}${done.has(x.id)?' ✓':''}</option>`).join('')}<option value="">— not building yet —</option></select></label>`:'';
   el.hidden=false;
-  el.innerHTML=`<div class="nowhead"><div class="roundel combo" role="img" aria-label="Stage ${s.num}">${ico(s.id)}<b class="rnum">${s.num}</b></div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${esc(s.title)}</h2></div>
+  el.innerHTML=`<div class="nowhead"><div class="spill" role="img" aria-label="Stage ${s.num}"><b>${s.num}</b><span>${ico(s.id)}</span></div><div class="t"><div class="eyebrow">${can?'You are here':'Now building'}</div><h2>${esc(s.title)}</h2></div>
     <div class="nowacts">${sel}${can?`<button class="btn" data-stagedone="${s.id}">Stage done, next →</button>`:`<button class="btn ghost" data-jump="${s.id}">Go to stage</button>`}</div></div>
     <div class="pbar ${r.pct<100?'lo':''}"><i style="width:${r.pct}%"></i></div>
     <div class="strip">${tiles.map(([k,val,sub])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(val)}</div><div class="s">${esc(sub)}</div></div>`).join('')}</div>
