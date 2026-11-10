@@ -230,8 +230,9 @@ td.pn{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 .copyprompt{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:8px 0;overflow-wrap:anywhere}
 .calc .calcin{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;margin:6px 0 12px}
 .calc label{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
-.calc label input{padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px;font-variant-numeric:tabular-nums}
+.calc label input,.calc label select{padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px;font-variant-numeric:tabular-nums}
 .calc label .row{font-weight:400;font-size:12px}
+@media (max-width:600px){#tax-strip>div:last-child{grid-column:1/-1}}
 .chip.st-ordered{color:var(--accent);border-color:var(--accent)}
 .chip.st-received{color:var(--warn);border-color:var(--warn)}
 .chip.st-installed{color:var(--ok);border-color:var(--ok);background:var(--surface)}
@@ -513,6 +514,16 @@ section.stage.folded .shead{gap:16px}
   <section class="stage" id="order"><div class="shead"><div class="roundel">$</div><div class="t"><h2>Order sheet</h2><div class="meta"><span>Generated from your picks: what to tick on the Factory Five order form, what to leave unticked because you're buying it elsewhere, and what to order from each vendor. Prices are the low end of what's listed and are rough.</span></div></div></div>
     <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><span class="status">Excel copy pastes into cells: one row per part with a clickable link, a status column and a subtotal per vendor.</span></div>
     <div id="report" style="margin-top:12px"></div>
+    <div class="panel calc" id="taxpanel" style="margin-top:14px">
+      <h3>Estimate with sales tax</h3>
+      <div class="calcin">
+        <label>Where you'll title the car <select id="tax-state" aria-label="State"></select></label>
+        <label>Sales tax rate (%) <input type="number" id="tax-rate" min="0" max="15" step="0.05" inputmode="decimal"><span class="row" id="tax-hint"></span></label>
+      </div>
+      <div class="strip" id="tax-strip"></div>
+      <p class="status" id="tax-split"></p>
+      <p class="status">One rate on everything is a fair estimate, because tax follows where the parts are delivered and the car is titled, not where they ship from. Big retailers charge your home rate at checkout; whatever arrives untaxed (often the kit and small vendors) is usually billed at the same rate as use tax when you title the car. Picking a state fills in its average state-plus-local rate; type your own city's rate over it. Rough numbers, not tax advice.</p>
+    </div>
   </section>
 
   <section class="stage suggest" id="suggest"><div class="shead"><div class="roundel gold">+</div><div class="t"><h2>Missing a part? Add it here</h2><div class="meta"><span>Running something on your coupe that isn't in the hub? Drop it in. Claude files it into the right stage right away, and the weekly research pass fills in the vendor, part number, price and who else runs it.</span></div></div></div>
@@ -627,7 +638,29 @@ const ym=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
 const parseYM=s=>{const [y,m]=s.split('-').map(Number); return new Date(y,m-1,1);};
 function monthIndex(d,origin){ return (d.getFullYear()-origin.getFullYear())*12+(d.getMonth()-origin.getMonth()); }
 
-const CALC_DEFAULT={order:'2026-12',hpw:10,hours:1200,target:'2029-09',paint:3};
+const CALC_DEFAULT={order:'2026-12',hpw:10,hours:1200,target:'2029-09',paint:3,taxState:'WA',taxRate:10.55};
+// Combined state + average local sales tax, Tax Foundation midyear 2026 (rates as of July 1, 2026). [name, state %, combined %]
+const TAX_STATES={AL:['Alabama',4,9.46],AK:['Alaska',0,1.82],AZ:['Arizona',5.6,8.54],AR:['Arkansas',6.5,9.48],CA:['California',7.25,9.03],CO:['Colorado',2.9,7.89],CT:['Connecticut',6.35,6.35],DE:['Delaware',0,0],DC:['District of Columbia',6,6],FL:['Florida',6,6.98],GA:['Georgia',4,7.56],HI:['Hawaii',4,4.5],ID:['Idaho',6,6.03],IL:['Illinois',6.25,8.98],IN:['Indiana',7,7],IA:['Iowa',6,6.94],KS:['Kansas',6.5,8.71],KY:['Kentucky',6,6],LA:['Louisiana',5,10.13],ME:['Maine',5.5,5.5],MD:['Maryland',6,6],MA:['Massachusetts',6.25,6.25],MI:['Michigan',6,6],MN:['Minnesota',6.88,8.14],MS:['Mississippi',7,7.06],MO:['Missouri',4.23,8.44],MT:['Montana',0,0],NE:['Nebraska',5.5,6.98],NV:['Nevada',6.85,8.24],NH:['New Hampshire',0,0],NJ:['New Jersey',6.63,6.6],NM:['New Mexico',4.88,7.68],NY:['New York',4,8.54],NC:['North Carolina',4.75,7.1],ND:['North Dakota',5,7.09],OH:['Ohio',5.75,7.29],OK:['Oklahoma',4.5,9.06],OR:['Oregon',0,0],PA:['Pennsylvania',6,6.34],RI:['Rhode Island',7,7],SC:['South Carolina',6,7.49],SD:['South Dakota',4.2,6.11],TN:['Tennessee',7,9.61],TX:['Texas',6.25,8.2],UT:['Utah',6.1,7.42],VT:['Vermont',6,6.43],VA:['Virginia',5.3,5.77],WA:['Washington',6.5,9.57],WV:['West Virginia',6,6.6],WI:['Wisconsin',5,5.72],WY:['Wyoming',4,5.39]};
+const taxRate=()=>Math.min(15,Math.max(0,+calc.taxRate||0));
+let taxSum=null;
+function renderTax(){
+  const sel=$('#tax-state'); if(!sel||!taxSum) return;
+  if(!sel.options.length) sel.innerHTML=Object.entries(TAX_STATES).sort((a,b)=>a[1][0].localeCompare(b[1][0])).map(([k,v])=>`<option value="${k}">${esc(v[0])} · ${v[2]}%</option>`).join('')+'<option value="">Other / outside the US</option>';
+  sel.value=TAX_STATES[calc.taxState]?calc.taxState:'';
+  const inp=$('#tax-rate'); if(document.activeElement!==inp) inp.value=calc.taxRate;
+  const r=taxRate(), t=taxSum, S=TAX_STATES[calc.taxState];
+  $('#tax-hint').textContent=S?(S[2]?`${S[0]} averages ${S[2]}% (${S[1]}% state + local)${calc.taxState==='WA'?'; Seattle is 10.55%':''}`:`${S[0]} has no sales tax; check what it charges when you register a kit car`):'Type the rate where you live';
+  const tax=t.taxable*r/100;
+  $('#tax-strip').innerHTML=[['Kit and parts',money(t.total),'the running estimate above'],['Sales / use tax',money(tax),`${r}% on ${money(t.taxable)}`],['Estimate with tax',money(t.total+tax),'before shipping, paint and consumables']].map(([k,v,s])=>`<div><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div><div class="s">${esc(s)}</div></div>`).join('');
+  const bits=[]; if(t.paid) bits.push(`${money(t.paid*r/100)} already charged at checkout`); if(t.due) bits.push(`<b>${money(t.due*r/100)} due at titling</b> on parts marked "not charged"`); if(t.unk) bits.push(`${money(t.unk*r/100)} on the kit and parts you haven't marked yet`);
+  $('#tax-split').innerHTML=r?`Of that tax: ${bits.join(', ')||'nothing priced yet'}.${t.exempt?` ${money(t.exempt)} marked not taxable is left out.`:''} Mark each part paid, not charged or not taxable under its quote button as the receipts come in.`:'Rate is 0%, so no tax is added.';
+}
+document.addEventListener('input',e=>{
+  if(e.target.id==='tax-state'){ calc.taxState=e.target.value; const S=TAX_STATES[calc.taxState]; if(S) calc.taxRate=S[2]; }
+  else if(e.target.id==='tax-rate'){ calc.taxRate=Math.min(15,Math.max(0,+e.target.value||0)); }
+  else return;
+  renderReport(); clearTimeout(calcT); calcT=setTimeout(saveCalc,500);
+});
 let calc=Object.assign({},CALC_DEFAULT);
 function stageWeights(){ const w={}; D.stages.forEach(s=>{w[s.id]=hoursMid(s);}); return w; }
 function addMonths(ym,m){ const [y,mo]=ym.split('-').map(Number); const d=new Date(y,mo-1+m,1); return d; }
@@ -891,11 +924,14 @@ function renderReport(){
     txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>{ txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${linkOf(p)||''}`); if(srcOf(p)) txt.push(`      source: ${srcOf(p)}`); extraLinks(p).forEach(l=>txt.push(`      ${l.label||'link'}: ${l.url}`)); }); txt.push(`  Subtotal: ${money(sum(list))}`);
   });
   const total=sum(chosen.filter(p=>p.group!=='kit'))+kitPrice;
+  { const items=chosen.filter(p=>p.group!=='kit').map(p=>[eff(p),st(p.id).taxPaid||'']).concat([[kitPrice,(kitPick&&st(kitPick.id).taxPaid)||'']]); const of=f=>items.filter(i=>f(i[1])).reduce((a,i)=>a+i[0],0);
+    taxSum={total,taxable:of(t=>t!=='na'),exempt:of(t=>t==='na'),paid:of(t=>t==='paid'),due:of(t=>t==='due'),unk:of(t=>!t)}; }
+  const tRate=taxRate(), taxAmt=taxSum.taxable*tRate/100;
   const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(warnKey(w)));
   if(warns.length){ html+=`<div style="margin-bottom:14px">${warnBoxHTML(warns,'Check before ordering')}</div>`; if(openW.length){ txt.push(''); txt.push('CHECK BEFORE ORDERING'); openW.forEach(x=>txt.push('  - '+x.msg+(x.fix?' -> '+x.fix:''))); } }
-  html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${money(total)}</div><div class="status">${kitName} ${money(kitPrice)} + ${chosen.filter(p=>p.group!=='kit').length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at the low listed price.${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} Unpriced items (call for quote) add to this. Not included: shipping, paint, consumables.</div>${(()=>{ const due=chosen.filter(p=>st(p.id).taxPaid==='due'); const unk=chosen.filter(p=>!st(p.id).taxPaid&&(st(p.id).quote||eff(p))); const base=due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0); return `<div class="status" style="margin-top:6px"><b>Washington use tax at titling:</b> ${due.length?`about ${money(Math.round(base*0.095))} on ${money(base)} of parts marked "not charged" (at 9.5%; your local rate applies)`:'nothing marked "not charged" yet'}${unk.length?`; ${unk.length} priced item${unk.length>1?'s':''} not yet marked either way`:''}. Set it per part under the quote button.</div>`; })()}</div>
+  html+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${money(total)}</div><div class="status">${kitName} ${money(kitPrice)} + ${chosen.filter(p=>p.group!=='kit').length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at the low listed price.${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} Unpriced items (call for quote) add to this. Not included: shipping, paint, consumables.</div>${(()=>{ const due=chosen.filter(p=>st(p.id).taxPaid==='due'); const unk=chosen.filter(p=>!st(p.id).taxPaid&&(st(p.id).quote||eff(p))); const base=due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0); return `<div class="status" style="margin-top:6px"><b>With sales tax: about ${money(total+taxAmt)}</b> (${money(taxAmt)} at ${tRate}%; set your rate below). <b>Use tax at titling:</b> ${due.length?`about ${money(base*tRate/100)} on ${money(base)} of parts marked "not charged"`:'nothing marked "not charged" yet'}${unk.length?`; ${unk.length} priced item${unk.length>1?'s':''} not yet marked either way`:''}. Set it per part under the quote button.</div>`; })()}</div>
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
-  txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); { const due=chosen.filter(p=>st(p.id).taxPaid==='due'); if(due.length) txt.push(`Use tax due at titling on ${money(due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0))} of parts not charged WA sales tax`); } if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
+  txt.push(''); txt.push(`RUNNING ESTIMATE: ${money(total)} (kit + chosen items, low end)`); txt.push(`Sales / use tax (est.): ${money(taxAmt)} at ${tRate}% on ${money(taxSum.taxable)}`); txt.push(`ESTIMATE WITH TAX: ${money(total+taxAmt)}`); { const due=chosen.filter(p=>st(p.id).taxPaid==='due'); if(due.length) txt.push(`Use tax due at titling on ${money(due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0))} of parts not charged WA sales tax`); } if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   $('#report').innerHTML=html; reportText=txt.join('\n');
   // spreadsheet export: one flat table
   const TAXLBL={paid:'Paid',due:'Use tax due',na:'Not taxable'};
@@ -906,7 +942,8 @@ function renderReport(){
   pushRows('Factory Five options',ffr);
   Object.entries(byVendor).sort().forEach(([v,list])=>pushRows(v,list));
   const cell=(v,i)=>{ if(i===13||i===14){ return v?`<a href="${esc(v)}">${esc(host(v)||v)}</a>`:''; } if(i===15){ return (v||[]).map(l=>`<a href="${esc(l.url)}">${esc(l.label||host(l.url))}</a>`).join('<br>'); } return esc(v); };
-  reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (kit + chosen; quotes where entered)</td><td style="font-weight:bold">${total}</td><td colspan="12"></td></tr></tbody></table>`;
+  reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (kit + chosen; quotes where entered)</td><td style="font-weight:bold">${total}</td><td colspan="12"></td></tr><tr><td colspan="6">Sales / use tax, estimated at ${tRate}% on ${Math.round(taxSum.taxable)}</td><td>${Math.round(taxAmt)}</td><td colspan="12"></td></tr><tr><td colspan="6" style="font-weight:bold">Total with tax</td><td style="font-weight:bold">${Math.round(total+taxAmt)}</td><td colspan="12"></td></tr></tbody></table>`;
+  renderTax();
   reportTSV=[cols.join('\t')].concat(flat.map(r=>r.map((v,i)=>i===15?(v||[]).map(l=>`${l.label||'link'}: ${l.url}`).join(' | '):String(v).replace(/[\t\n]/g,' ')).join('\t'))).join('\n');
 }
 $('#copyxls').addEventListener('click',async()=>{
@@ -1594,7 +1631,7 @@ function initLocal(){
   renderNotes(); renderParts(q.value);
   const bar=$('#sandbox'); if(bar){ bar.hidden=false; bar.innerHTML=`<b>Your copy.</b> Picks, progress and notes are saved in this browser only. <button class="btn ghost" id="lc-export">Export my build</button> <label class="btn ghost" style="cursor:pointer">Import<input type="file" accept="application/json" id="lc-import" hidden></label> <button class="btn ghost" id="lc-nate">Start from Nate's picks</button> <button class="btn ghost" id="lc-clear">Clear</button> <a class="btn ghost" href="https://github.com/nathanjparker/type65-hub#readme" target="_blank" rel="noopener">About this hub</a>${D.forumThread?` <a class="btn ghost" href="${esc(D.forumThread)}" target="_blank" rel="noopener">Forum thread</a>`:''}`;
     $('#lc-export').onclick=()=>{ const blob=new Blob([JSON.stringify(localSnapshot(),null,1)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='my-type65-build.json'; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); };
-    $('#lc-import').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const d=JSON.parse(r.result); state=d.state||{}; stageState=d.stagestate||{}; taskState=d.tasks||{}; notes=d.notes||{}; addedParts=d.addedParts||[]; persistLocal(); renderNotes(); renderParts(q.value); toast('Build imported'); }catch(x){ toast('That file is not a hub export'); } }; r.readAsText(f); };
+    $('#lc-import').onchange=e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ const d=JSON.parse(r.result); state=d.state||{}; stageState=d.stagestate||{}; taskState=d.tasks||{}; notes=d.notes||{}; addedParts=d.addedParts||[]; if(d.calc){ calc=Object.assign({},CALC_DEFAULT,d.calc); renderCalc(); } persistLocal(); renderNotes(); renderParts(q.value); toast('Build imported'); }catch(x){ toast('That file is not a hub export'); } }; r.readAsText(f); };
     $('#lc-nate').onclick=()=>{ state={}; (D.natePicks||[]).forEach(id=>{state[id]={chosen:true,pct:0};}); persistLocal(); renderParts(q.value); toast("Nate's picks loaded"); };
     $('#lc-clear').onclick=()=>{ state={}; stageState={}; taskState={}; notes={}; addedParts=[]; persistLocal(); renderNotes(); renderParts(q.value); toast('Cleared'); };
   }
@@ -1612,7 +1649,7 @@ function localDb(){
 }
 /* ---- ask the hub (sample) ---- */
 function context(){
-  const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`];
+  const p=plan(); const lines=[`OVERALL BUILD PROGRESS: ${overallPct()}%`,`PLAN: kit order ${calc.order}, ${calc.hpw} h/week, ${calc.hours} build hours, target ${calc.target}, paint shop ${calc.paint} months; hours available ${Math.round(p.avail)}; ${p.ok?'plan holds':'short by '+Math.round(p.needed-p.avail)+' h'}; go-kart ${fmtM(p.windows.gokart.to)}, title ${fmtM(p.windows.title.to)}, done ${fmtM(p.windows.shakedown.to)}`]; if(taxSum) lines.push(`COST: running estimate ${money(taxSum.total)} for kit and chosen parts; sales/use tax estimated at ${taxRate()}% (${calc.taxState||'custom rate'}) adds ${money(taxSum.taxable*taxRate()/100)}; shipping, paint and consumables not included`);
   D.stages.forEach(s=>lines.push(`STAGE ${s.num} ${s.title} (${s.window}; ${s.hours}; progress ${stagePct(s.id).pct}%): ${s.summary} Challenges: ${s.challenges.join(' ')} Ideas: ${s.ideas.join(' ')}`));
   allParts().forEach(p=>{const s=st(p.id); lines.push(`[${p.stage}/${p.cat}] ${p.name} | ${p.model||''} | ${p.kind} | vendor: ${p.vendor||''} ${linkOf(p)||''} | price: ${p.price||'?'} [${p.tag||''}] | used by: ${p.users||''} | fit: ${p.fit} | ${p.notes||''} | source: ${p.src||''} ${srcOf(p)||''}${extraLinks(p).map(l=>` | ${l.label||'link'}: ${l.url}`).join('')}${isChosen(p)?` | CHOSEN, status ${statusOf(p)}, ${pctOf(p)}% done${st(p.id).quote?`, ${st(p.id).quoteKind||'quoted'} $${st(p.id).quote} ${st(p.id).quoteDate||''}`:''}`:''}${s.note?` | BUILDER NOTE: ${s.note}`:''}`);});
   D.stages.forEach(s=>{const tl=taskList(s.id); lines.push(`CHECKLIST ${s.id} (${stageHoursLogged(s.id)} h logged): `+tl.map(t=>(t.done?'[x] ':'[ ] ')+t.t+(t.m.hours?` (${t.m.hours}h${t.m.date?' '+t.m.date:''})`:'')+(t.m.gotcha?` GOTCHA: ${t.m.gotcha}`:'')).join('; '));});

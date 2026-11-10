@@ -230,8 +230,9 @@ td.pn{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
 .copyprompt{white-space:pre-wrap;font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:8px 0;overflow-wrap:anywhere}
 .calc .calcin{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px;margin:6px 0 12px}
 .calc label{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
-.calc label input{padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px;font-variant-numeric:tabular-nums}
+.calc label input,.calc label select{padding:7px 9px;border:1px solid var(--line);border-radius:5px;background:var(--bg);color:var(--fg);font:inherit;font-size:15px;font-variant-numeric:tabular-nums}
 .calc label .row{font-weight:400;font-size:12px}
+@media (max-width:600px){#tax-strip>div:last-child{grid-column:1/-1}}
 .chip.st-ordered{color:var(--accent);border-color:var(--accent)}
 .chip.st-received{color:var(--warn);border-color:var(--warn)}
 .chip.st-installed{color:var(--ok);border-color:var(--ok);background:var(--surface)}
