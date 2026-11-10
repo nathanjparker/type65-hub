@@ -80,7 +80,7 @@
       <p class="status" id="tax-split"></p>
       <details class="others"><summary>How the tax is figured</summary><p class="status">One rate on everything is a fair estimate, because tax follows where the parts are delivered and the car is titled, not where they ship from. Big retailers charge your home rate at checkout; whatever arrives untaxed (often the kit and small vendors) is usually billed at the same rate as use tax when you title the car. Picking a state fills in its average state-plus-local rate; type your own city's rate over it. Rough numbers, not tax advice.</p></details>
     </div>
-    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><button class="btn ghost" id="est-all" type="button">Expand all</button><span class="status">The Excel copy has one row per part with links, status and low and high prices.</span></div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" id="exportsov" type="button">Export schedule of values</button><button class="btn ghost" id="copyxls">Copy for Excel / Sheets</button><button class="btn ghost" id="copyreport">Copy as text</button><button class="btn ghost" id="est-all" type="button">Expand all</button><span class="status">Schedule of values is an .xlsx for whoever holds the purse strings: one line per purchase with a budget, the month it lands from the Schedule, how it gets paid, and a month-by-month cash flow tab. The Excel copy is one flat row per part with links and status.</span></div>
     <div id="report" style="margin-top:10px"></div>
   </section>
 
@@ -538,6 +538,7 @@ function renderReport(){
   const cell=(v,i)=>{ if(i===14||i===15){ return v?`<a href="${esc(v)}">${esc(host(v)||v)}</a>`:''; } if(i===16){ return (v||[]).map(l=>`<a href="${esc(l.url)}">${esc(l.label||host(l.url))}</a>`).join('<br>'); } return esc(v); };
   reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (kit + chosen; quotes where entered)</td><td style="font-weight:bold">${Math.round(total)}</td><td style="font-weight:bold">${Math.round(totalHi)}</td><td colspan="12"></td></tr><tr><td colspan="6">Sales / use tax, estimated at ${tRate}%</td><td>${Math.round(taxAmt)}</td><td>${Math.round(taxAmtHi)}</td><td colspan="12"></td></tr><tr><td colspan="6" style="font-weight:bold">Total with tax</td><td style="font-weight:bold">${Math.round(total+taxAmt)}</td><td style="font-weight:bold">${Math.round(totalHi+taxAmtHi)}</td><td colspan="12"></td></tr></tbody></table>`;
   renderTax();
+  sovCtx={ffr,byVendor,toolsNeed,kitPick,kitPrice,kitName,eff,effHi};
   reportTSV=[cols.join('\t')].concat(flat.map(r=>r.map((v,i)=>i===16?(v||[]).map(l=>`${l.label||'link'}: ${l.url}`).join(' | '):String(v).replace(/[\t\n]/g,' ')).join('\t'))).join('\n');
 }
 $('#copyxls').addEventListener('click',async()=>{
@@ -548,6 +549,128 @@ $('#copyxls').addEventListener('click',async()=>{
   }catch(e){ try{ await navigator.clipboard.writeText(reportTSV); toast('Copied as tab-separated text'); }catch(x){ toast('Clipboard blocked here; use Copy as text'); } }
 });
 $('#copyreport').addEventListener('click',async()=>{ try{ await navigator.clipboard.writeText(reportText); toast('Estimate copied'); }catch(e){ const ta=document.createElement('textarea'); ta.value=reportText; document.body.appendChild(ta); ta.select(); toast('Select and copy the text'); setTimeout(()=>ta.remove(),8000);} });
+
+/* ---- schedule of values export (.xlsx, no library) ---- */
+let sovCtx=null;
+// Minimal .xlsx writer: a stored (uncompressed) zip of the OOXML parts. Inline strings, numbers, formulas, a few styles, one list validation.
+const SOVX=(()=>{
+  const CRC=(()=>{ const t=new Uint32Array(256); for(let n=0;n<256;n++){ let c=n; for(let k=0;k<8;k++) c=c&1?0xEDB88320^(c>>>1):c>>>1; t[n]=c>>>0; } return b=>{ let c=0xFFFFFFFF; for(let i=0;i<b.length;i++) c=t[(c^b[i])&255]^(c>>>8); return (c^0xFFFFFFFF)>>>0; }; })();
+  const enc=new TextEncoder();
+  function zip(files){ // files: [{name, text}]
+    const parts=[], cd=[]; let off=0;
+    const u16=n=>[n&255,(n>>8)&255], u32=n=>[n&255,(n>>8)&255,(n>>16)&255,(n>>>24)&255];
+    files.forEach(f=>{ const nm=enc.encode(f.name), data=enc.encode(f.text), crc=CRC(data);
+      const loc=new Uint8Array([0x50,0x4b,3,4,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(data.length),...u32(data.length),...u16(nm.length),0,0,...nm]);
+      parts.push(loc,data);
+      cd.push(new Uint8Array([0x50,0x4b,1,2,20,0,20,0,0,0,0,0,0,0,0,0,...u32(crc),...u32(data.length),...u32(data.length),...u16(nm.length),0,0,0,0,0,0,0,0,0,0,0,0,...u32(off),...nm]));
+      off+=loc.length+data.length; });
+    const cdLen=cd.reduce((a,c)=>a+c.length,0);
+    const eocd=new Uint8Array([0x50,0x4b,5,6,0,0,0,0,...u16(files.length),...u16(files.length),...u32(cdLen),...u32(off),0,0]);
+    return new Blob([...parts,...cd,eocd],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}); }
+  const xe=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const col=n=>{ let s=''; n++; while(n>0){ const m=(n-1)%26; s=String.fromCharCode(65+m)+s; n=Math.floor((n-1)/26); } return s; };
+  const serial=d=>Math.round((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())-Date.UTC(1899,11,30))/86400000);
+  // cell: {v:number|string|Date, f:'formula', s:styleIndex}
+  function sheetXML(sh){
+    const rows=sh.rows.map((r,ri)=>{ const cells=r.map((c,ci)=>{ if(c==null) return ''; const o=typeof c==='object'&&!(c instanceof Date)?c:{v:c}; const ref=col(ci)+(ri+1), s=o.s?` s="${o.s}"`:'';
+      if(o.f) return `<c r="${ref}"${s}><f>${xe(o.f)}</f></c>`;
+      if(o.v instanceof Date) return `<c r="${ref}"${s}><v>${serial(o.v)}</v></c>`;
+      if(typeof o.v==='number') return `<c r="${ref}"${s}><v>${o.v}</v></c>`;
+      if(o.v===''||o.v==null) return s?`<c r="${ref}"${s}/>`:'';
+      return `<c r="${ref}"${s} t="inlineStr"><is><t xml:space="preserve">${xe(o.v)}</t></is></c>`; }).join('');
+      return `<row r="${ri+1}">${cells}</row>`; }).join('');
+    const cols=sh.widths?`<cols>${sh.widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')}</cols>`:'';
+    const view=sh.freeze?`<sheetViews><sheetView workbookViewId="0"><pane ySplit="${sh.freeze}" topLeftCell="A${sh.freeze+1}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`:'<sheetViews><sheetView workbookViewId="0"/></sheetViews>';
+    const dv=sh.lists&&sh.lists.length?`<dataValidations count="${sh.lists.length}">${sh.lists.map(l=>`<dataValidation type="list" allowBlank="1" showDropDown="0" sqref="${l.ref}"><formula1>"${xe(l.items.join(','))}"</formula1></dataValidation>`).join('')}</dataValidations>`:'';
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">${view}${cols}<sheetData>${rows}</sheetData>${dv}<pageMargins left="0.5" right="0.5" top="0.6" bottom="0.6" header="0.3" footer="0.3"/></worksheet>`; }
+  // styles: 0 plain · 1 header · 2 money · 3 money bold · 4 month · 5 input text · 6 input money · 7 bold · 8 subtotal money · 9 input month · 10 small italic · 11 title · 12 input number · 13 percent input · 14 subtotal text
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="3"><numFmt numFmtId="164" formatCode="&quot;$&quot;#,##0;(&quot;$&quot;#,##0);&quot;-&quot;"/><numFmt numFmtId="165" formatCode="mmm-yyyy"/><numFmt numFmtId="166" formatCode="0.00%"/></numFmts><fonts count="6"><font><sz val="10"/><name val="Arial"/></font><font><b/><sz val="10"/><color rgb="FFFFFFFF"/><name val="Arial"/></font><font><b/><sz val="10"/><name val="Arial"/></font><font><sz val="10"/><color rgb="FF0000FF"/><name val="Arial"/></font><font><i/><sz val="9"/><name val="Arial"/></font><font><b/><sz val="14"/><name val="Arial"/></font></fonts><fills count="5"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1F3864"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFFFF00"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFD9E1F2"/></patternFill></fill></fills><borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFBFBFBF"/></left><right style="thin"><color rgb="FFBFBFBF"/></right><top style="thin"><color rgb="FFBFBFBF"/></top><bottom style="thin"><color rgb="FFBFBFBF"/></bottom><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="15"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf><xf numFmtId="164" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1"/><xf numFmtId="164" fontId="2" fillId="0" borderId="0" xfId="0" applyNumberFormat="1" applyFont="1"/><xf numFmtId="165" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="164" fontId="3" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="164" fontId="2" fillId="4" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf numFmtId="165" fontId="3" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="5" fillId="0" borderId="0" xfId="0" applyFont="1"/><xf numFmtId="0" fontId="3" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1"/><xf numFmtId="166" fontId="3" fillId="3" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1"/><xf numFmtId="0" fontId="2" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  function workbook(sheets){
+    const files=[
+      {name:'[Content_Types].xml',text:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>${sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')}</Types>`},
+      {name:'_rels/.rels',text:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>`},
+      {name:'xl/workbook.xml',text:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheets.map((s,i)=>`<sheet name="${xe(s.name)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')}</sheets><calcPr fullCalcOnLoad="1"/></workbook>`},
+      {name:'xl/_rels/workbook.xml.rels',text:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')}<Relationship Id="rId${sheets.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
+      {name:'xl/styles.xml',text:styles}];
+    sheets.forEach((s,i)=>files.push({name:`xl/worksheets/sheet${i+1}.xml`,text:sheetXML(s)}));
+    return zip(files); }
+  return {workbook,col};
+})();
+function buildSOV(){
+  const c=sovCtx; if(!c) return null;
+  const W=effectiveWindows(); const kitMonth=W.plan?W.plan.to:addMonths(calc.order,6); const orderMonth=parseYM(calc.order);
+  const stageTitle=id=>{ const s=D.stages.find(x=>x.id===id); return s?`${s.num?s.num+'. ':''}${s.title}`:id; };
+  const monthFor=p=>{ if(p.kind==='FFR') return kitMonth; if(p.stage==='plan') return p.group==='engine'&&W.drivetrain?W.drivetrain.from:kitMonth; if(p.stage==='tools') return W.delivery?W.delivery.from:kitMonth; const w=W[p.stage]; return w?w.from:kitMonth; };
+  const phaseFor=p=>p.kind==='FFR'?'Kit order (Factory Five form)':p.stage==='tools'?'Shop & tools':p.stage==='plan'&&p.group==='engine'?stageTitle('drivetrain'):stageTitle(p.stage);
+  const fundFor=p=>p.kind==='FFR'?'0% card':/blueprint/i.test(p.vendor||'')?'Affirm (0%)':'Cash';
+  const row=(p,phase,month,fund)=>{ const s=st(p.id), lo=c.eff(p), hi=c.effHi(p); const budget=s.quote?+s.quote:(lo===hi?lo:Math.round((lo+hi)/2)); const paid=s.quoteKind==='paid'&&['ordered','received','installed'].includes(statusOf(p))?+s.quote:0;
+    return {phase:phase||phaseFor(p),item:p.name+(p.model?' · '+p.model:''),vendor:p.vendor||host(linkOf(p))||'',pn:pnOf(p)||'',month:month||monthFor(p),lo,hi,budget,fund:fund||fundFor(p),paid,status:STATUSES.find(x=>x[0]===statusOf(p))[1],note:[s.quote?`${s.quoteKind==='paid'?'Paid':'Quoted'} ${money(s.quote)}${s.quoteFrom?' from '+s.quoteFrom:''}${s.quoteDate?' '+s.quoteDate:''}`:`Listed: ${p.price||'no price'}${p.tag==='est'?' (estimate)':''}`,s.taxPaid==='due'?'use tax due at titling':s.taxPaid==='paid'?'tax paid':s.taxPaid==='na'?'not taxable':''].filter(Boolean).join(' · '),link:linkOf(p)||''}; };
+  const rows=[];
+  rows.push({phase:'Kit order (Factory Five form)',item:'Kit deposit (schedules production)',vendor:'Factory Five',pn:'',month:orderMonth,lo:1000,hi:1000,budget:1000,fund:'Cash',paid:0,status:'Planned',note:'$1,000 to schedule; balance due 10 days before the completion date',link:'https://www.factoryfive.com/order-a-kit/'});
+  rows.push({phase:'Kit order (Factory Five form)',item:`Gen 3 ${c.kitName} (balance after deposit)`,vendor:'Factory Five',pn:'',month:kitMonth,lo:c.kitPrice-1000,hi:c.kitPrice-1000,budget:c.kitPrice-1000,fund:'0% card',paid:0,status:c.kitPick?STATUSES.find(x=>x[0]===statusOf(c.kitPick))[1]:'Planned',note:`List ${money(c.kitPrice)}; FFR adds 1% on card payments beyond the deposit`,link:c.kitPick&&c.kitPick.id==='p214'?'https://www.factoryfive.com/type-65-coupe/coupe-r/':'https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/'});
+  c.ffr.forEach(p=>rows.push(row(p)));
+  rows.push({phase:'Kit order (Factory Five form)',item:'Shipping, Factory Five to your garage',vendor:'Cunningham Transport / pickup',pn:'',month:kitMonth,lo:0,hi:2600,budget:'',fund:'Cash',paid:0,status:'Planned',note:'Not in the estimator. Builders report $1,000–$2,600 to the West Coast; free if you pick up in Wareham, MA',link:'https://www.factoryfive.com/order-a-kit/'});
+  const vendors=Object.entries(c.byVendor).sort(); const others=[]; vendors.forEach(([v,list])=>list.forEach(p=>others.push(p)));
+  others.sort((a,b)=>monthFor(a)-monthFor(b)).forEach(p=>rows.push(row(p)));
+  c.toolsNeed.forEach(p=>rows.push(row(p)));
+  const paintM=W.paint?W.paint.from:kitMonth;
+  rows.push({phase:stageTitle('paint'),item:'Body prep and paint (shop)',vendor:'Body shop',pn:'',month:paintM,lo:8000,hi:20000,budget:'',fund:'Cash',paid:0,status:'Planned',note:'Not in the estimator. Coupe builders report $8k–$20k; get three quotes before the title stage',link:''});
+  return {rows,kitMonth};
+}
+function exportSOV(){
+  const b=buildSOV(); if(!b){ toast('Nothing to export yet'); return; }
+  const S='\'Schedule of Values\''; const H=['#','Phase','Line item','Vendor','Part no.','Planned purchase (month)','Low ($)','High ($)','Budget ($)','Funding source','Paid to date ($)','Balance to finish ($)','Status','Notes','Link'];
+  const FUNDS=['Cash','0% card','Affirm (0%)','Company / other','Other'], STATS=STATUSES.map(x=>x[1]);
+  const title=`${D.title||'Type 65 Coupe'} — Purchasing schedule of values`;
+  const today=new Date().toISOString().slice(0,10);
+  const rows=[[{v:title,s:11}],[{v:`Exported ${today} from the build hub. Low/High are the ends of each listed price range; Budget is your quote where you entered one, otherwise the middle. Blue on yellow = inputs; change them freely. Shipping and paint are blank for you to fill in.`,s:10}],[],H.map(h=>({v:h,s:1}))];
+  const R0=5; b.rows.forEach((r,i)=>{ const n=R0+i; rows.push([{v:i+1},{v:r.phase},{v:r.item},{v:r.vendor},{v:r.pn},{v:r.month,s:9},{v:r.lo,s:6},{v:r.hi,s:6},{v:r.budget,s:6},{v:r.fund,s:5},{v:r.paid,s:6},{f:`IF(I${n}="","",I${n}-K${n})`,s:2},{v:r.status,s:5},{v:r.note},{v:r.link}]); });
+  const R1=R0+b.rows.length-1; const put=r=>{ rows.push(r); return rows.length; };
+  rows.push([]);
+  const subRow=put([null,null,{v:'Subtotal: kit, parts, tools, shipping, paint',s:14},null,null,null,{f:`SUM(G${R0}:G${R1})`,s:8},{f:`SUM(H${R0}:H${R1})`,s:8},{f:`SUM(I${R0}:I${R1})`,s:8},null,{f:`SUM(K${R0}:K${R1})`,s:8},{f:`SUM(L${R0}:L${R1})`,s:8}]);
+  const rateRow=put([null,null,{v:'Sales / use tax rate (your state; the hub estimate is pre-filled)',s:7},null,null,null,null,null,{v:taxRate()/100,s:13},null,null,null,null,{v:'Rough: one rate on everything, charged at checkout or as use tax at titling',s:10}]);
+  const taxRow=put([null,null,{v:'Sales / use tax (estimate)',s:7},null,null,null,{f:`ROUND(G${subRow}*I${rateRow},0)`,s:3},{f:`ROUND(H${subRow}*I${rateRow},0)`,s:3},{f:`ROUND(I${subRow}*I${rateRow},0)`,s:3}]);
+  const totRow=put([null,null,{v:'TOTAL with tax',s:7},null,null,null,{f:`G${subRow}+G${taxRow}`,s:3},{f:`H${subRow}+H${taxRow}`,s:3},{f:`I${subRow}+I${taxRow}`,s:3},null,{f:`K${subRow}`,s:3},{f:`I${subRow}+I${taxRow}-K${subRow}`,s:3}]);
+  const ceilRow=put([null,null,{v:'Budget ceiling (type yours)',s:7},null,null,null,null,null,{v:'',s:6}]);
+  put([null,null,{v:'Headroom under ceiling (Budget column, with tax)',s:7},null,null,null,null,null,{f:`IF(I${ceilRow}="","",I${ceilRow}-I${totRow})`,s:3}]);
+  rows.push([]); put([null,null,{v:'Budget by funding source (before tax)',s:7}]);
+  const fundRows={}; FUNDS.forEach(f=>{ fundRows[f]=put([null,null,{v:f},null,null,null,null,null,{f:`SUMIF($J$${R0}:$J$${R1},"${f}",$I$${R0}:$I$${R1})`,s:2}]); });
+  rows.push([]); put([null,null,{v:'Legend: blue text on yellow = inputs. Black = formulas. Funding source and Status are dropdowns. Low and High bracket what the hub has seen listed; neither is a quote.',s:10}]);
+  const sov={name:'Schedule of Values',rows,widths:[4,30,48,22,9,13,10,10,10,15,12,14,11,52,30],freeze:4,lists:[{ref:`J${R0}:J${R1}`,items:FUNDS},{ref:`M${R0}:M${R1}`,items:STATS}]};
+  // monthly cash flow: purchases by month from the SOV, plus level payments on card and Affirm purchases
+  const m0=parseYM(calc.order), m1=parseYM(calc.target); const months=[]; for(let d=new Date(m0);d<=m1;d=new Date(d.getFullYear(),d.getMonth()+1,1)) months.push(d);
+  const idx=L=>`(YEAR(${L})*12+MONTH(${L}))`; const rg=L=>`${S}!$${L}$${R0}:$${L}$${R1}`;
+  const cf=[[{v:'Monthly outlay from the schedule of values',s:11}],[{v:'Purchases land in their planned month. Anything funded on a 0% card or Affirm is spread as level payments over the months below, starting the month after purchase. Change the blue cells.',s:10}],[],
+    [null,{v:'0% card promo (months)',s:7},{v:21,s:12},null,{v:'Pay card purchases off inside the promo window',s:10}],
+    [null,{v:'Cash down on card purchases ($)',s:7},{v:0,s:6},null,{v:'Lands in the month below; reduces every card payment',s:10}],
+    [null,{v:'Cash down month',s:7},{v:b.kitMonth,s:9}],
+    [null,{v:'Affirm term (months)',s:7},{v:12,s:12},null,{v:'Confirm the real offer with BluePrint / Affirm',s:10}],
+    [],[{v:'Month',s:1},{v:'Cash purchases ($)',s:1},{v:'Cash down ($)',s:1},{v:'0% card payment ($)',s:1},{v:'Affirm payment ($)',s:1},{v:'Total out ($)',s:1},{v:'Cumulative ($)',s:1}]];
+  const C0=cf.length+1; const cardTot=`${S}!$I$${fundRows['0% card']}`, affTot=`${S}!$I$${fundRows['Affirm (0%)']}`;
+  months.forEach((d,i)=>{ const r=C0+i; cf.push([{v:d,s:4},
+    {f:`SUMIFS(${rg('I')},${rg('F')},A${r},${rg('J')},"Cash")+SUMIFS(${rg('I')},${rg('F')},A${r},${rg('J')},"Other")+SUMIFS(${rg('I')},${rg('F')},A${r},${rg('J')},"Company / other")`,s:2},
+    {f:`IF(AND(YEAR(A${r})=YEAR($C$6),MONTH(A${r})=MONTH($C$6)),$C$5,0)`,s:2},
+    {f:`IF(OR($C$4<1,${cardTot}<=0),0,SUMPRODUCT((${rg('J')}="0% card")*(${idx(rg('F'))}<${idx('A'+r)})*(${idx(rg('F'))}+$C$4>=${idx('A'+r)})*${rg('I')})/$C$4*MAX(0,1-$C$5/${cardTot}))`,s:2},
+    {f:`IF(OR($C$7<1,${affTot}<=0),0,SUMPRODUCT((${rg('J')}="Affirm (0%)")*(${idx(rg('F'))}<${idx('A'+r)})*(${idx(rg('F'))}+$C$7>=${idx('A'+r)})*${rg('I')})/$C$7)`,s:2},
+    {f:`SUM(B${r}:E${r})`,s:2},{f:i?`G${r-1}+F${r}`:`F${r}`,s:2}]); });
+  const CL=C0+months.length-1;
+  cf.push([{v:'Total',s:7},{f:`SUM(B${C0}:B${CL})`,s:3},{f:`SUM(C${C0}:C${CL})`,s:3},{f:`SUM(D${C0}:D${CL})`,s:3},{f:`SUM(E${C0}:E${CL})`,s:3},{f:`SUM(F${C0}:F${CL})`,s:3}]);
+  cf.push([{v:'Peak month',s:7},null,null,null,null,{f:`MAX(F${C0}:F${CL})`,s:3}]);
+  cf.push([{v:'Average month',s:7},null,null,null,null,{f:`AVERAGE(F${C0}:F${CL})`,s:3}]);
+  cf.push([{v:'Payments that run past the last month above are not shown; extend the schedule target or the table.',s:10}]);
+  const notes=[[{v:'How to read this',s:11}],[],[{v:'What it is',s:7},{v:'A purchasing schedule of values for the build: one line per thing to buy, what it should cost, when it lands, and how it gets paid. Built from the picks in the hub\'s Build estimator and the dates on its Schedule.'}],
+    [{v:'Low / High',s:7},{v:'The ends of the price range the hub has seen listed or reported for that part. Not quotes. Where you entered a quote or a paid price in the estimator, all three columns use it.'}],
+    [{v:'Budget',s:7},{v:'The planning number: your quote if entered, otherwise the middle of Low and High. Totals, tax and the monthly tab run off this column.'}],
+    [{v:'Planned purchase',s:7},{v:`The month the part's stage starts on the hub Schedule (kit order ${fmtM(parseYM(calc.order))}, kit balance ${fmtM(b.kitMonth)}, target ${fmtM(parseYM(calc.target))}). Move a stage on the Schedule and re-export, or just retype the month here.`}],
+    [{v:'Funding source',s:7},{v:'A dropdown. "0% card" and "Affirm (0%)" purchases are spread as level payments on the Monthly cash flow tab; everything else is cash in the month it lands. Factory Five takes a $1,000 deposit and the balance by wire, check or card (1% fee) before the completion date; BluePrint sells through Affirm. Confirm terms with each vendor.'}],
+    [{v:'Tax',s:7},{v:'One rate on the subtotal, pre-filled from the hub\'s estimate. Parts that arrive untaxed are usually billed use tax at titling. Rough numbers, not tax advice.'}],
+    [{v:'Not in here',s:7},{v:'Insurance during the build, titling and inspection fees, and anything you have not picked yet in the hub.'}],
+    [{v:'Source',s:7},{v:'Factory Five Gen 3 Type 65 Coupe build hub (nathanjparker.github.io/type65-hub). Prices carry their source on each part\'s card.'}]];
+  const blob=SOVX.workbook([sov,{name:'Monthly Cash Flow',rows:cf,widths:[12,34,16,18,18,14,14],freeze:9},{name:'How to read this',rows:notes,widths:[18,110]}]);
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`type65-schedule-of-values-${today}.xlsx`; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },2000);
+  toast('Schedule of values downloaded (.xlsx)');
+}
+$('#exportsov').addEventListener('click',exportSOV);
 
 /* ---- checklist ---- */
 function tasksHTML(id){
