@@ -340,7 +340,7 @@ li.warn .wkind.use{background:var(--accent)}
 details.estnotes{margin-top:10px}
 details.estnotes summary{color:var(--warn);font-weight:600;font-size:14.5px}
 .tooltbl{min-width:0}
-.tooltbl td.tk,.tooltbl th:nth-child(n+3){text-align:center;width:92px}
+.tooltbl td.tk,.tooltbl th:nth-child(n+3){text-align:center;width:64px}
 .tooltbl td.tk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
 .tooltbl tr.vrow.static{cursor:default} .tooltbl tr.vrow.static:hover td{background:var(--surface-2)} .tooltbl tr.vrow.static .vtog{cursor:default} .tooltbl tr.vrow.static .vtog::before{content:none}
 .tooltbl tr.prow.have td.nm,.tooltbl tr.prow.have td.pr{color:var(--muted);text-decoration:line-through}
@@ -369,7 +369,7 @@ tr.top td{color:var(--muted)}
 .card .ctl .pbar{flex:1 1 60px}
 .card .ctl input[type=number]{width:58px;padding:2px 5px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px}
 .card.have{opacity:.72}
-.card.have .nm::after{content:" · have it";font-weight:400;font-size:13px;color:var(--ok)}
+.card.have .nm::after{content:" · skipped";font-weight:400;font-size:13px;color:var(--ok)}
 .card.chosen{box-shadow:0 0 0 2px var(--ok) inset}
 .card .chosenchip{color:var(--ok);border-color:var(--ok)}
 .nbtn{border:1px solid var(--line);background:var(--bg);border-radius:4px;padding:2px 7px;font-size:13px;position:relative;color:var(--muted)}
@@ -521,7 +521,8 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
   <div class="railfold"><button type="button" class="nbtn" id="foldall">Fold all</button><button type="button" class="nbtn" id="openall">Open all</button></div>
   <h4>Overview</h4>
   <a href="#overview"><span class="n">★</span>Build at a glance</a>
-  <a href="#sheet"><span class="n">✓</span>Your build</a>
+  <a href="#sheet"><span class="n">✓</span>Kit builder</a>
+  <a href="#tools"><span class="n">T</span>Shop &amp; tools</a>
   <a href="#schedule"><span class="n">⟶</span>Schedule</a>
   <a href="#plans"><span class="n">☰</span>Plans</a>
   <a href="#builders"><span class="n">👤</span>Builders</a>
@@ -530,7 +531,6 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
   <h4>Build stages</h4>
   <div id="toc-stages"></div>
   <h4>Reference</h4>
-  <a href="#tools"><span class="n">T</span>Tools &amp; shop</a>
   <a href="#builds"><span class="n">B</span>Build threads</a>
   <a href="#videos"><span class="n">V</span>Video series</a>
   <a href="#vendors"><span class="n">$</span>Vendor directory</a>
@@ -568,7 +568,9 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
   </section>
 
   <div class="panel sandboxbar" id="sandbox" hidden></div>
-  <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Your build</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
+  <section class="stage" id="sheet"><div class="shead"><div class="roundel">✓</div><div class="t"><h2>Kit builder</h2><div class="meta"><span>Pick one option per decision. Dots show how often documented Gen 3 coupes chose it (five dots = the clear majority), ranked from about 25 build threads and FFR features; hover or hold a chip for the names. The pick is marked Chosen on its card and the alternatives fold out of the way.</span></div></div></div><div id="sheet-warn" style="margin-top:12px"></div><div class="panel" style="margin-top:12px"><h3>Still open, by deadline</h3><div id="sheet-deadlines"></div></div><div class="panel sheet" id="sheet-body" style="margin-top:14px"></div></section>
+
+  <section class="stage" id="tools" data-stage="tools"><div class="shead"><div class="roundel">T</div><div class="t"><h2>Shop &amp; tools</h2><div class="meta"><span>What builders wish they had bought before the first panel went on, plus what it takes to get the garage ready. Tick <b>Buy</b> on what you need and <b>Skip</b> on what you already own or can do without; everything marked Buy goes into the Build estimator total.</span></div><p class="status" id="tools-sum" style="margin:6px 0 0"></p><div class="stagepct" id="pct-tools"></div></div></div><div id="tools-list" style="margin-top:12px"></div><details class="others" id="tools-detail"><summary>Details, links and notes for each item</summary><div id="parts-tools"></div></details><div class="notes-wrap" id="notes-tools"></div><div id="owner-tools"></div></section>
 
   <section class="stage" id="schedule"><div class="shead"><div class="roundel">⟶</div><div class="t"><h2>Schedule</h2><div class="meta"><span>Every stage on one timeline from the build calculator. Arrows are "must finish before"; red gates are the things you can't undo once the next stage starts; amber ticks are order-by dates for long-lead parts.</span></div></div></div><div id="gantt" style="margin-top:14px"></div></section>
 
@@ -606,8 +608,6 @@ section.stage.stagedone .spill b,.rail a.tocdone .spill b{background:var(--ok);c
   </section>
 
   <div id="stages"></div>
-
-  <section class="stage" id="tools" data-stage="tools"><div class="shead"><div class="roundel">T</div><div class="t"><h2>Tools &amp; shop</h2><div class="meta"><span>What builders wish they had bought before the first panel went on, plus what it takes to get the garage ready. Tick <b>Have it</b> or <b>Need to buy</b> on each; everything you need goes into the Build estimator total.</span></div><p class="status" id="tools-sum" style="margin:6px 0 0"></p><div class="stagepct" id="pct-tools"></div></div></div><div id="tools-list" style="margin-top:12px"></div><details class="others" id="tools-detail"><summary>Details, links and notes for each item</summary><div id="parts-tools"></div></details><div class="notes-wrap" id="notes-tools"></div><div id="owner-tools"></div></section>
 
   <section class="stage" id="builds"><div class="shead"><div class="roundel">B</div><div class="t"><h2>Build threads to follow</h2><div class="meta"><span>Starred threads are the closest matches to this build. Thread numbers resolve on the v1 archive when the live forum blocks you.</span></div></div></div><div class="tbl" style="margin-top:14px"><table id="builds-tbl"><thead><tr><th>Thread</th><th>Builder</th><th>Drivetrain</th><th>Status</th><th>Why read it</th></tr></thead><tbody></tbody></table></div></section>
 
@@ -849,7 +849,7 @@ function cardHTML(p){
   if(isOwner||sandbox){
     const inGroup=p.group&&!GROUPS[p.group]?.multi;
     ctl=`<div class="ctl">
-      ${p.stage==='tools'?`<label><input type="checkbox" data-tool="have" data-toolid="${esc(p.id)}" ${!chosen&&s.tool==='have'?'checked':''}> Have it</label><label><input type="checkbox" data-tool="need" data-toolid="${esc(p.id)}" ${chosen?'checked':''}> Need to buy</label>`:`<label><input type="${inGroup?'radio':'checkbox'}" ${inGroup?`name="g-${esc(p.group)}"`:''} data-choose="${esc(p.id)}" ${chosen?'checked':''}> Chosen</label>`}
+      ${p.stage==='tools'?`<label><input type="checkbox" data-tool="have" data-toolid="${esc(p.id)}" ${!chosen&&s.tool==='have'?'checked':''}> Skip</label><label><input type="checkbox" data-tool="need" data-toolid="${esc(p.id)}" ${chosen?'checked':''}> Buy</label>`:`<label><input type="${inGroup?'radio':'checkbox'}" ${inGroup?`name="g-${esc(p.group)}"`:''} data-choose="${esc(p.id)}" ${chosen?'checked':''}> Chosen</label>`}
  ${chosen&&(isOwner||sandbox)?`<button class="nbtn ${s.quote?'has':''}" data-quote="${esc(p.id)}" title="Enter the price you were actually quoted or paid">$ quote</button>`:''}
       ${chosen?`<select data-status="${esc(p.id)}" aria-label="Status">${STATUSES.map(([v,l])=>`<option value="${v}" ${statusOf(p)===v?'selected':''}>${l}</option>`).join('')}</select><input type="number" min="0" max="100" step="5" value="${pct}" data-pct="${esc(p.id)}" aria-label="Percent done">%<div class="pbar ${pct<100?'lo':''}"><i style="width:${pct}%"></i></div>`:''}
       ${isOwner?`<button class="nbtn ${hasNote?'has':''}" data-note="${esc(p.id)}" title="Builder note">✎ note</button>`:''}
@@ -1008,13 +1008,13 @@ function renderReport(){
     group('v:'+v,v,`${list.length} part${list.length===1?'':'s'}`,list,sumR(list));
     txt.push(''); txt.push(v.toUpperCase()); list.forEach(p=>{ txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''} · ${linkOf(p)||''}`); if(srcOf(p)) txt.push(`      source: ${srcOf(p)}`); extraLinks(p).forEach(l=>txt.push(`      ${l.label||'link'}: ${l.url}`)); }); txt.push(`  Subtotal: ${sumR(list)}`);
   });
-  const toolsSub=`${toolsNeed.length} to buy · ${toolsHave.length} already have${toolsOpen?` · ${toolsOpen} not marked`:''}`;
-  group('tools','Tools and shop',toolsSub,toolsNeed,toolsNeed.length?sumR(toolsNeed):'<span class="row">nothing to buy yet</span>',toolsNeed.length?'':`<tr class="prow skiprow"><td class="nm" colspan="5">Nothing marked Need to buy. Go through <a href="#tools">Tools &amp; shop</a> and tick Have it or Need to buy on each.</td></tr>`);
-  txt.push(''); txt.push('TOOLS AND SHOP ('+toolsSub+')'); toolsNeed.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''}`)); txt.push(`  Subtotal: ${sumR(toolsNeed)}`);
+  const toolsSub=`${toolsNeed.length} to buy · ${toolsHave.length} skipped${toolsOpen?` · ${toolsOpen} not marked`:''}`;
+  group('tools','Shop and tools',toolsSub,toolsNeed,toolsNeed.length?sumR(toolsNeed):'<span class="row">nothing to buy yet</span>',toolsNeed.length?'':`<tr class="prow skiprow"><td class="nm" colspan="5">Nothing marked Buy yet. Go through <a href="#tools">Shop &amp; tools</a> and tick Buy or Skip on each.</td></tr>`);
+  txt.push(''); txt.push('SHOP AND TOOLS ('+toolsSub+')'); toolsNeed.forEach(p=>txt.push(`  ${p.name} · ${p.model||''} · ${p.price||''}`)); txt.push(`  Subtotal: ${sumR(toolsNeed)}`);
   const toolsLo=sum(toolsNeed), toolsHi=sumHi(toolsNeed);
-  { const ts=$('#tools-sum'); if(ts) ts.innerHTML=`<b>${toolsNeed.length} to buy</b>${toolsNeed.length?` (${rng(toolsLo,toolsHi)})`:''} · ${toolsHave.length} already have · ${toolsOpen} not marked yet. <a href="#order">See it in the Build estimator →</a>`; }
+  { const ts=$('#tools-sum'); if(ts) ts.innerHTML=`<b>${toolsNeed.length} to buy</b>${toolsNeed.length?` (${rng(toolsLo,toolsHi)})`:''} · ${toolsHave.length} skipped · ${toolsOpen} not marked yet. <a href="#order">See it in the Build estimator →</a>`; }
   { const tlEl=$('#tools-list'); if(tlEl){ const cats=[]; toolsAll.forEach(p=>{ if(!cats.includes(p.cat)) cats.push(p.cat); }); cats.sort((a,b)=>(a==='Garage build-out'?-1:0)-(b==='Garage build-out'?-1:0));
-      tlEl.innerHTML=`<div class="tbl"><table class="esttbl tooltbl"><thead><tr><th>Item</th><th class="pr">Price</th><th>Have it</th><th>Need to buy</th></tr></thead><tbody>${cats.map(c=>`<tr class="vrow static"><td colspan="4"><span class="vtog">${esc(c||'Other')}</span></td></tr>`+toolsAll.filter(p=>p.cat===c).map(p=>{ const need=isChosen(p), have=!need&&st(p.id).tool==='have', lo=eff(p), hi=effHi(p); return `<tr class="prow${have?' have':''}"><td class="nm" title="${esc(p.name+(p.model?' · '+p.model:''))}">${esc(p.name)} <small class="row">${esc(p.model||'')}</small></td><td class="pn pr">${(lo||hi)?rng(lo,hi):`<span class="row">${esc(p.price||'no price')}</span>`}${p.tag==='est'?' <small>est</small>':''}</td><td class="tk"><input type="checkbox" data-tool="have" data-toolid="${esc(p.id)}" aria-label="Have it: ${esc(p.name)}" ${have?'checked':''} ${canEdit?'':'disabled'}></td><td class="tk"><input type="checkbox" data-tool="need" data-toolid="${esc(p.id)}" aria-label="Need to buy: ${esc(p.name)}" ${need?'checked':''} ${canEdit?'':'disabled'}></td></tr>`; }).join('')).join('')}</tbody></table></div>`;
+      tlEl.innerHTML=`<div class="tbl"><table class="esttbl tooltbl"><thead><tr><th>Item</th><th class="pr">Price</th><th>Skip</th><th>Buy</th></tr></thead><tbody>${cats.map(c=>`<tr class="vrow static"><td colspan="4"><span class="vtog">${esc(c||'Other')}</span></td></tr>`+toolsAll.filter(p=>p.cat===c).map(p=>{ const need=isChosen(p), have=!need&&st(p.id).tool==='have', lo=eff(p), hi=effHi(p); return `<tr class="prow${have?' have':''}"><td class="nm" title="${esc(p.name+(p.model?' · '+p.model:''))}">${esc(p.name)} <small class="row">${esc(p.model||'')}</small></td><td class="pn pr">${(lo||hi)?rng(lo,hi):`<span class="row">${esc(p.price||'no price')}</span>`}${p.tag==='est'?' <small>est</small>':''}</td><td class="tk"><input type="checkbox" data-tool="have" data-toolid="${esc(p.id)}" aria-label="Skip: ${esc(p.name)}" ${have?'checked':''} ${canEdit?'':'disabled'}></td><td class="tk"><input type="checkbox" data-tool="need" data-toolid="${esc(p.id)}" aria-label="Buy: ${esc(p.name)}" ${need?'checked':''} ${canEdit?'':'disabled'}></td></tr>`; }).join('')).join('')}</tbody></table></div>`;
       const dt=$('#tools-detail'); if(dt&&q.value) dt.open=true; } }
   const nonKit=chosen.filter(p=>p.group!=='kit');
   const total=sum(nonKit)+kitPrice, totalHi=sumHi(nonKit)+kitPrice;
@@ -1025,13 +1025,13 @@ function renderReport(){
   const withTax=rng(total+taxAmt,totalHi+taxAmtHi);
   const warns=activeWarnings(); const resS=resolvedSet(); const openW=warns.filter(w=>!resS.has(warnKey(w)));
   if(warns.length){ notes+=`<div style="margin-bottom:14px">${warnBoxHTML(warns,'Check before ordering')}</div>`; if(openW.length){ txt.push(''); txt.push('CHECK BEFORE ORDERING'); openW.forEach(x=>txt.push('  - '+x.msg+(x.fix?' -> '+x.fix:''))); } }
-  top+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${rng(total,totalHi)}</div><div class="status">${kitName} ${money(kitPrice)} + ${nonKit.length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at listed prices. The low number takes the bottom of every listed range (promo and base-version prices); the high number takes the top.${ranged.length?` The spread comes from ${ranged.slice(0,3).map(p=>`${esc(p.name)} (${rng(eff(p),effHi(p))})`).join(', ')}${ranged.length>3?` and ${ranged.length-3} more`:''}; a quote on any of them closes its gap.`:' Every priced pick has a single price right now, so the two ends match.'}${unpriced?` ${unpriced} pick${unpriced>1?'s have':' has'} no price yet and ${unpriced>1?'are':'is'} in neither number.`:''}${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} ${toolsNeed.length?`Includes ${rng(toolsLo,toolsHi)} of tools and shop gear you marked Need to buy.`:`No tools or shop gear in this yet${toolsOpen?`: ${toolsOpen} item${toolsOpen>1?'s':''} in Tools &amp; shop not marked`:''}.`} Not included: shipping, paint.</div></div>
+  top+=`<div class="panel"><h3>Running estimate</h3><div class="chips" style="margin-bottom:8px">${counts.map(([l,n])=>`<span class="chip st-${l.toLowerCase()}">${n} ${l.toLowerCase()}</span>`).join('')}</div><div class="overall"><div class="big">${rng(total,totalHi)}</div><div class="status">${kitName} ${money(kitPrice)} + ${nonKit.length} chosen items${quoted?`, ${quoted} at your quoted or paid price and the rest`:''} at listed prices. The low number takes the bottom of every listed range (promo and base-version prices); the high number takes the top.${ranged.length?` The spread comes from ${ranged.slice(0,3).map(p=>`${esc(p.name)} (${rng(eff(p),effHi(p))})`).join(', ')}${ranged.length>3?` and ${ranged.length-3} more`:''}; a quote on any of them closes its gap.`:' Every priced pick has a single price right now, so the two ends match.'}${unpriced?` ${unpriced} pick${unpriced>1?'s have':' has'} no price yet and ${unpriced>1?'are':'is'} in neither number.`:''}${stale?` <b style="color:var(--warn)">${stale} quote${stale>1?'s are':' is'} over 90 days old.</b>`:''} ${toolsNeed.length?`Includes ${rng(toolsLo,toolsHi)} of shop and tools you marked Buy.`:`No tools or shop gear in this yet${toolsOpen?`: ${toolsOpen} item${toolsOpen>1?'s':''} in Shop &amp; tools not marked`:''}.`} Not included: shipping, paint.</div></div>
     ${undecided.length?`<h3 style="margin-top:14px;font-size:16px">Still to decide (${undecided.length})</h3><div class="chips">${undecided.map(g=>`<a class="chip ${esc(g.decideBy)}" href="#sheet" title="${esc(D.decideLabels[g.decideBy]||'')}">${esc(g.label)}</a>`).join('')}</div>`:'<p class="status">Every decision on the spec sheet has a pick.</p>'}</div>`;
   txt.push(''); txt.push(`RUNNING ESTIMATE: ${rng(total,totalHi)} (kit + chosen items, low to high of listed prices)`); txt.push(`Sales / use tax (est.): ${rng(taxAmt,taxAmtHi)} at ${tRate}%`); txt.push(`ESTIMATE WITH TAX: ${withTax}`); { const due=chosen.filter(p=>st(p.id).taxPaid==='due'); if(due.length) txt.push(`Use tax due at titling on ${money(due.reduce((a,p)=>a+(st(p.id).quote||eff(p)||0),0))} of parts not charged WA sales tax`); } if(undecided.length) txt.push('Still to decide: '+undecided.map(g=>g.label).join(', '));
   if(notes){ const bits=[]; if(openOrder.length) bits.push(`${openOrder.length} order-form decision${openOrder.length>1?'s':''} still open`); if(openW.length) bits.push(`${openW.length} thing${openW.length>1?'s':''} to check before ordering`); if(!bits.length) bits.push('Checks you have resolved');
     top+=`<details class="others estnotes" id="est-notes"${estNotesOpen?' open':''}><summary>${bits.join(' · ')}</summary><div style="margin-top:10px">${notes}</div></details>`; }
   $('#report-top').innerHTML=top;
-  $('#report').innerHTML=`<div class="tbl"><table class="esttbl"><thead><tr><th>Where / part</th><th class="c-x">Part no.</th><th class="pr">Price</th><th class="c-s">Status</th><th class="c-x">Links</th></tr></thead><tbody>${body}</tbody><tfoot><tr><td colspan="2">Car: kit and parts</td><td class="pn pr">${rng(total-toolsLo,totalHi-toolsHi)}</td><td colspan="2" class="row">low to high of listed prices</td></tr><tr><td colspan="2">Tools and shop</td><td class="pn pr">${rng(toolsLo,toolsHi)}</td><td colspan="2" class="row">${esc(toolsSub)}</td></tr><tr><td colspan="2">Sales / use tax at ${tRate}%</td><td class="pn pr">${rng(taxAmt,taxAmtHi)}</td><td colspan="2"></td></tr><tr class="grand"><td colspan="2">Estimate with tax</td><td class="pn pr">${withTax}</td><td colspan="2" class="row">before shipping and paint</td></tr></tfoot></table></div>`;
+  $('#report').innerHTML=`<div class="tbl"><table class="esttbl"><thead><tr><th>Where / part</th><th class="c-x">Part no.</th><th class="pr">Price</th><th class="c-s">Status</th><th class="c-x">Links</th></tr></thead><tbody>${body}</tbody><tfoot><tr><td colspan="2">Car: kit and parts</td><td class="pn pr">${rng(total-toolsLo,totalHi-toolsHi)}</td><td colspan="2" class="row">low to high of listed prices</td></tr><tr><td colspan="2">Shop and tools</td><td class="pn pr">${rng(toolsLo,toolsHi)}</td><td colspan="2" class="row">${esc(toolsSub)}</td></tr><tr><td colspan="2">Sales / use tax at ${tRate}%</td><td class="pn pr">${rng(taxAmt,taxAmtHi)}</td><td colspan="2"></td></tr><tr class="grand"><td colspan="2">Estimate with tax</td><td class="pn pr">${withTax}</td><td colspan="2" class="row">before shipping and paint</td></tr></tfoot></table></div>`;
   estKeys=['ffr'].concat(Object.keys(byVendor).map(v=>'v:'+v),['tools']); { const a=$('#est-all'); if(a) a.textContent=estKeys.every(k=>open.has(k))?'Collapse all':'Expand all'; }
   reportText=txt.join('\n');
   // spreadsheet export: one flat table
@@ -1042,7 +1042,7 @@ function renderReport(){
   flat.push(['Factory Five','Factory Five','',`Gen 3 ${kitName}`,kitName,1,kitPrice,kitPrice,money(kitPrice),'','Planned','☐','☐','☐',kitPick&&kitPick.id==='p214'?'https://www.factoryfive.com/type-65-coupe/coupe-r/':'https://www.factoryfive.com/order-a-kit/type-65-coupe-complete-kit/','',[],'','','Base kit; options below']);
   pushRows('Factory Five options',ffr);
   Object.entries(byVendor).sort().forEach(([v,list])=>pushRows(v,list));
-  pushRows('Tools and shop',toolsNeed);
+  pushRows('Shop and tools',toolsNeed);
   const cell=(v,i)=>{ if(i===14||i===15){ return v?`<a href="${esc(v)}">${esc(host(v)||v)}</a>`:''; } if(i===16){ return (v||[]).map(l=>`<a href="${esc(l.url)}">${esc(l.label||host(l.url))}</a>`).join('<br>'); } return esc(v); };
   reportHTML=`<table border="1"><thead><tr>${cols.map(c=>`<th style="font-weight:bold;background:#e3ecf9">${c}</th>`).join('')}</tr></thead><tbody>${flat.map(r=>`<tr>${r.map((v,i)=>`<td>${cell(v,i)}</td>`).join('')}</tr>`).join('')}<tr><td colspan="6" style="font-weight:bold">Total (kit + chosen; quotes where entered)</td><td style="font-weight:bold">${Math.round(total)}</td><td style="font-weight:bold">${Math.round(totalHi)}</td><td colspan="12"></td></tr><tr><td colspan="6">Sales / use tax, estimated at ${tRate}%</td><td>${Math.round(taxAmt)}</td><td>${Math.round(taxAmtHi)}</td><td colspan="12"></td></tr><tr><td colspan="6" style="font-weight:bold">Total with tax</td><td style="font-weight:bold">${Math.round(total+taxAmt)}</td><td style="font-weight:bold">${Math.round(totalHi+taxAmtHi)}</td><td colspan="12"></td></tr></tbody></table>`;
   renderTax();
@@ -1448,7 +1448,7 @@ function renderNow(v){
     ['Hours on this stage',String(h),`of ${s.hours} planned · ${hl} of ~${calc.hours.toLocaleString()} overall`],
     ['Stage window ends',fmtM(w.to),days>=0?`${days} days left`:`${-days} days past`],
     ['Parts not here yet',String(waiting.length),`of ${ch.length} chosen for this stage`],
-    ['Open checks',String(ow.length),ow.length?'see Your build':'nothing flagged']];
+    ['Open checks',String(ow.length),ow.length?'see Kit builder':'nothing flagged']];
   const done=new Set(v.done||[]);
   const sel=can?`<label class="nowpick">Working on <select id="now-stage">${D.stages.map(x=>`<option value="${x.id}"${x.id===s.id?' selected':''}>${x.num}. ${esc(x.title)}${done.has(x.id)?' ✓':''}</option>`).join('')}<option value="">— not building yet —</option></select></label>`:'';
   el.hidden=false;
@@ -1764,7 +1764,7 @@ function context(){
 async function initAsk(){
   sample=await claude.use('sample'); if(!sample) return;
   $('#ask-off').hidden=true; $('#ask-ui').hidden=false;
-  $('#askstage').innerHTML=D.stages.map(s=>`<option value="${s.id}">${s.num}. ${esc(s.title)}</option>`).join('')+'<option value="tools">Tools</option>';
+  $('#askstage').innerHTML=D.stages.map(s=>`<option value="${s.id}">${s.num}. ${esc(s.title)}</option>`).join('')+'<option value="tools">Shop &amp; tools</option>';
   $('#asksave').hidden=!isOwner; let ctl;
   $('#askstop').onclick=()=>ctl?.abort();
   $('#askbtn').onclick=async()=>{
